@@ -76,7 +76,7 @@ public class Main {
                         }
 
                         // Apply paragraph style
-                        Pattern headerPattern = Pattern.compile("^[^#].*", Pattern.MULTILINE);
+                        Pattern headerPattern = Pattern.compile("^[^\\n\\r#].*", Pattern.MULTILINE);
                         Matcher matcher = headerPattern.matcher(textPane.getDocument().getText(0, textPane.getStyledDocument().getLength()));
                         while (matcher.find()) {
                             System.out.println(textPane.getDocument().getLength());
