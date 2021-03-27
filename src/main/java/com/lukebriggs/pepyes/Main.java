@@ -7,9 +7,8 @@ import javax.swing.text.SimpleAttributeSet;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,14 +38,10 @@ public class Main {
         }
         final MarkDownStyle style;
         MarkDownStyle testStyle;
-        try {
-            System.out.println(System.getProperty("user.dir"));
-            File styleFile = new File(System.getProperty("user.dir") + "/src/main/java/com/lukebriggs/pepyes/style.json");
-            testStyle = new MarkDownStyle(Files.readString(styleFile.toPath(), StandardCharsets.UTF_8));
-        } catch (IOException e) {
-            testStyle = null;
-            e.printStackTrace();
-        }
+        ClassLoader classLoader = Main.class.getClassLoader();
+        Scanner jsonScanner = new Scanner(classLoader.getResourceAsStream("style.json"), StandardCharsets.UTF_8.name());
+        File styleFile = new File("");
+        testStyle = new MarkDownStyle(jsonScanner.useDelimiter("\\A").next());
         style = testStyle;
 
         JFrame frame = new JFrame();
