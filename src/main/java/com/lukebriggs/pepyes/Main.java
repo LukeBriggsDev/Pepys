@@ -99,6 +99,7 @@ public class Main {
         });
 
         frame.setSize(200,100);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(textPane);
         frame.setVisible(true);
     }
