@@ -52,22 +52,25 @@ public class Main {
         textPane.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
-                System.out.println("Boo");
-                if (textPane.getDocument().getLength() > 0) {
+
+                if (textPane.getDocument().getLength() > 0 && e.getKeyChar() != 10) {
                     try {
                         boolean atBeginningOfLine;
                         try {
-                            atBeginningOfLine = textPane.getDocument().getText(textPane.getStyledDocument().getLength() , 1).equals(EOL);
+                            atBeginningOfLine = textPane.getDocument().getText(textPane.getDocument().getLength() -1 , 1).equals(EOL);
                         } catch (BadLocationException atStartOfFile) {
                             atBeginningOfLine = true;
+                        }
+
+                        if(atBeginningOfLine){
+                            textPane.setCharacterAttributes(style.getParagraph().getAttributeSet(), true);
                         }
 
                         // Apply header styles
                         for (int i = 1; i <= 6; i++) {
                             Pattern headerPattern = Pattern.compile("^#{" + i + "}[\\s]+.*", Pattern.MULTILINE);
-                            Matcher matcher = headerPattern.matcher(textPane.getDocument().getText(0, textPane.getStyledDocument().getLength()));
+                            Matcher matcher = headerPattern.matcher(textPane.getDocument().getText(0, textPane.getStyledDocument().getLength()) + e.getKeyChar());
                             while (matcher.find()) {
-                                System.out.println(textPane.getDocument().getLength());
                                 UpdateAttribute updateAttribute = new UpdateAttribute((AbstractDocument) textPane.getDocument(), matcher.start(), matcher.end() - matcher.start(), matcher.group(), style.getHeader(i).getAttributeSet());
                                 textPane.setCharacterAttributes(style.getHeader(i).getAttributeSet(), true);
                                 SwingUtilities.invokeLater(updateAttribute);
@@ -77,9 +80,8 @@ public class Main {
 
                         // Apply paragraph style
                         Pattern headerPattern = Pattern.compile("^[^\\n\\r#].*", Pattern.MULTILINE);
-                        Matcher matcher = headerPattern.matcher(textPane.getDocument().getText(0, textPane.getStyledDocument().getLength()));
+                        Matcher matcher = headerPattern.matcher(textPane.getDocument().getText(0, textPane.getStyledDocument().getLength()) + e.getKeyChar());
                         while (matcher.find()) {
-                            System.out.println(textPane.getDocument().getLength());
                             UpdateAttribute updateAttribute = new UpdateAttribute((AbstractDocument) textPane.getDocument(), matcher.start(), matcher.end() - matcher.start(), matcher.group(), style.getParagraph().getAttributeSet());
                             textPane.setCharacterAttributes(style.getParagraph().getAttributeSet(), true);
                             SwingUtilities.invokeLater(updateAttribute);
@@ -95,7 +97,6 @@ public class Main {
                     textPane.setCharacterAttributes(style.getParagraph().getAttributeSet(), true);
                 }
             }
-
         });
 
         frame.setSize(200,100);
