@@ -53,7 +53,7 @@ public class Main {
             @Override
             public void keyTyped(KeyEvent e) {
 
-                if (textPane.getDocument().getLength() > 0 && e.getKeyChar() != 10) {
+                if (textPane.getDocument().getLength() > 0) {
                     try {
                         boolean atBeginningOfLine;
                         try {
