@@ -68,7 +68,8 @@ public class Main {
 
                         // Apply header styles
                         for (int i = 1; i <= 6; i++) {
-                            Pattern headerPattern = Pattern.compile("^#{" + i + "}[\\s]+.*", Pattern.MULTILINE);
+                            Pattern headerPattern = Pattern.compile(style.getHeader(i).getRegex(), Pattern.MULTILINE);
+                            System.out.println(style.getHeader(i).getRegex());
                             Matcher matcher = headerPattern.matcher(textPane.getDocument().getText(0, textPane.getStyledDocument().getLength()) + e.getKeyChar());
                             while (matcher.find()) {
                                 UpdateAttribute updateAttribute = new UpdateAttribute((AbstractDocument) textPane.getDocument(), matcher.start(), matcher.end() - matcher.start(), matcher.group(), style.getHeader(i).getAttributeSet());
@@ -78,9 +79,11 @@ public class Main {
                             }
                         }
 
+
+
                         // Apply paragraph style
-                        Pattern headerPattern = Pattern.compile("^[^\\n\\r#].*", Pattern.MULTILINE);
-                        Matcher matcher = headerPattern.matcher(textPane.getDocument().getText(0, textPane.getStyledDocument().getLength()) + e.getKeyChar());
+                        Pattern paragraphPattern = Pattern.compile(style.getParagraph().getRegex(), Pattern.MULTILINE);
+                        Matcher matcher = paragraphPattern.matcher(textPane.getDocument().getText(0, textPane.getStyledDocument().getLength()) + e.getKeyChar());
                         while (matcher.find()) {
                             UpdateAttribute updateAttribute = new UpdateAttribute((AbstractDocument) textPane.getDocument(), matcher.start(), matcher.end() - matcher.start(), matcher.group(), style.getParagraph().getAttributeSet());
                             textPane.setCharacterAttributes(style.getParagraph().getAttributeSet(), true);
@@ -99,7 +102,7 @@ public class Main {
             }
         });
 
-        frame.setSize(200,100);
+        frame.setSize(800,600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(textPane);
         frame.setVisible(true);

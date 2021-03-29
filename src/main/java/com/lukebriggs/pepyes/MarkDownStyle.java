@@ -19,11 +19,13 @@ public class MarkDownStyle {
             this.headers[i] = new Header(
                 jsonStyle.get("header" + String.valueOf(i + 1)).getAsJsonObject().get("level").getAsInt(),
                 jsonStyle.get("header" + String.valueOf(i + 1)).getAsJsonObject().get("fontSize").getAsInt(),
-                jsonStyle.get("header" + String.valueOf(i + 1)).getAsJsonObject().get("bold").getAsBoolean());
+                jsonStyle.get("header" + String.valueOf(i + 1)).getAsJsonObject().get("bold").getAsBoolean(),
+                    jsonStyle.get("header" + String.valueOf(i + 1)).getAsJsonObject().get("regex").getAsString());
         }
 
         this.paragraph = new Paragraph(
-                jsonStyle.get("paragraph").getAsJsonObject().get("fontSize").getAsInt()
+                jsonStyle.get("paragraph").getAsJsonObject().get("fontSize").getAsInt(),
+                jsonStyle.get("paragraph").getAsJsonObject().get("regex").getAsString()
         );
     }
 
@@ -47,11 +49,13 @@ class Header{
     int fontSize;
     Boolean bold;
     SimpleAttributeSet attributeSet = new SimpleAttributeSet();
+    String regex;
 
-    public Header(int level, int fontSize, boolean bold){
+    public Header(int level, int fontSize, boolean bold, String regex){
         this.level = level;
         this.fontSize = fontSize;
         this.bold = bold;
+        this.regex = regex;
         StyleConstants.setBold(attributeSet, this.bold);
         StyleConstants.setFontSize(attributeSet, this.fontSize);
     }
@@ -63,6 +67,10 @@ class Header{
         return fontSize;
     }
 
+    public String getRegex() {
+        return regex;
+    }
+
     public SimpleAttributeSet getAttributeSet() {
         return attributeSet;
     }
@@ -71,9 +79,11 @@ class Header{
 class Paragraph{
     int fontSize;
     SimpleAttributeSet attributeSet = new SimpleAttributeSet();
+    String regex;
 
-    public Paragraph(int fontSize){
+    public Paragraph(int fontSize, String regex){
         this.fontSize = fontSize;
+        this.regex = regex;
         StyleConstants.setFontSize(attributeSet, this.fontSize);
     }
 
@@ -83,5 +93,9 @@ class Paragraph{
 
     public SimpleAttributeSet getAttributeSet() {
         return attributeSet;
+    }
+
+    public String getRegex() {
+        return regex;
     }
 }
