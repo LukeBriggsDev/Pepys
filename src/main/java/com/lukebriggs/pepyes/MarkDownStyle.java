@@ -6,11 +6,13 @@ import com.google.gson.JsonParser;
 import javax.swing.*;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
+import java.awt.*;
 
 public class MarkDownStyle {
 
     private ATXHeader[] atxHeaders = new ATXHeader[6];
     private SetextHeader[] setextHeaders = new SetextHeader[2];
+    private IndentedCode indentedCode;
     private Paragraph paragraph;
 
     public MarkDownStyle(String style){
@@ -32,6 +34,13 @@ public class MarkDownStyle {
                     jsonStyle.get("setextheader" + String.valueOf(i)).getAsJsonObject().get("regex").getAsString());
         }
 
+        this.indentedCode = new IndentedCode(
+                jsonStyle.get("indentedcode").getAsJsonObject().get("fontSize").getAsInt(),
+                jsonStyle.get("indentedcode").getAsJsonObject().get("bold").getAsBoolean(),
+                new Font(jsonStyle.get("indentedcode").getAsJsonObject().get("font").getAsString(), Font.PLAIN, 16),
+                jsonStyle.get("indentedcode").getAsJsonObject().get("regex").getAsString()
+        );
+
         this.paragraph = new Paragraph(
                 jsonStyle.get("paragraph").getAsJsonObject().get("fontSize").getAsInt(),
                 jsonStyle.get("paragraph").getAsJsonObject().get("regex").getAsString()
@@ -48,6 +57,10 @@ public class MarkDownStyle {
 
     public SetextHeader getSetextHeader(int i) {
         return setextHeaders[i - 1];
+    }
+
+    public IndentedCode getIndentedCode() {
+        return indentedCode;
     }
 
     public void setParagraphStyle(SimpleAttributeSet attributeSet, JTextPane textPane){

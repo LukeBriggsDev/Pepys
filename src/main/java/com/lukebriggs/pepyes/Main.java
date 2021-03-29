@@ -63,6 +63,7 @@ public class Main {
                             textPane.setCharacterAttributes(style.getParagraph().getAttributeSet(), true);
                         }
 
+
                         // Apply atx header styles
                         for (int i = 1; i <= 6; i++) {
                             style.getAtxHeader(i).applyStyle(textPane, style.getParagraph().getAttributeSet(),e.getKeyChar());
@@ -73,6 +74,8 @@ public class Main {
                             style.getSetextHeader(i).applyStyle(textPane, style.getParagraph().getAttributeSet(),e.getKeyChar());
                         }
 
+                        // Apply code style
+                        style.getIndentedCode().applyStyle(textPane, style.getParagraph().getAttributeSet(), e.getKeyChar());
 
 
                     } catch (BadLocationException badLocationException) {

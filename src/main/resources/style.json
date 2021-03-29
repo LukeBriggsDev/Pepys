@@ -51,5 +51,13 @@
   "paragraph": {
     "fontSize": 16,
     "regex": "^[^\\n\\r#].*"
+  },
+
+  "indentedcode": {
+    "fontSize": 16,
+    "bold": false,
+    "font": "Monospaced",
+    "regex": "^([\\s]{4,}|[\\t]+)"
   }
+
 }
