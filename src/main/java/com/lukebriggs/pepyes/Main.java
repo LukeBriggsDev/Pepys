@@ -1,7 +1,6 @@
 package com.lukebriggs.pepyes;
 
 import javax.swing.*;
-import javax.swing.text.AbstractDocument;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
 import java.awt.event.KeyAdapter;
@@ -9,8 +8,6 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 public class Main {
@@ -68,28 +65,13 @@ public class Main {
 
                         // Apply header styles
                         for (int i = 1; i <= 6; i++) {
-                            Pattern headerPattern = Pattern.compile(style.getHeader(i).getRegex(), Pattern.MULTILINE);
-                            System.out.println(style.getHeader(i).getRegex());
-                            Matcher matcher = headerPattern.matcher(textPane.getDocument().getText(0, textPane.getStyledDocument().getLength()) + e.getKeyChar());
-                            while (matcher.find()) {
-                                UpdateAttribute updateAttribute = new UpdateAttribute((AbstractDocument) textPane.getDocument(), matcher.start(), matcher.end() - matcher.start(), matcher.group(), style.getHeader(i).getAttributeSet());
-                                textPane.setCharacterAttributes(style.getHeader(i).getAttributeSet(), true);
-                                SwingUtilities.invokeLater(updateAttribute);
-
-                            }
+                            style.getHeader(i).applyStyle(textPane, e.getKeyChar());
                         }
 
 
 
                         // Apply paragraph style
-                        Pattern paragraphPattern = Pattern.compile(style.getParagraph().getRegex(), Pattern.MULTILINE);
-                        Matcher matcher = paragraphPattern.matcher(textPane.getDocument().getText(0, textPane.getStyledDocument().getLength()) + e.getKeyChar());
-                        while (matcher.find()) {
-                            UpdateAttribute updateAttribute = new UpdateAttribute((AbstractDocument) textPane.getDocument(), matcher.start(), matcher.end() - matcher.start(), matcher.group(), style.getParagraph().getAttributeSet());
-                            textPane.setCharacterAttributes(style.getParagraph().getAttributeSet(), true);
-                            SwingUtilities.invokeLater(updateAttribute);
-
-                        }
+                        style.getParagraph().applyStyle(textPane, e.getKeyChar());
 
 
                     } catch (BadLocationException badLocationException) {
