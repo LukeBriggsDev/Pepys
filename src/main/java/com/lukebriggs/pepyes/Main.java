@@ -63,15 +63,16 @@ public class Main {
                             textPane.setCharacterAttributes(style.getParagraph().getAttributeSet(), true);
                         }
 
-                        // Apply header styles
+                        // Apply atx header styles
                         for (int i = 1; i <= 6; i++) {
-                            style.getHeader(i).applyStyle(textPane, e.getKeyChar());
+                            style.getAtxHeader(i).applyStyle(textPane, style.getParagraph().getAttributeSet(),e.getKeyChar());
                         }
 
+                        // Apply setext header styles
+                        for (int i = 1; i <= 2; i++){
+                            style.getSetextHeader(i).applyStyle(textPane, style.getParagraph().getAttributeSet(),e.getKeyChar());
+                        }
 
-
-                        // Apply paragraph style
-                        style.getParagraph().applyStyle(textPane, e.getKeyChar());
 
 
                     } catch (BadLocationException badLocationException) {

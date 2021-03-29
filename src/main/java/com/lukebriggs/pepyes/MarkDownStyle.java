@@ -9,18 +9,27 @@ import javax.swing.text.StyleConstants;
 
 public class MarkDownStyle {
 
-    private Header[] headers = new Header[6];
+    private ATXHeader[] atxHeaders = new ATXHeader[6];
+    private SetextHeader[] setextHeaders = new SetextHeader[2];
     private Paragraph paragraph;
 
     public MarkDownStyle(String style){
         JsonObject jsonStyle = new JsonParser().parse(style).getAsJsonObject();
 
-        for(int i=0; i < 6; i++){
-            this.headers[i] = new Header(
-                jsonStyle.get("header" + String.valueOf(i + 1)).getAsJsonObject().get("level").getAsInt(),
-                jsonStyle.get("header" + String.valueOf(i + 1)).getAsJsonObject().get("fontSize").getAsInt(),
-                jsonStyle.get("header" + String.valueOf(i + 1)).getAsJsonObject().get("bold").getAsBoolean(),
-                    jsonStyle.get("header" + String.valueOf(i + 1)).getAsJsonObject().get("regex").getAsString());
+        for(int i=1; i <= 6; i++){
+            this.atxHeaders[i - 1] = new ATXHeader(
+                jsonStyle.get("atxheader" + String.valueOf(i)).getAsJsonObject().get("level").getAsInt(),
+                jsonStyle.get("atxheader" + String.valueOf(i)).getAsJsonObject().get("fontSize").getAsInt(),
+                jsonStyle.get("atxheader" + String.valueOf(i)).getAsJsonObject().get("bold").getAsBoolean(),
+                    jsonStyle.get("atxheader" + String.valueOf(i)).getAsJsonObject().get("regex").getAsString());
+        }
+
+        for(int i=1; i<=2; i++){
+            this.setextHeaders[i-1] = new SetextHeader(
+                    jsonStyle.get("setextheader" + String.valueOf(i)).getAsJsonObject().get("level").getAsInt(),
+                    jsonStyle.get("setextheader" + String.valueOf(i)).getAsJsonObject().get("fontSize").getAsInt(),
+                    jsonStyle.get("setextheader" + String.valueOf(i)).getAsJsonObject().get("bold").getAsBoolean(),
+                    jsonStyle.get("setextheader" + String.valueOf(i)).getAsJsonObject().get("regex").getAsString());
         }
 
         this.paragraph = new Paragraph(
@@ -33,8 +42,12 @@ public class MarkDownStyle {
         return paragraph;
     }
 
-    public Header getHeader(int i) {
-        return headers[i - 1];
+    public ATXHeader getAtxHeader(int i) {
+        return atxHeaders[i - 1];
+    }
+
+    public SetextHeader getSetextHeader(int i) {
+        return setextHeaders[i - 1];
     }
 
     public void setParagraphStyle(SimpleAttributeSet attributeSet, JTextPane textPane){

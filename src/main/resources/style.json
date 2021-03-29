@@ -1,39 +1,52 @@
 {
-  "header1": {
+  "atxheader1": {
   "level": 1,
   "fontSize": 96,
   "bold" : false,
     "regex": "^#{1}[\\s]+.*"
 },
-  "header2": {
+  "atxheader2": {
     "level": 2,
     "fontSize": 60,
     "bold" : false,
     "regex": "^#{2}[\\s]+.*"
   },
-  "header3": {
+  "atxheader3": {
     "level" : 3,
     "fontSize": 48,
     "bold" : false,
     "regex": "^#{3}[\\s]+.*"
   },
-  "header4": {
+  "atxheader4": {
     "level" : 4,
     "fontSize": 34,
     "bold" : false,
     "regex": "^#{4}[\\s]+.*"
   },
-  "header5": {
+  "atxheader5": {
     "level" : 5,
     "fontSize": 24,
     "bold" : false,
     "regex": "^#{5}[\\s]+.*"
   },
-  "header6": {
+  "atxheader6": {
     "level" : 6,
     "fontSize": 20,
     "bold" : false,
     "regex": "^#{6}[\\s]+.*"
+  },
+  "setextheader1": {
+    "level": 1,
+    "fontSize": 96,
+    "bold" : false,
+    "regex": "^[\\s]{0,3}[\\S]+.*((\\r\\n|\\r|\\n))=+"
+  },
+  "setextheader2": {
+    "level": 2,
+    "fontSize": 60,
+    "bold" : false,
+    "regex": "^[\\s]{0,3}[\\S]+.*((\\r\\n|\\r|\\n))-+"
+
   },
   "paragraph": {
     "fontSize": 16,

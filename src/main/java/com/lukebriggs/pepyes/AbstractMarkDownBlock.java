@@ -11,7 +11,7 @@ public abstract class AbstractMarkDownBlock {
     SimpleAttributeSet attributeSet = new SimpleAttributeSet();
     String regex;
 
-    public void applyStyle(JTextPane textPane, char nextChar) throws BadLocationException {
+    public void applyStyle(JTextPane textPane, SimpleAttributeSet paragraphAttrSet,char nextChar) throws BadLocationException {
         Pattern headerPattern = Pattern.compile(this.regex, Pattern.MULTILINE);
         System.out.println(this.regex);
         Matcher matcher = headerPattern.matcher(textPane.getDocument().getText(0, textPane.getStyledDocument().getLength()) + nextChar);
@@ -21,6 +21,7 @@ public abstract class AbstractMarkDownBlock {
             SwingUtilities.invokeLater(updateAttribute);
 
         }
+        textPane.setCharacterAttributes(paragraphAttrSet, false);
     }
 
     abstract SimpleAttributeSet getAttributeSet();
