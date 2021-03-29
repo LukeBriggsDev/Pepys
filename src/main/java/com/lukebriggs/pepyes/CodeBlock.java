@@ -2,10 +2,8 @@ package com.lukebriggs.pepyes;
 
 import javax.swing.text.StyleConstants;
 
-public class IndentedCode extends AbstractCode{
-
-
-    public IndentedCode(int fontSize, boolean bold, String font, String regex, boolean regexIsDotAll){
+public class CodeBlock extends AbstractCode{
+    public CodeBlock(int fontSize, boolean bold, String font, String regex, boolean regexIsDotAll){
         this.fontSize = fontSize;
         this.bold = bold;
         this.font = FontParser.parseFont(font);

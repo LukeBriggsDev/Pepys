@@ -10,9 +10,10 @@ import java.util.regex.Pattern;
 public abstract class AbstractMarkDownBlock {
     SimpleAttributeSet attributeSet = new SimpleAttributeSet();
     String regex;
+    boolean regexIsDotAll;
 
     public void applyStyle(JTextPane textPane, SimpleAttributeSet paragraphAttrSet,char nextChar) throws BadLocationException {
-        Pattern headerPattern = Pattern.compile(this.regex, Pattern.MULTILINE);
+        Pattern headerPattern = Pattern.compile(this.regex, this.regexIsDotAll ? Pattern.MULTILINE | Pattern.DOTALL : Pattern.MULTILINE);
         System.out.println(this.regex);
         Matcher matcher = headerPattern.matcher(textPane.getDocument().getText(0, textPane.getStyledDocument().getLength()) + nextChar);
         while (matcher.find()) {
@@ -25,6 +26,8 @@ public abstract class AbstractMarkDownBlock {
     }
 
     abstract SimpleAttributeSet getAttributeSet();
+
+    abstract boolean isRegexIsDotAll();
 
     abstract String getRegex();
 }

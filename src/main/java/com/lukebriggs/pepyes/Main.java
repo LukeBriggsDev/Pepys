@@ -2,16 +2,16 @@ package com.lukebriggs.pepyes;
 
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.SimpleAttributeSet;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.File;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 import java.util.Scanner;
 
 
 public class Main {
     static String EOL = System.getProperty("line.separator");
+
     public static void main(String[] args) {
         try {
             if(System.getProperty("os.name").equals("Linux")){
@@ -21,30 +21,20 @@ public class Main {
                 // Set System L&F
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             }
-        } catch (UnsupportedLookAndFeelException e) {
+        } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
             // handle exception
         }
-        catch (ClassNotFoundException e) {
-            // handle exception
-        }
-        catch (InstantiationException e) {
-            // handle exception
-        }
-        catch (IllegalAccessException e) {
-            // handle exception
-        }
+
         final MarkDownStyle style;
         MarkDownStyle testStyle;
         ClassLoader classLoader = Main.class.getClassLoader();
-        Scanner jsonScanner = new Scanner(classLoader.getResourceAsStream("style.json"), StandardCharsets.UTF_8.name());
-        File styleFile = new File("");
+        Scanner jsonScanner = new Scanner(Objects.requireNonNull(classLoader.getResourceAsStream("style.json")), StandardCharsets.UTF_8.name());
         testStyle = new MarkDownStyle(jsonScanner.useDelimiter("\\A").next());
         style = testStyle;
 
         JFrame frame = new JFrame();
         final JTextPane textPane = new JTextPane();
-
-        SimpleAttributeSet entryAttributeSet = new SimpleAttributeSet();
+        textPane.setFont(FontParser.parseFont("SystemSansSerif"));
 
         textPane.addKeyListener(new KeyAdapter() {
             @Override
@@ -74,9 +64,13 @@ public class Main {
                             style.getSetextHeader(i).applyStyle(textPane, style.getParagraph().getAttributeSet(),e.getKeyChar());
                         }
 
-                        // Apply code style
+                        // Apply indented code style
                         style.getIndentedCode().applyStyle(textPane, style.getParagraph().getAttributeSet(), e.getKeyChar());
 
+                        // Apply Code block style
+                        style.getCodeBlock().applyStyle(textPane, style.getParagraph().getAttributeSet(), e.getKeyChar());
+
+                        System.out.println(textPane.getFont().getFamily());
 
                     } catch (BadLocationException badLocationException) {
                         badLocationException.printStackTrace();
