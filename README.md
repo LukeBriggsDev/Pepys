@@ -5,7 +5,6 @@ Pepyes will be a journaling application, made in java, that will utilise markdow
 Features:
 - [x] Write text
 - [x] Write headings
-- [ ] Write Underline 
 - [x] Write Bold 
 - [x] Write Italics
 - [x] Write Setext headings 
