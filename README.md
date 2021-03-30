@@ -6,10 +6,10 @@ Features:
 - [x] Write text
 - [x] Write headings
 - [ ] Write Underline 
-- [ ] Write Bold 
-- [ ] Write Italics
-- [ ] Write Setext headings 
-- [ ] Write Code Blocks
+- [x] Write Bold 
+- [x] Write Italics
+- [x] Write Setext headings 
+- [x] Write Code Blocks
 - [ ] Write Links
 - [ ] Write BlockQuotes
 - [ ] Write Lists
