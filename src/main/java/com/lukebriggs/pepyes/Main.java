@@ -2,7 +2,7 @@ package com.lukebriggs.pepyes;
 
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.Utilities;
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.nio.charset.StandardCharsets;
@@ -34,8 +34,15 @@ public class Main {
         style = testStyle;
 
         JFrame frame = new JFrame();
-        final JTextPane textPane = new JTextPane();
+        final CustomTextPane textPane = new CustomTextPane(true);
         textPane.setFont(FontParser.parseFont("SystemSansSerif"));
+
+        frame.setSize(800,600);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        JScrollPane scrollPaneText = new JScrollPane(textPane);
+        scrollPaneText.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        frame.getContentPane().add(scrollPaneText, BorderLayout.CENTER);
+        frame.setVisible(true);
 
         textPane.addKeyListener(new KeyAdapter() {
             @Override
@@ -54,14 +61,9 @@ public class Main {
                             textPane.setCharacterAttributes(style.getParagraph().getAttributeSet(), true);
                         }
 
-                        int rowLength =  Utilities.getRowEnd(textPane, textPane.getCaretPosition()) -  Utilities.getRowStart(textPane, textPane.getCaretPosition());
-                        String currentRowText = textPane.getDocument().getText(Utilities.getRowStart(textPane, textPane.getCaretPosition()), rowLength);
-
-                        // Apply atx header styles if row has a # in it
-                        if(currentRowText.contains("#")) {
-                            for (int i = 1; i <= 6; i++) {
-                                style.getAtxHeader(i).applyStyle(textPane, style.getParagraph().getAttributeSet(), e.getKeyChar());
-                            }
+                        // Apply atx header styles
+                        for (int i = 1; i <= 6; i++) {
+                            style.getAtxHeader(i).applyStyle(textPane, style.getParagraph().getAttributeSet(), e.getKeyChar());
                         }
 
                         for (int i = 1; i <= 2; i++) {
@@ -92,10 +94,6 @@ public class Main {
             }
         });
 
-        frame.setSize(800,600);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.add(textPane);
-        frame.setVisible(true);
     }
 
 
