@@ -2,56 +2,48 @@
   "atxheader1": {
     "level": 1,
     "fontSize": 96,
-    "bold" : false,
     "regex": "^#{1}[\\s]+.*",
     "regexIsDotAll" : false
 },
   "atxheader2": {
     "level": 2,
     "fontSize": 60,
-    "bold" : false,
     "regex": "^#{2}[\\s]+.*",
     "regexIsDotAll" : false
   },
   "atxheader3": {
     "level" : 3,
     "fontSize": 48,
-    "bold" : false,
     "regex": "^#{3}[\\s]+.*",
     "regexIsDotAll" : false
   },
   "atxheader4": {
     "level" : 4,
     "fontSize": 34,
-    "bold" : false,
     "regex": "^#{4}[\\s]+.*",
     "regexIsDotAll" : false
   },
   "atxheader5": {
     "level" : 5,
     "fontSize": 24,
-    "bold" : false,
     "regex": "^#{5}[\\s]+.*",
     "regexIsDotAll" : false
   },
   "atxheader6": {
     "level" : 6,
     "fontSize": 20,
-    "bold" : false,
     "regex": "^#{6}[\\s]+.*",
     "regexIsDotAll" : false
   },
   "setextheader1": {
     "level": 1,
     "fontSize": 96,
-    "bold" : false,
     "regex": "^[\\s]{0,3}[\\S]+.*((\\r\\n|\\r|\\n))=+",
     "regexIsDotAll" : false
   },
   "setextheader2": {
     "level": 2,
     "fontSize": 60,
-    "bold" : false,
     "regex": "^[\\s]{0,3}[\\S]+.*((\\r\\n|\\r|\\n))-+",
     "regexIsDotAll" : false
 
@@ -59,6 +51,7 @@
   "paragraph": {
     "fontSize": 16,
     "bold": false,
+    "italics": false,
     "font": "SystemSansSerif",
     "regex": "^[^\\n\\r#].*",
     "regexIsDotAll" : false
@@ -67,6 +60,7 @@
   "indentedcode": {
     "fontSize": 16,
     "bold": false,
+    "italics": false,
     "font": "SystemMonospace",
     "regex": "^([\\s]{4,}|[\\t]+).*",
     "regexIsDotAll" : false
@@ -75,9 +69,24 @@
   "codeblock": {
     "fontSize": 16,
     "bold": false,
+    "italics": false,
     "font": "SystemMonospace",
     "regex": "(^[`]{3,}.*[`]{3,})|(^[~]{3,}.*[~]{3,})",
     "regexIsDotAll" : true
+  },
+
+  "emphasis": {
+    "bold": false,
+    "italics": true,
+    "regex" : "\\*{1}\\w+\\*{1}|_{1}\\w+_{1}",
+    "regexIsDotAll": false
+  },
+
+  "strongemphasis": {
+    "bold": true,
+    "italics": false,
+    "regex": "\\*{2}\\w+\\*{2}|_{2}\\w+_{2}",
+    "regexIsDotAll": false
   }
 
 }

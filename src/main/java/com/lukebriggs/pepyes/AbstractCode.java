@@ -6,7 +6,8 @@ import java.awt.*;
 public abstract class AbstractCode extends AbstractMarkDownBlock{
 
     int fontSize;
-    Boolean bold;
+    boolean bold;
+    boolean italics;
     Font font;
 
     @Override

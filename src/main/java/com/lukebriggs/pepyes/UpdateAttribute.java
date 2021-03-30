@@ -1,8 +1,6 @@
 package com.lukebriggs.pepyes;
 
-import javax.swing.text.AbstractDocument;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.*;
 
 public class UpdateAttribute implements  Runnable{
 
@@ -23,6 +21,19 @@ public class UpdateAttribute implements  Runnable{
     @Override
     public void run() {
         try {
+            if(StyleConstants.isItalic(attributeSet)){
+                AttributeSet currentAttributeSet = ((StyledDocument) abstractDocument).getCharacterElement(start).getAttributes();
+                StyleConstants.setFontSize(attributeSet, StyleConstants.getFontSize(currentAttributeSet));
+                StyleConstants.setFontFamily(attributeSet, StyleConstants.getFontFamily(currentAttributeSet));
+                StyleConstants.setItalic(attributeSet, true);
+            }
+            if(StyleConstants.isBold(attributeSet)){
+                AttributeSet currentAttributeSet = ((StyledDocument) abstractDocument).getCharacterElement(start).getAttributes();
+                StyleConstants.setFontSize(attributeSet, StyleConstants.getFontSize(currentAttributeSet));
+                StyleConstants.setFontFamily(attributeSet, StyleConstants.getFontFamily(currentAttributeSet));
+                StyleConstants.setBold(attributeSet, true);
+            }
+
             abstractDocument.replace(start, length, text, attributeSet);
         } catch (BadLocationException e) {
             e.printStackTrace();

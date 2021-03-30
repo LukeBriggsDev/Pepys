@@ -10,6 +10,8 @@ public class MarkDownStyle {
     private IndentedCode indentedCode;
     private CodeBlock codeBlock;
     private Paragraph paragraph;
+    private Emphasis emphasis;
+    private StrongEmphasis strongEmphasis;
 
     public MarkDownStyle(String style){
         JsonObject jsonStyle = new JsonParser().parse(style).getAsJsonObject();
@@ -18,7 +20,6 @@ public class MarkDownStyle {
             this.atxHeaders[i - 1] = new ATXHeader(
                 jsonStyle.get("atxheader" + String.valueOf(i)).getAsJsonObject().get("level").getAsInt(),
                 jsonStyle.get("atxheader" + String.valueOf(i)).getAsJsonObject().get("fontSize").getAsInt(),
-                jsonStyle.get("atxheader" + String.valueOf(i)).getAsJsonObject().get("bold").getAsBoolean(),
                 jsonStyle.get("atxheader" + String.valueOf(i)).getAsJsonObject().get("regex").getAsString(),
                 jsonStyle.get("atxheader" + String.valueOf(i)).getAsJsonObject().get("regexIsDotAll").getAsBoolean()
             );
@@ -28,7 +29,6 @@ public class MarkDownStyle {
             this.setextHeaders[i-1] = new SetextHeader(
                 jsonStyle.get("setextheader" + String.valueOf(i)).getAsJsonObject().get("level").getAsInt(),
                 jsonStyle.get("setextheader" + String.valueOf(i)).getAsJsonObject().get("fontSize").getAsInt(),
-                jsonStyle.get("setextheader" + String.valueOf(i)).getAsJsonObject().get("bold").getAsBoolean(),
                 jsonStyle.get("setextheader" + String.valueOf(i)).getAsJsonObject().get("regex").getAsString(),
                 jsonStyle.get("setextheader" + String.valueOf(i)).getAsJsonObject().get("regexIsDotAll").getAsBoolean()
             );
@@ -37,6 +37,7 @@ public class MarkDownStyle {
         this.indentedCode = new IndentedCode(
                 jsonStyle.get("indentedcode").getAsJsonObject().get("fontSize").getAsInt(),
                 jsonStyle.get("indentedcode").getAsJsonObject().get("bold").getAsBoolean(),
+                jsonStyle.get("indentedcode").getAsJsonObject().get("italics").getAsBoolean(),
                 jsonStyle.get("indentedcode").getAsJsonObject().get("font").getAsString(),
                 jsonStyle.get("indentedcode").getAsJsonObject().get("regex").getAsString(),
                 jsonStyle.get("indentedcode").getAsJsonObject().get("regexIsDotAll").getAsBoolean()
@@ -45,6 +46,7 @@ public class MarkDownStyle {
         this.codeBlock = new CodeBlock(
                 jsonStyle.get("codeblock").getAsJsonObject().get("fontSize").getAsInt(),
                 jsonStyle.get("codeblock").getAsJsonObject().get("bold").getAsBoolean(),
+                jsonStyle.get("codeblock").getAsJsonObject().get("italics").getAsBoolean(),
                 jsonStyle.get("codeblock").getAsJsonObject().get("font").getAsString(),
                 jsonStyle.get("codeblock").getAsJsonObject().get("regex").getAsString(),
                 jsonStyle.get("codeblock").getAsJsonObject().get("regexIsDotAll").getAsBoolean()
@@ -53,10 +55,27 @@ public class MarkDownStyle {
         this.paragraph = new Paragraph(
                 jsonStyle.get("paragraph").getAsJsonObject().get("fontSize").getAsInt(),
                 jsonStyle.get("paragraph").getAsJsonObject().get("bold").getAsBoolean(),
+                jsonStyle.get("paragraph").getAsJsonObject().get("italics").getAsBoolean(),
                 jsonStyle.get("paragraph").getAsJsonObject().get("font").getAsString(),
                 jsonStyle.get("paragraph").getAsJsonObject().get("regex").getAsString(),
                 jsonStyle.get("paragraph").getAsJsonObject().get("regexIsDotAll").getAsBoolean()
         );
+
+        this.emphasis = new Emphasis(
+                jsonStyle.get("emphasis").getAsJsonObject().get("bold").getAsBoolean(),
+                jsonStyle.get("emphasis").getAsJsonObject().get("italics").getAsBoolean(),
+                jsonStyle.get("emphasis").getAsJsonObject().get("regex").getAsString(),
+                jsonStyle.get("emphasis").getAsJsonObject().get("regexIsDotAll").getAsBoolean()
+        );
+
+        this.strongEmphasis = new StrongEmphasis(
+                jsonStyle.get("strongemphasis").getAsJsonObject().get("bold").getAsBoolean(),
+                jsonStyle.get("strongemphasis").getAsJsonObject().get("italics").getAsBoolean(),
+                jsonStyle.get("strongemphasis").getAsJsonObject().get("regex").getAsString(),
+                jsonStyle.get("strongemphasis").getAsJsonObject().get("regexIsDotAll").getAsBoolean()
+        );
+
+
     }
 
     public Paragraph getParagraph(){
@@ -78,6 +97,12 @@ public class MarkDownStyle {
     public CodeBlock getCodeBlock(){
         return codeBlock;
     }
+
+    public Emphasis getEmphasis() {
+        return emphasis;
+    }
+
+    public StrongEmphasis getStrongEmphasis(){ return strongEmphasis; }
 }
 
 

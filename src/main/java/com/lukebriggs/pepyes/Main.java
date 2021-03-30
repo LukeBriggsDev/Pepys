@@ -2,6 +2,7 @@ package com.lukebriggs.pepyes;
 
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.Utilities;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.nio.charset.StandardCharsets;
@@ -53,16 +54,26 @@ public class Main {
                             textPane.setCharacterAttributes(style.getParagraph().getAttributeSet(), true);
                         }
 
+                        int rowLength =  Utilities.getRowEnd(textPane, textPane.getCaretPosition()) -  Utilities.getRowStart(textPane, textPane.getCaretPosition());
+                        String currentRowText = textPane.getDocument().getText(Utilities.getRowStart(textPane, textPane.getCaretPosition()), rowLength);
 
-                        // Apply atx header styles
-                        for (int i = 1; i <= 6; i++) {
-                            style.getAtxHeader(i).applyStyle(textPane, style.getParagraph().getAttributeSet(),e.getKeyChar());
+                        // Apply atx header styles if row has a # in it
+                        if(currentRowText.contains("#")) {
+                            for (int i = 1; i <= 6; i++) {
+                                style.getAtxHeader(i).applyStyle(textPane, style.getParagraph().getAttributeSet(), e.getKeyChar());
+                            }
                         }
 
-                        // Apply setext header styles
-                        for (int i = 1; i <= 2; i++){
-                            style.getSetextHeader(i).applyStyle(textPane, style.getParagraph().getAttributeSet(),e.getKeyChar());
+                        for (int i = 1; i <= 2; i++) {
+                            style.getSetextHeader(i).applyStyle(textPane, style.getParagraph().getAttributeSet(), e.getKeyChar());
                         }
+
+
+                        // Apply emphasis
+                        style.getEmphasis().applyStyle(textPane, style.getParagraph().getAttributeSet(), e.getKeyChar());
+
+                        // Apply strong emphasis
+                        style.getStrongEmphasis().applyStyle(textPane, style.getParagraph().getAttributeSet(), e.getKeyChar());
 
                         // Apply indented code style
                         style.getIndentedCode().applyStyle(textPane, style.getParagraph().getAttributeSet(), e.getKeyChar());
@@ -70,7 +81,6 @@ public class Main {
                         // Apply Code block style
                         style.getCodeBlock().applyStyle(textPane, style.getParagraph().getAttributeSet(), e.getKeyChar());
 
-                        System.out.println(textPane.getFont().getFamily());
 
                     } catch (BadLocationException badLocationException) {
                         badLocationException.printStackTrace();

@@ -5,7 +5,6 @@ import javax.swing.text.SimpleAttributeSet;
 public abstract class AbstractHeader extends AbstractMarkDownBlock {
     int level;
     int fontSize;
-    boolean bold;
 
 
     public int getLevel() {
