@@ -14,12 +14,9 @@ public abstract class AbstractMarkDownBlock {
 
     public void applyStyle(JTextPane textPane, SimpleAttributeSet paragraphAttrSet,char nextChar) throws BadLocationException {
         Pattern headerPattern = Pattern.compile(this.regex, this.regexIsDotAll ? Pattern.MULTILINE | Pattern.DOTALL : Pattern.MULTILINE);
-        Matcher matcher = headerPattern.matcher(textPane.getDocument().getText(0, textPane.getStyledDocument().getLength()) + nextChar);
-        System.out.println(textPane.getDocument().getText(0, textPane.getStyledDocument().getLength()) + nextChar);
-
+        Matcher matcher = headerPattern.matcher(textPane.getDocument().getText(0, textPane.getStyledDocument().getLength()));
         while (matcher.find()) {
-            System.out.println(textPane.getDocument().getText(0, textPane.getDocument().getLength()));
-            UpdateAttribute updateAttribute = new UpdateAttribute((AbstractDocument) textPane.getDocument(), matcher.start(), matcher.end() - matcher.start(), matcher.group(), this.getAttributeSet());
+            UpdateAttribute updateAttribute = new UpdateAttribute((AbstractDocument) textPane.getDocument(), matcher.start(), matcher.end() - matcher.start(), matcher.group(), this.getAttributeSet(), textPane, nextChar);
             textPane.setCharacterAttributes(this.getAttributeSet(), true);
             SwingUtilities.invokeLater(updateAttribute);
 

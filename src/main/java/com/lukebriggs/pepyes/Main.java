@@ -1,6 +1,8 @@
 package com.lukebriggs.pepyes;
 
 import javax.swing.*;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 import javax.swing.text.BadLocationException;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -12,6 +14,7 @@ import java.util.Scanner;
 
 public class Main {
     static String EOL = System.getProperty("line.separator");
+    static int currentCaretPosition = 0;
 
     public static void main(String[] args) {
         try {
@@ -44,18 +47,31 @@ public class Main {
         frame.getContentPane().add(scrollPaneText, BorderLayout.CENTER);
         frame.setVisible(true);
 
+        textPane.addCaretListener(new CaretListener() {
+            @Override
+            public void caretUpdate(CaretEvent e) {
+            }
+        });
+
+
+
         textPane.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
+                System.out.println("Hi");
 
-                if (textPane.getDocument().getLength() > 0) {
+                currentCaretPosition = textPane.getCaretPosition();
+
+                if (textPane.getDocument().getLength() > 0 && e.getKeyChar() != 8) {
                     try {
                         boolean atBeginningOfLine;
                         try {
+                            textPane.getDocument().insertString(textPane.getCaretPosition(), String.valueOf(e.getKeyChar()), textPane.getCharacterAttributes());
                             atBeginningOfLine = textPane.getDocument().getText(textPane.getDocument().getLength() -1 , 1).equals(EOL);
                         } catch (BadLocationException atStartOfFile) {
                             atBeginningOfLine = true;
                         }
+
 
                         if(atBeginningOfLine){
                             textPane.setCharacterAttributes(style.getParagraph().getAttributeSet(), true);
@@ -83,14 +99,30 @@ public class Main {
                         // Apply Code block style
                         style.getCodeBlock().applyStyle(textPane, style.getParagraph().getAttributeSet(), e.getKeyChar());
 
+                        UpdateAttribute.ALREADY_PERFORMED = false;
+
+                        System.out.println(textPane.getCaretPosition());
+
+                        if(textPane.getDocument().getLength() > 1) {
+
+                            if(textPane.getCaretPosition() < textPane.getDocument().getLength()) {
+                                textPane.setCaretPosition(textPane.getCaretPosition() - 1);
+                            }
+
+                            textPane.getDocument().remove(textPane.getDocument().getLength() - 1, 1);
+
+                        }
 
                     } catch (BadLocationException badLocationException) {
                         badLocationException.printStackTrace();
                     }
+
+
                 }
                 else{
                     textPane.setCharacterAttributes(style.getParagraph().getAttributeSet(), true);
                 }
+
             }
         });
 
