@@ -1,0 +1,11 @@
+QWidget {
+
+    background-color: palette(base);
+
+}
+
+QTextEdit{
+    font-size: 16pt;
+    border-style: none;
+
+}
