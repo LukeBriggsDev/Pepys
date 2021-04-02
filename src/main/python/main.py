@@ -1,5 +1,6 @@
 import mistune
 from fbs_runtime.application_context.PySide2 import ApplicationContext
+from fbs_runtime import PUBLIC_SETTINGS
 from ViewPane import ViewPane
 from EditPane import EditPane
 import sys
@@ -18,7 +19,7 @@ class AppContext(ApplicationContext):
         mainPane = MainPane()
         mainPane.resize(800, 600)
         mainPane.show()
-        version = self.build_settings['version']
+        version = PUBLIC_SETTINGS['version']
         return self.app.exec_()                 # 3. End run() with this line
 
 
