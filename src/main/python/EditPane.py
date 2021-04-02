@@ -1,11 +1,12 @@
-from PySide6 import QtCore, QtWidgets, QtGui
+from PySide2 import QtCore, QtWidgets, QtGui
 import re
-
+import os
 
 class EditPane(QtWidgets.QTextEdit):
-    def __init__(self):
+    def __init__(self, ctx):
         super().__init__()
-        with open("EditPaneStyle.qss") as file:
+        filename = ctx.get_resource("EditPaneStyle.qss")
+        with open(filename) as file:
             stylesheet = file.read()
         self.setWordWrapMode(QtGui.QTextOption.WrapAtWordBoundaryOrAnywhere)
         self.setStyleSheet(stylesheet)

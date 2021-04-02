@@ -1,1 +1,4 @@
-pyside6
+PySide2
+regex
+mistune
+pygments

@@ -1,12 +1,25 @@
+import mistune
+from fbs_runtime.application_context.PySide2 import ApplicationContext
 from ViewPane import ViewPane
 from EditPane import EditPane
 import sys
 import regex
 import random
-from PySide6 import QtCore, QtWidgets, QtGui
+from PySide2 import QtCore, QtWidgets, QtGui
 import json
-
+import os
 from enum import Enum
+
+import highlighter
+
+
+class AppContext(ApplicationContext):
+    def run(self):                              # 2. Implement run()
+        mainPane = MainPane()
+        mainPane.resize(800, 600)
+        mainPane.show()
+        version = self.build_settings['version']
+        return self.app.exec_()                 # 3. End run() with this line
 
 
 
@@ -19,11 +32,12 @@ class MainPane(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
 
-        with open("styles.qss", "r") as file:
+        filename = ctx.get_resource("styles.qss")
+        with open(filename, "r") as file:
             stylesheet = file.read()
 
-        self.editPane = EditPane()
-        self.viewPane = ViewPane()
+        self.editPane = EditPane(ctx)
+        self.viewPane = ViewPane(ctx)
         self.viewPane.setVisible(False)
         self.viewPane.setMaximumWidth(self.width()*0.5)
         self.viewPane.setMinimumWidth(self.width()*0.5)
@@ -52,7 +66,7 @@ class MainPane(QtWidgets.QWidget):
 
     def switchPane(self):
         self.editPane.setVisible(not self.editPane.isVisible())
-        self.viewPane.setMarkdown(self.editPane.toPlainText())
+        self.viewPane.setHtml(mistune.markdown(self.editPane.toPlainText(), renderer=highlighter.HighlightRenderer()))
         self.viewPane.setMaximumWidth(self.width()*0.5)
         self.viewPane.setMinimumWidth(self.width()*0.5)
         html = self.viewPane.toHtml().replace("<img ", f'<img width="{self.viewPane.width()}" ')
@@ -61,10 +75,6 @@ class MainPane(QtWidgets.QWidget):
 
 
 if __name__ == "__main__":
-    app = QtWidgets.QApplication([])
+    ctx = AppContext()
 
-    mainPane = MainPane()
-    mainPane.resize(800, 600)
-    mainPane.show()
-
-    sys.exit(app.exec_())
+    sys.exit(ctx.run())
