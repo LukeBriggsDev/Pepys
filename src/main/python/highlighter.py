@@ -15,4 +15,11 @@ class HighlightRenderer(mistune.Renderer):
                 pass
         return '<pre><code>' + mistune.escape(code) + '</code></pre>'
 
+    def strikethrough(self, text):
+        """Rendering ~~strikethrough~~ text. Overrides standard method which uses <del> and is unsupported by qt
+
+        :param text: text content for strikethrough.
+        """
+        return '<s>%s</s>' % text
+
 
