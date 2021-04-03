@@ -16,7 +16,9 @@ class EditPane(AbstractPane.AbstractPane):
         headerPattern = re.compile("^#{1,6}[^\S\n]+.*", re.MULTILINE)
         headers = [x for x in re.finditer(headerPattern, self.toPlainText())]
         sliderPos = self.verticalScrollBar().sliderPosition()
-        if len(headers) > 0:
+        allowedUpdateChars = [' ', '\n', '\r']
+        if len(headers) > 0 and (e.text().isalnum() or e.text() in allowedUpdateChars):
+            print("WOO")
             for header in headers:
                 cursor = QtGui.QTextCursor(self.document())
                 cursor.setPosition(header.start())
@@ -25,7 +27,6 @@ class EditPane(AbstractPane.AbstractPane):
                 formatter = QtGui.QTextCharFormat()
                 formatter.setFontWeight(QtGui.QFont.Bold)
                 cursor.mergeCharFormat(formatter)
-                print(self.textCursor().position())
 
             formatter = QtGui.QTextCharFormat()
             formatter.setFontWeight(QtGui.QFont.Normal)
@@ -34,7 +35,5 @@ class EditPane(AbstractPane.AbstractPane):
             cursor.mergeCharFormat(formatter)
             self.setTextCursor(cursor)
             self.verticalScrollBar().setSliderPosition(sliderPos)
-            print(self.textCursor().position())
-            print(self.toHtml())
 
         super(EditPane, self).keyReleaseEvent(e)

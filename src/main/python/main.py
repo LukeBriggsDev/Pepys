@@ -10,6 +10,7 @@ from fbs_runtime.application_context.PySide2 import ApplicationContext
 import highlighter
 from EditPane import EditPane
 from ViewPane import ViewPane
+from CustomMenuBar import CustomMenuBar
 
 
 class AppContext(ApplicationContext):
@@ -53,12 +54,14 @@ class MainPane(QtWidgets.QWidget):
         self.buttonSwitchPane = QtWidgets.QPushButton("Switch Pane")
         self.buttonSwitchPane.clicked.connect(self.switchPane)
         self.setStyleSheet(stylesheet)
+        self.menuBar = CustomMenuBar()
 
 
 
         self.layout = QtWidgets.QVBoxLayout(self)
         self.layout.setContentsMargins(0, 0, 0, 0)
         self.layout.setSpacing(0)
+        self.layout.addWidget(self.menuBar)
         self.layout.addWidget(self.editPane)
         self.layout.addWidget(self.viewPane)
         self.layout.addWidget(self.buttonSwitchPane)
