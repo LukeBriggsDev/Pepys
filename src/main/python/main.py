@@ -1,23 +1,22 @@
-import mistune
-from fbs_runtime.application_context.PySide2 import ApplicationContext
-from fbs_runtime import PUBLIC_SETTINGS
-from ViewPane import ViewPane
-from EditPane import EditPane
 import sys
-import regex
-import random
-from PySide2 import QtCore, QtWidgets, QtGui
-import json
-import os
 from enum import Enum
 
+import mistune
+import regex
+from PySide2 import QtWidgets, QtGui
+from fbs_runtime import PUBLIC_SETTINGS
+from fbs_runtime.application_context.PySide2 import ApplicationContext
+
 import highlighter
+from EditPane import EditPane
+from ViewPane import ViewPane
 
 
 class AppContext(ApplicationContext):
     def run(self):                              # 2. Implement run()
         mainPane = MainPane()
         mainPane.resize(800, 600)
+        mainPane.setMinimumSize(640, 480)
         mainPane.show()
         version = PUBLIC_SETTINGS['version']
         return self.app.exec_()                 # 3. End run() with this line
@@ -38,11 +37,10 @@ class MainPane(QtWidgets.QWidget):
             stylesheet = file.read()
 
         self.editPane = EditPane(ctx)
+
+
         self.viewPane = ViewPane(ctx)
         self.viewPane.setVisible(False)
-        self.viewPane.setMaximumWidth(self.width()*0.5)
-        self.viewPane.setMinimumWidth(self.width()*0.5)
-        self.setContentsMargins(self.width() * 0.25, 0, self.width() * 0.25, 0)
         self.buttonSwitchPane = QtWidgets.QPushButton("Switch Pane")
         self.buttonSwitchPane.clicked.connect(self.switchPane)
         self.setStyleSheet(stylesheet)
@@ -57,20 +55,18 @@ class MainPane(QtWidgets.QWidget):
         self.layout.addWidget(self.buttonSwitchPane)
 
     def resizeEvent(self, event:QtGui.QResizeEvent) -> None:
-        print("Woo")
-        self.setContentsMargins(self.width() * 0.25, 0, self.width() * 0.25, 0)
-        self.viewPane.setMaximumWidth(self.width()*0.5)
-        html = regex.sub(r'(?<=<img[^>]*)(width="[\d.]+")', f'width="{self.viewPane.width()}" ', self.viewPane.toHtml())
+        self.editPane.updateSize(self.width())
+        self.viewPane.updateSize(self.width())
+        html = regex.sub(r'(?<=<img[^>]*)(width="[\d.]+")', f'width="{self.viewPane.width() * 0.5}" ', self.viewPane.toHtml())
         self.viewPane.setHtml(html)
-        print(self.editPane.font())
 
 
     def switchPane(self):
         self.editPane.setVisible(not self.editPane.isVisible())
         self.viewPane.setHtml(mistune.markdown(self.editPane.toPlainText(), renderer=highlighter.HighlightRenderer()))
-        self.viewPane.setMaximumWidth(self.width()*0.5)
-        self.viewPane.setMinimumWidth(self.width()*0.5)
-        html = self.viewPane.toHtml().replace("<img ", f'<img width="{self.viewPane.width()}" ')
+        self.editPane.updateSize(self.width())
+        self.viewPane.updateSize(self.width())
+        html = self.viewPane.toHtml().replace("<img ", f'<img width="{self.viewPane.width() * 0.5}" ')
         self.viewPane.setHtml(html)
         self.viewPane.setVisible(not self.viewPane.isVisible())
 

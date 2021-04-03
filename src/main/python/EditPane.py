@@ -1,26 +1,23 @@
-from PySide2 import QtCore, QtWidgets, QtGui
 import re
-import os
+import AbstractPane
+from PySide2 import QtWidgets, QtGui, QtCore
 
-class EditPane(QtWidgets.QTextEdit):
+
+class EditPane(AbstractPane.AbstractPane):
     def __init__(self, ctx):
-        super().__init__()
-        filename = ctx.get_resource("EditPaneStyle.qss")
-        with open(filename) as file:
-            stylesheet = file.read()
-        self.setWordWrapMode(QtGui.QTextOption.WrapAtWordBoundaryOrAnywhere)
-        self.setStyleSheet(stylesheet)
+        super().__init__(ctx)
         self.setAcceptRichText(False)
         self.setAutoFormatting(QtWidgets.QTextEdit.AutoAll)
+
+
 
 
     def keyReleaseEvent(self, e:QtGui.QKeyEvent) -> None:
         currentCaretPosition = self.textCursor().position()
         headerPattern = re.compile("^#{1,6}[^\S\n]+.*", re.MULTILINE)
         headers = [x for x in re.finditer(headerPattern, self.toPlainText())]
+        sliderPos = self.verticalScrollBar().sliderPosition()
         if len(headers) > 0:
-            print(headers)
-            print(currentCaretPosition)
             for header in headers:
                 cursor = QtGui.QTextCursor(self.document())
                 cursor.setPosition(header.start())
@@ -37,8 +34,8 @@ class EditPane(QtWidgets.QTextEdit):
             cursor.setPosition(currentCaretPosition)
             cursor.mergeCharFormat(formatter)
             self.setTextCursor(cursor)
+            self.verticalScrollBar().setSliderPosition(sliderPos)
             print(self.textCursor().position())
             print(self.toHtml())
 
-        #super(EditPane, self).keyReleaseEvent(e)
-
+        super(EditPane, self).keyReleaseEvent(e)
