@@ -6,6 +6,7 @@ import regex
 from PySide2 import QtWidgets, QtGui
 from fbs_runtime import PUBLIC_SETTINGS
 from fbs_runtime.application_context.PySide2 import ApplicationContext
+import os
 
 import highlighter
 from EditPane import EditPane
@@ -54,7 +55,7 @@ class MainPane(QtWidgets.QWidget):
         self.buttonSwitchPane = QtWidgets.QPushButton("Switch Pane")
         self.buttonSwitchPane.clicked.connect(self.switchPane)
         self.setStyleSheet(stylesheet)
-        self.menuBar = CustomMenuBar()
+        self.menuBar = CustomMenuBar(self.editPane)
 
 
 
@@ -66,6 +67,7 @@ class MainPane(QtWidgets.QWidget):
         self.layout.addWidget(self.viewPane)
         self.layout.addWidget(self.buttonSwitchPane)
 
+
     def resizeEvent(self, event:QtGui.QResizeEvent) -> None:
         self.editPane.updateSize(self.width())
         self.viewPane.updateSize(self.width())
@@ -75,10 +77,22 @@ class MainPane(QtWidgets.QWidget):
 
     def switchPane(self):
         self.editPane.setVisible(not self.editPane.isVisible())
-        self.viewPane.setHtml(mistune.markdown(self.editPane.toPlainText(), renderer=highlighter.HighlightRenderer()))
         self.editPane.updateSize(self.width())
         self.viewPane.updateSize(self.width())
+
+
+        self.viewPane.setHtml(mistune.markdown(self.editPane.toPlainText(), renderer=highlighter.HighlightRenderer()))
         html = self.viewPane.toHtml().replace("<img ", f'<img width="{self.viewPane.width() * 0.5}" ')
+        filePathPatter = regex.compile('(?<=src=")\S*(?=")')
+        filepaths = [filepath.group() for filepath in regex.finditer(filePathPatter, self.viewPane.toHtml())]
+
+        for filepath in filepaths:
+            if filepath[0] != "/" or filepath[1] != ":":
+                # Replace relative file paths
+                # TODO: Maybe need to make directory separators agnostic for windows
+                html = html.replace(filepath, os.path.join("/".join(self.editPane.currentFile.split("/")[:-1]), filepath))
+
+
         self.viewPane.setHtml(html)
         self.viewPane.setVisible(not self.viewPane.isVisible())
 
