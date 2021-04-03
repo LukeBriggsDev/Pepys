@@ -7,7 +7,6 @@ class EditPane(AbstractPane.AbstractPane):
     def __init__(self, ctx):
         super().__init__(ctx)
         self.setAcceptRichText(False)
-        self.setAutoFormatting(QtWidgets.QTextEdit.AutoAll)
 
 
 
