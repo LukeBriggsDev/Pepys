@@ -14,6 +14,15 @@ from ViewPane import ViewPane
 
 class AppContext(ApplicationContext):
     def run(self):                              # 2. Implement run()
+        QtGui.QFontDatabase.addApplicationFont(ctx.get_resource("fonts/LibreCaslon/LibreCaslonText-Regular.ttf"))
+        QtGui.QFontDatabase.addApplicationFont(ctx.get_resource("fonts/LibreCaslon/LibreCaslonText-Bold.ttf"))
+        QtGui.QFontDatabase.addApplicationFont(ctx.get_resource("fonts/LibreCaslon/LibreCaslonText-Italic.ttf"))
+        QtGui.QFontDatabase.addApplicationFont(ctx.get_resource("fonts/IBMPlexMono/IBMPlexMono-Regular.ttf"))
+
+        fontdb = QtGui.QFontDatabase()
+        print(fontdb.families(QtGui.QFontDatabase.WritingSystem.Latin))
+        print(fontdb.applicationFontFamilies(2))
+
         mainPane = MainPane()
         mainPane.resize(800, 600)
         mainPane.setMinimumSize(640, 480)
