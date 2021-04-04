@@ -78,8 +78,8 @@ class MainPane(QtWidgets.QWidget):
 
         self.viewPane.setHtml(mistune.markdown(self.editPane.toPlainText(), renderer=CodeSyntaxHighlighter.HighlightRenderer()))
         html = self.viewPane.toHtml().replace("<img ", f'<img width="{self.viewPane.width() * 0.5}" ')
-        filePathPatter = regex.compile('(?<=src=")\S*(?=")')
-        filepaths = [filepath.group() for filepath in regex.finditer(filePathPatter, self.viewPane.toHtml())]
+        filePathPattern = regex.compile('(?<=src=")\S*(?=")')
+        filepaths = [filepath.group() for filepath in regex.finditer(filePathPattern, self.viewPane.toHtml())]
 
         for filepath in filepaths:
             if filepath[0] != "/" or filepath[1] != ":":
