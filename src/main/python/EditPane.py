@@ -13,23 +13,10 @@ class EditPane(AbstractPane.AbstractPane):
         super().__init__(ctx)
         self.setAcceptRichText(False)
         self.currentFile = ""
-        self.markdownHighlighter = MarkdownSyntaxHighlighter(self.document())
+        self.markdownHighlighter = MarkdownSyntaxHighlighter(self)
 
-
-
-
-    def applyFormatting(self):
-        self.markdownHighlighter.highlightBlock(self.toPlainText())
 
 
     def setCurrentFile(self, filepath: str):
         self.currentFile = filepath
 
-    def keyReleaseEvent(self, e:QtGui.QKeyEvent) -> None:
-        allowedUpdateChars = [' ', chr(8)]
-
-        if (e.text().isalnum() or e.text() in allowedUpdateChars or e.text() in string.punctuation):
-            self.applyFormatting()
-
-
-        super(EditPane, self).keyReleaseEvent(e)
