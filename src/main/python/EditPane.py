@@ -10,6 +10,7 @@ class EditPane(AbstractPane.AbstractPane):
 
 
     markdownRegex = '|'.join(f'(?P<{pair[0]}>{pair[1]})' for pair in regexPatterns)
+    markdownRegex = regex.compile(markdownRegex, regex.MULTILINE)
 
 
     textFormatter = QtGui.QTextCharFormat()
