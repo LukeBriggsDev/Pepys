@@ -1,6 +1,8 @@
 import re
 import AbstractPane
 from PySide2 import QtWidgets, QtGui, QtCore
+from MarkdownToken import MarkdownToken
+import string
 
 
 class EditPane(AbstractPane.AbstractPane):
@@ -18,54 +20,60 @@ class EditPane(AbstractPane.AbstractPane):
         sliderPos = self.verticalScrollBar().sliderPosition()
 
         textPattern = re.compile("[\s\S]+?(?=[\\<!\[_*`~]|https?://| {2,}\n|$)")
+        textFormatter = QtGui.QTextCharFormat()
+        textFormatter.setFontItalic(False)
+        textFormatter.setFontWeight(QtGui.QFont.Normal)
+        textFormatter.setFontStrikeOut(False)
+        textToken = MarkdownToken(textPattern, textFormatter)
+        textToken.applyStyle(self)
 
-        headerPattern = re.compile("^ *(#{1,6}) *([^\n]+?) *#* *(?:\n+|$)", re.MULTILINE)
-        emphasisPattern =     emphasis = re.compile(
-            r'^\b_((?:__|[^_])+?)_\b'  # _this_
-            r'|'
-            r'^\*((?:\*\*|[^\*])+?)\*(?!\*)'  # *this*
+        headerPattern = re.compile("^ *(#{1,6}) *([^\n]+?) *#* *(?:\n+|$)|^([^\n]+)\n *(=|-)+ *(?:\n+|$)", re.MULTILINE)
+        headerFormatter = QtGui.QTextCharFormat()
+        headerFormatter.setFontWeight(QtGui.QFont.Bold)
+        headerToken = MarkdownToken(headerPattern, headerFormatter)
+        headerToken.applyStyle(self)
+
+        emphasisPattern = re.compile(
+            r'(?<!\\)\*[^\s\*](.*?\S?.*?)(?<!\\)\*' # *this*
+            r'|' # or
+            r'(?<!(\\|\S))_[^\s_](.*?\S?.*?)(?<!\\)_(?=\s)' #_this_
         )
+        emphasisFormatter = QtGui.QTextCharFormat()
+        emphasisFormatter.setFontItalic(True)
+        emphasisToken = MarkdownToken(emphasisPattern, emphasisFormatter)
+        emphasisToken.applyStyle(self)
 
-        text = [x for x in re.finditer(textPattern, self.toPlainText())]
-        for match in text:
-            cursor = QtGui.QTextCursor(self.document())
-            cursor.setPosition(match.start())
-            cursor.setPosition(match.end(), self.textCursor().KeepAnchor)
-            self.setTextCursor(cursor)
-            formatter = QtGui.QTextCharFormat()
-            formatter.setFontWeight(QtGui.QFont.Normal)
-            formatter.setFontItalic(False)
-            cursor.mergeCharFormat(formatter)
+        strongEmphasisPattern = re.compile(
+            r'(\*\*|__)[^\s*](.*?\S.*?)\1' # **this** or __this__
+        )
+        strongEmphasisFormatter = QtGui.QTextCharFormat()
+        strongEmphasisFormatter.setFontWeight(QtGui.QFont.Bold)
+        strongEmphasisFormatter.setFontItalic(False)
+        strongEmphasisToken = MarkdownToken(strongEmphasisPattern, strongEmphasisFormatter)
+        strongEmphasisToken.applyStyle(self)
 
+        veryStrongEmphasisPattern = re.compile(
+            r'((\*\*|__)([*_])|([*_])(\*\*|__))[^\s*](.*?\S.*?)(?:\5\4|\3\2)' # ***this*** or ___this___
+        )
+        veryStrongEmphasisFormatter = QtGui.QTextCharFormat()
+        veryStrongEmphasisFormatter.setFontWeight(QtGui.QFont.Bold)
+        veryStrongEmphasisFormatter.setFontItalic(True)
+        veryStrongEmphasisToken = MarkdownToken(veryStrongEmphasisPattern, veryStrongEmphasisFormatter)
+        veryStrongEmphasisToken.applyStyle(self)
 
-        headers = [x for x in re.finditer(headerPattern, self.toPlainText())]
-        print("WOO")
-        for header in headers:
-            cursor = QtGui.QTextCursor(self.document())
-            cursor.setPosition(header.start())
-            cursor.setPosition(header.end(), self.textCursor().KeepAnchor)
-            self.setTextCursor(cursor)
-            formatter = QtGui.QTextCharFormat()
-            formatter.setFontWeight(QtGui.QFont.Bold)
-            cursor.mergeCharFormat(formatter)
+        strikethroughPattern = re.compile(r"~~(?=\S)([\s\S]*?\S)~~") # ~~this~~
+        strikethroughFormatter = QtGui.QTextCharFormat()
+        strikethroughFormatter.setFontStrikeOut(True)
+        strikethroughToken = MarkdownToken(strikethroughPattern, strikethroughFormatter)
+        strikethroughToken.applyStyle(self)
 
-        emphasis = [x for x in re.finditer(emphasisPattern, self.toPlainText())]
-
-        for emphasis in emphasis:
-            cursor = QtGui.QTextCursor(self.document())
-            cursor.setPosition(emphasis.start())
-            cursor.setPosition(emphasis.end(), self.textCursor().KeepAnchor)
-            self.setTextCursor(cursor)
-            formatter = QtGui.QTextCharFormat()
-            formatter.setFontItalic(True)
-            cursor.mergeCharFormat(formatter)
 
         formatter = QtGui.QTextCharFormat()
         formatter.setFontWeight(QtGui.QFont.Normal)
         formatter.setFontItalic(False)
         cursor = QtGui.QTextCursor(self.document())
+        #cursor.mergeCharFormat(formatter)
         cursor.setPosition(currentCaretPosition)
-        cursor.mergeCharFormat(formatter)
         self.setTextCursor(cursor)
         self.verticalScrollBar().setSliderPosition(sliderPos)
 
@@ -75,7 +83,7 @@ class EditPane(AbstractPane.AbstractPane):
 
     def keyReleaseEvent(self, e:QtGui.QKeyEvent) -> None:
         allowedUpdateChars = [' ', '\n', '\r', chr(8)]
-        if e.text().isalnum() or e.text() in allowedUpdateChars:
+        if e.text().isalnum() or e.text() in allowedUpdateChars or e.text() in string.punctuation:
             self.applyFormatting()
 
 
