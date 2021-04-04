@@ -7,7 +7,6 @@ from PySide2 import QtWidgets, QtGui
 from fbs_runtime import PUBLIC_SETTINGS
 from fbs_runtime.application_context.PySide2 import ApplicationContext
 import os
-
 import highlighter
 from EditPane import EditPane
 from ViewPane import ViewPane
@@ -16,9 +15,7 @@ from CustomMenuBar import CustomMenuBar
 
 class AppContext(ApplicationContext):
     def run(self):                              # 2. Implement run()
-        QtGui.QFontDatabase.addApplicationFont(ctx.get_resource("fonts/LibreCaslon/LibreCaslonText-Regular.ttf"))
-        QtGui.QFontDatabase.addApplicationFont(ctx.get_resource("fonts/LibreCaslon/LibreCaslonText-Bold.ttf"))
-        QtGui.QFontDatabase.addApplicationFont(ctx.get_resource("fonts/LibreCaslon/LibreCaslonText-Italic.ttf"))
+        QtGui.QFontDatabase.addApplicationFont(ctx.get_resource("fonts/Inter/Inter.ttf"))
         QtGui.QFontDatabase.addApplicationFont(ctx.get_resource("fonts/IBMPlexMono/IBMPlexMono-Regular.ttf"))
 
         fontdb = QtGui.QFontDatabase()
