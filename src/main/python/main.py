@@ -7,7 +7,7 @@ from PySide2 import QtWidgets, QtGui
 from fbs_runtime import PUBLIC_SETTINGS
 from fbs_runtime.application_context.PySide2 import ApplicationContext
 import os
-import highlighter
+import CodeSyntaxHighlighter
 from EditPane import EditPane
 from ViewPane import ViewPane
 from CustomMenuBar import CustomMenuBar
@@ -76,7 +76,7 @@ class MainPane(QtWidgets.QWidget):
         self.viewPane.updateSize(self.width())
 
 
-        self.viewPane.setHtml(mistune.markdown(self.editPane.toPlainText(), renderer=highlighter.HighlightRenderer()))
+        self.viewPane.setHtml(mistune.markdown(self.editPane.toPlainText(), renderer=CodeSyntaxHighlighter.HighlightRenderer()))
         html = self.viewPane.toHtml().replace("<img ", f'<img width="{self.viewPane.width() * 0.5}" ')
         filePathPatter = regex.compile('(?<=src=")\S*(?=")')
         filepaths = [filepath.group() for filepath in regex.finditer(filePathPatter, self.viewPane.toHtml())]
