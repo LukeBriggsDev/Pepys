@@ -20,3 +20,6 @@ class EditPane(AbstractPane.AbstractPane):
     def setCurrentFile(self, filepath: str):
         self.currentFile = filepath
 
+    def keyReleaseEvent(self, e:QtGui.QKeyEvent) -> None:
+        if(e.text() == '=' or e.text() == '-'):
+            self.markdownHighlighter.rehighlightBlock(self.document().findBlock(self.textCursor().position()).previous())

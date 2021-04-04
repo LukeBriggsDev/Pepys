@@ -5,7 +5,7 @@ from MarkdownRegex import regexPatterns
 
 class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
 
-    POSSIBLE_SETEXT_HEADER = 1
+    SETEXT_HEADER = 0
 
 
     textFormatter = QtGui.QTextCharFormat()
@@ -14,6 +14,8 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
     textFormatter.setFontStrikeOut(False)
 
     atxHeaderPattern = regex.compile(regexPatterns['ATX_HEADER'], regex.MULTILINE)
+    setextHeaderPattern = regex.compile(regexPatterns['SETEXT_HEADER'], regex.MULTILINE)
+    setextUnderlinePattern = regex.compile(regexPatterns['SETEXT_UNDERLINE'], regex.MULTILINE)
     headerFormatter = QtGui.QTextCharFormat()
     headerFormatter.setFontWeight(QtGui.QFont.Bold)
 
@@ -40,9 +42,22 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
 
     def highlightBlock(self, text:str) -> None:
 
+        self.setCurrentBlockState(0)
+
         match = regex.match(r'^([^\n]+)\n *', text)
 
         formatter = QtGui.QTextCharFormat()
+
+        for match in regex.finditer(self.setextHeaderPattern, text + "\n" + self.currentBlock().next().text()):
+            formatter.setFontWeight(QtGui.QFont.Bold)
+            self.setFormat(match.start(), len(match.group()), formatter)
+
+            if self.format(match.start()).fontWeight() == QtGui.QFont.Bold:
+                self.setCurrentBlockState(1)
+
+        for match in regex.finditer(self.setextUnderlinePattern, text):
+            formatter.setFontWeight(QtGui.QFont.Bold)
+            self.setFormat(match.start(), len(match.group()), formatter)
 
         for match in regex.finditer(self.atxHeaderPattern, text):
             formatter.setFontWeight(QtGui.QFont.Bold)
@@ -63,7 +78,6 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
 
         for match in regex.finditer(self.strikethroughPattern, text):
             formatter.setFontStrikeOut(True)
-
             self.setFormat(match.start(), len(match.group()), formatter)
 
 

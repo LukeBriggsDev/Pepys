@@ -10,5 +10,6 @@ regexPatterns = {
      ,
     'STRIKETHROUGH': r'~~(?=\S)([\s\S]*?\S)~~', # ~~this~~
     'ATX_HEADER': r'^ *(#{1,6}) *([^\n]+?) *#* *(?:\n+|$)',
-    'SETEXT_HEADER_UNDERLINE': r'^(=|-)+ *(?:\n+|$)' ## Only matchesthe bottom line
+    'SETEXT_HEADER': r'(?:^\n*|\n\n)([^\s].+)\n {0,3}[=\-]+(?: +?\n|$)',
+    'SETEXT_UNDERLINE': r'(=|-)+ *(?:\n+|$)'
 }
