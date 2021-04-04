@@ -3,16 +3,13 @@ import re
 
 class MarkdownToken:
 
-    def __init__(self, regex, formatter):
-        self.regex = regex
+    def __init__(self, formatter):
         self.formatter = formatter
 
-    def applyStyle(self, textEdit: QtWidgets.QTextEdit):
-        matches = [x for x in re.finditer(self.regex, textEdit.toPlainText())]
-        for match in matches:
-            cursor = QtGui.QTextCursor(textEdit.document())
-            cursor.setPosition(match.start())
-            cursor.setPosition(match.end(), textEdit.textCursor().KeepAnchor)
-            textEdit.setTextCursor(cursor)
-            cursor.mergeCharFormat(self.formatter)
+    def applyStyle(self, textEdit: QtWidgets.QTextEdit, start, end):
+        cursor = QtGui.QTextCursor(textEdit.document())
+        cursor.setPosition(start)
+        cursor.setPosition(end, textEdit.textCursor().KeepAnchor)
+        textEdit.setTextCursor(cursor)
+        cursor.mergeCharFormat(self.formatter)
 

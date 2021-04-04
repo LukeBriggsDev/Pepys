@@ -19,8 +19,6 @@ class AppContext(ApplicationContext):
         QtGui.QFontDatabase.addApplicationFont(ctx.get_resource("fonts/IBMPlexMono/IBMPlexMono-Regular.ttf"))
 
         fontdb = QtGui.QFontDatabase()
-        print(fontdb.families(QtGui.QFontDatabase.WritingSystem.Latin))
-        print(fontdb.applicationFontFamilies(2))
 
         mainPane = MainPane()
         mainPane.resize(800, 600)
