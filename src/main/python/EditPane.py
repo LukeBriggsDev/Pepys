@@ -15,7 +15,7 @@ class EditPane(AbstractPane.AbstractPane):
 
     def applyFormatting(self):
         currentCaretPosition = self.textCursor().position()
-        headerPattern = re.compile("^#{1,6}[^\S\n]+.*", re.MULTILINE)
+        headerPattern = re.compile("^ *(#{1,6}) *([^\n]+?) *#* *(?:\n+|$)", re.MULTILINE)
         headers = [x for x in re.finditer(headerPattern, self.toPlainText())]
         sliderPos = self.verticalScrollBar().sliderPosition()
         print("WOO")
