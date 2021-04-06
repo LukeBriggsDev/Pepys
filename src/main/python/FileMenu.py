@@ -1,5 +1,6 @@
 from PySide2 import QtWidgets, QtGui, QtCore
 from EditPane import EditPane
+from CalendarFileSelector import CalendarFileSelector
 
 
 class FileMenu(QtWidgets.QMenu):
@@ -17,12 +18,25 @@ class FileMenu(QtWidgets.QMenu):
         open_file_action = self.addAction("Open")
         open_file_action.triggered.connect(self.open_file)
 
+        open_file_action = self.addAction("Open Entry")
+        open_file_action.triggered.connect(self.open_file_date)
+
         # Add save file action
         save_file_action = self.addAction("Save")
         save_file_action.triggered.connect(self.save_file)
 
     def new_file(self) -> None:
         print("NewFile")
+
+    def open_file_date(self) -> None:
+        self.date_dialog = CalendarFileSelector(self.edit_pane)
+        self.date_dialog.layout = QtWidgets.QVBoxLayout()
+        calendar = QtWidgets.QCalendarWidget()
+        self.date_dialog.layout.addWidget(calendar)
+        self.date_dialog.setMinimumSize(480, 480)
+        self.date_dialog.setMaximumSize(480, 480)
+        self.date_dialog.show()
+
 
     def open_file(self) -> None:
         """Open file in text edit, called when open_file_action clicked"""

@@ -78,6 +78,7 @@ class EditPane(AbstractPane.AbstractPane):
         if e.text() == '=' or e.text() == '-':
             self.markdownHighlighter.rehighlightBlock(
                 self.document().findBlock(self.textCursor().position()).previous())
+        self.save_current_file()
 
     @property
     def current_file(self):
