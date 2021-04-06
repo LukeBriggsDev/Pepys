@@ -31,10 +31,9 @@ class FileMenu(QtWidgets.QMenu):
         filename = QtWidgets.QFileDialog.getOpenFileName(self)
 
         with open(filename[0], 'r') as file:
-            self.edit_pane.setText(file.read())
             self.edit_pane.set_current_file(filename[0])
 
         print("OpenFile")
 
     def save_file(self) -> None:
-        print("SaveFile")
+        self.edit_pane.save_current_file()
