@@ -1,10 +1,20 @@
-import re
+from __future__ import annotations
+import typing
 
 from PySide2 import QtWidgets, QtGui, QtCore
 
+if typing.TYPE_CHECKING:
+    from AppContext import AppContext
+
 
 class AbstractPane(QtWidgets.QTextEdit):
-    def __init__(self, ctx):
+    """Contain abstract methods and attributes for use by both the EditPane and ViewPane"""
+
+    def __init__(self, ctx: AppContext) -> None:
+        """Initialise a QTextEdit and apply attributes required at load time.
+
+        :param ctx: current ApplicationContext, used to get stylesheet resource
+        """
         super().__init__()
         filename = ctx.get_resource("PaneStyle.qss")
         with open(filename) as file:
@@ -13,21 +23,39 @@ class AbstractPane(QtWidgets.QTextEdit):
         self.setStyleSheet(stylesheet)
         self.setVerticalScrollBarPolicy(self.verticalScrollBarPolicy().ScrollBarAlwaysOn)
 
+    def update_size(self, new_frame_width: int) -> None:
+        """Updates style based on a given frame size. To be called when the window changes size.
 
-    def updateSize(self, newFrameSize):
-        self.verticalScrollBar().setStyleSheet("QScrollBar:vertical {width:"+str(newFrameSize * 0.25 + 4)+";border-left-width: "+ str(newFrameSize * 0.25 - 4) +"px ;}")
-        self.setStyleSheet(self.styleSheet() + "QTextEdit { border-left-width: " + str(newFrameSize * 0.25) + "px;}")
+        :param new_frame_width: the frame width to style to
+        """
 
+        # Increase width of scroll bar left border to create a margin 25% width of the main window.
+        margin_scale = 1 / 4
+        scroll_bar_width = 4
+        self.verticalScrollBar().setStyleSheet(
+            "QScrollBar:vertical {"
+            f"width: {new_frame_width * margin_scale + scroll_bar_width};"
+            f"border-left-width: {str(new_frame_width * margin_scale - scroll_bar_width)}px ;"
+            "}")
 
-    def enterEvent(self, event:QtCore.QEvent) -> None:
+        # Increase left border of the QTextEdit pane to create a left margin 25% width of the main window
+        self.setStyleSheet(self.styleSheet() +
+                           "QTextEdit { "
+                           f"border-left-width: {new_frame_width * margin_scale} px;"
+                           "}")
+
+    def enterEvent(self, event: QtCore.QEvent) -> None:
+        """"Override base QTextEdit method, called when mouse is over TextEdit
+
+        :param event: the QEvent that caused the invocation
+        """
+
         self.verticalScrollBar().setVisible(True)
-        self.verticalScrollBar().setStyleSheet(self.verticalScrollBar().styleSheet() + """QScrollBar::handle:vertical {
-        background-color: rgb(125,124,123);
-        }""")
 
+    def leaveEvent(self, event: QtCore.QEvent) -> None:
+        """"Override base QTextEdit method, called when mouse leaves TextEdit
 
-    def leaveEvent(self, event:QtCore.QEvent) -> None:
+        :param event: the QEvent that caused the invocation
+        """
+
         self.verticalScrollBar().setVisible(False)
-        self.verticalScrollBar().setStyleSheet(self.verticalScrollBar().styleSheet() + """QScrollBar::handle:vertical {
-        background-color: rgb(250,249,247);
-        }""")

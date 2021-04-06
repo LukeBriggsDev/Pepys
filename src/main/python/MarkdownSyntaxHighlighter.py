@@ -4,81 +4,91 @@ from MarkdownRegex import regexPatterns
 
 
 class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
+    """Syntax highlighter for markdown file"""
 
-    SETEXT_HEADER = 0
+    # Plaintext format options and regex
+    text_formatter = QtGui.QTextCharFormat()
+    text_formatter.setFontItalic(False)
+    text_formatter.setFontWeight(QtGui.QFont.Normal)
+    text_formatter.setFontStrikeOut(False)
 
+    # Header format options and regex
+    atx_header_pattern = regex.compile(regexPatterns['ATX_HEADER'], regex.MULTILINE)
+    setext_header_pattern = regex.compile(regexPatterns['SETEXT_HEADER'], regex.MULTILINE)
+    setext_underline_pattern = regex.compile(regexPatterns['SETEXT_UNDERLINE'], regex.MULTILINE)
+    header_formatter = QtGui.QTextCharFormat()
+    header_formatter.setFontWeight(QtGui.QFont.Bold)
 
-    textFormatter = QtGui.QTextCharFormat()
-    textFormatter.setFontItalic(False)
-    textFormatter.setFontWeight(QtGui.QFont.Normal)
-    textFormatter.setFontStrikeOut(False)
+    # Emphasis format options and regex
+    emphasis_pattern = regex.compile(regexPatterns['EMPHASIS'], regex.MULTILINE)
+    emphasis_formatter = QtGui.QTextCharFormat()
+    emphasis_formatter.setFontItalic(True)
 
-    atxHeaderPattern = regex.compile(regexPatterns['ATX_HEADER'], regex.MULTILINE)
-    setextHeaderPattern = regex.compile(regexPatterns['SETEXT_HEADER'], regex.MULTILINE)
-    setextUnderlinePattern = regex.compile(regexPatterns['SETEXT_UNDERLINE'], regex.MULTILINE)
-    headerFormatter = QtGui.QTextCharFormat()
-    headerFormatter.setFontWeight(QtGui.QFont.Bold)
+    # Strong emphasis format options and regex
+    strong_emphasis_pattern = regex.compile(regexPatterns['STRONG_EMPHASIS'], regex.MULTILINE)
+    strong_emphasis_formatter = QtGui.QTextCharFormat()
+    strong_emphasis_formatter.setFontWeight(QtGui.QFont.Bold)
+    strong_emphasis_formatter.setFontItalic(False)
 
-    emphasisPattern = regex.compile(regexPatterns['EMPHASIS'], regex.MULTILINE)
-    emphasisFormatter = QtGui.QTextCharFormat()
-    emphasisFormatter.setFontItalic(True)
+    # Very strong emphasis options and regex
+    very_strong_emphasis_pattern = regex.compile(regexPatterns['VERY_STRONG_EMPHASIS'], regex.MULTILINE)
+    very_strong_emphasis_formatter = QtGui.QTextCharFormat()
+    very_strong_emphasis_formatter.setFontWeight(QtGui.QFont.Bold)
+    very_strong_emphasis_formatter.setFontItalic(True)
 
-    strongEmphasisPattern = regex.compile(regexPatterns['STRONG_EMPHASIS'], regex.MULTILINE)
-    strongEmphasisFormatter = QtGui.QTextCharFormat()
-    strongEmphasisFormatter.setFontWeight(QtGui.QFont.Bold)
-    strongEmphasisFormatter.setFontItalic(False)
+    # Strikethrough emphasis options and regex
+    strikethrough_pattern = regex.compile(regexPatterns['STRIKETHROUGH'], regex.MULTILINE)
+    strikethrough_formatter = QtGui.QTextCharFormat()
+    strikethrough_formatter.setFontStrikeOut(True)
 
-    veryStronEmphasisPattern = regex.compile(regexPatterns['VERY_STRONG_EMPHASIS'], regex.MULTILINE)
-    veryStrongEmphasisFormatter = QtGui.QTextCharFormat()
-    veryStrongEmphasisFormatter.setFontWeight(QtGui.QFont.Bold)
-    veryStrongEmphasisFormatter.setFontItalic(True)
+    def __init__(self, text_edit:QtWidgets.QTextEdit) -> None:
+        """Initialise syntax highlighter.
 
-    strikethroughPattern = regex.compile(regexPatterns['STRIKETHROUGH'], regex.MULTILINE)
-    strikethroughFormatter = QtGui.QTextCharFormat()
-    strikethroughFormatter.setFontStrikeOut(True)
-
-    def __init__(self, textEdit:QtWidgets.QTextEdit):
-        super().__init__(textEdit)
+        :param text_edit: QTextEdit to apply formatting to
+        """
+        super().__init__(text_edit)
 
     def highlightBlock(self, text:str) -> None:
-
-        self.setCurrentBlockState(0)
-
-        match = regex.match(r'^([^\n]+)\n *', text)
+        """Overrides QSyntaxHighlighter method to provide custom formatting"""
 
         formatter = QtGui.QTextCharFormat()
 
-        for match in regex.finditer(self.setextHeaderPattern, text + "\n" + self.currentBlock().next().text()):
+        # Setext header match and format
+        for match in regex.finditer(self.setext_header_pattern, text + "\n" + self.currentBlock().next().text()):
             formatter.setFontWeight(QtGui.QFont.Bold)
             self.setFormat(match.start(), len(match.group()), formatter)
 
-            if self.format(match.start()).fontWeight() == QtGui.QFont.Bold:
-                self.setCurrentBlockState(1)
-
-        for match in regex.finditer(self.setextUnderlinePattern, text):
+        # Setext underline match and format
+        for match in regex.finditer(self.setext_underline_pattern, text):
             formatter.setFontWeight(QtGui.QFont.Bold)
             self.setFormat(match.start(), len(match.group()), formatter)
 
-        for match in regex.finditer(self.atxHeaderPattern, text):
+        # Atx header match and format
+        for match in regex.finditer(self.atx_header_pattern, text):
             formatter.setFontWeight(QtGui.QFont.Bold)
             self.setFormat(match.start(), len(match.group()), formatter)
 
-        for match in regex.finditer(self.emphasisPattern, text):
+        # Emphasis match and format
+        for match in regex.finditer(self.emphasis_pattern, text):
             formatter.setFontItalic(True)
             self.setFormat(match.start(), len(match.group()), formatter)
 
-        for match in regex.finditer(self.strongEmphasisPattern, text):
+        # Strong emphasis match and format
+        for match in regex.finditer(self.strong_emphasis_pattern, text):
             formatter.setFontWeight(QtGui.QFont.Bold)
             self.setFormat(match.start(), len(match.group()), formatter)
 
-        for match in regex.finditer(self.veryStronEmphasisPattern, text):
+        # Very strong emphasis match and format
+        for match in regex.finditer(self.very_strong_emphasis_pattern, text):
             formatter.setFontItalic(True)
             formatter.setFontWeight(QtGui.QFont.Bold)
             self.setFormat(match.start(), len(match.group()), formatter)
 
-        for match in regex.finditer(self.strikethroughPattern, text):
+        # Strikethrough match and format
+        for match in regex.finditer(self.strikethrough_pattern, text):
             formatter.setFontStrikeOut(True)
             self.setFormat(match.start(), len(match.group()), formatter)
+
 
 
 

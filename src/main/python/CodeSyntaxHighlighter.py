@@ -5,7 +5,15 @@ from pygments.lexers import get_lexer_by_name
 
 
 class HighlightRenderer(mistune.Renderer):
-    def block_code(self, code, lang=None):
+    """Custom renderer for markdown to html conversion"""
+
+    def block_code(self, code: str, lang: str = None) -> str:
+        """ Render markdown code blocks as html.
+
+        :param code: the text within the code block
+        :param lang: the specified programming language (default = None)
+        :return: highlighted code if language recognised, else plain monospaced text
+        """
         if lang:
             try:
                 lexer = get_lexer_by_name(lang, stripall=True)
@@ -15,7 +23,7 @@ class HighlightRenderer(mistune.Renderer):
                 pass
         return '<pre><code>' + mistune.escape(code) + '</code></pre>'
 
-    def strikethrough(self, text):
+    def strikethrough(self, text: str) -> str:
         """Rendering ~~strikethrough~~ text. Overrides standard method which uses <del> and is unsupported by qt
 
         :param text: text content for strikethrough.
