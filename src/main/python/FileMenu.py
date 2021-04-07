@@ -18,20 +18,10 @@ class FileMenu(QtWidgets.QMenu):
         with open(ctx.get_resource("MenuBarStyle.qss")) as file:
             stylesheet = file.read()
 
-        # Add new file action
-        new_file_action = self.addAction("New")
-        new_file_action.triggered.connect(self.new_file)
-
-        # Add open file action
-        open_file_action = self.addAction("Open")
-        open_file_action.triggered.connect(self.open_file)
 
         open_file_action = self.addAction("Open Entry")
         open_file_action.triggered.connect(self.open_file_date)
 
-        # Add save file action
-        save_file_action = self.addAction("Save")
-        save_file_action.triggered.connect(self.save_file)
 
         self.setStyleSheet(stylesheet)
 
