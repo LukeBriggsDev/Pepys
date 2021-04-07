@@ -1,0 +1,22 @@
+QMenuBar{
+
+    background-color: rgb(250,249,247);
+
+
+}
+
+
+QMenuBar::item:selected{
+    background-color: rgb(125,123,123);
+    color: rgb(250,249,247);
+}
+
+
+QMenu::item:selected{
+
+    background-color: rgb(125,123,123);
+    alternate-background-color: red;
+    color: rgb(250,249,247);
+
+
+}

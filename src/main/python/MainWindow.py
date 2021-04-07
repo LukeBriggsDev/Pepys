@@ -111,6 +111,9 @@ class MainWindow(QtWidgets.QWidget):
         self.edit_pane.update_size(self.width())
         self.view_pane.update_size(self.width())
 
+    def closeEvent(self, event:QtGui.QCloseEvent) -> None:
+        sys.exit()
+
 
     def switch_pane(self) -> None:
         self.edit_pane.setVisible(not self.edit_pane.isVisible())

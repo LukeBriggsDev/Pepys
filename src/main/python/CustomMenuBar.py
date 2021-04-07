@@ -9,7 +9,11 @@ if typing.TYPE_CHECKING:
 class CustomMenuBar(QtWidgets.QMenuBar):
     """Menu bar to appear with MainWindow"""
     def __init__(self, text_edit: QtWidgets.QTextEdit, ctx: AppContext) -> None:
+
+        with open(ctx.get_resource("MenuBarStyle.qss"), 'r') as file:
+            stylesheet = file.read()
+
         super().__init__()
         file_menu = FileMenu(text_edit, ctx)
-        self.setStyleSheet("background-color: rgb(250,249,247);")
+        self.setStyleSheet(stylesheet)
         self.addMenu(file_menu)

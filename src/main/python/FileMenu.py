@@ -15,6 +15,9 @@ class FileMenu(QtWidgets.QMenu):
         self.edit_pane = edit_pane
         self.ctx = ctx
 
+        with open(ctx.get_resource("MenuBarStyle.qss")) as file:
+            stylesheet = file.read()
+
         # Add new file action
         new_file_action = self.addAction("New")
         new_file_action.triggered.connect(self.new_file)
@@ -29,6 +32,8 @@ class FileMenu(QtWidgets.QMenu):
         # Add save file action
         save_file_action = self.addAction("Save")
         save_file_action.triggered.connect(self.save_file)
+
+        self.setStyleSheet(stylesheet)
 
     def new_file(self) -> None:
         print("NewFile")
