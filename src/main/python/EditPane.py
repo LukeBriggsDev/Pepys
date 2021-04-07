@@ -55,7 +55,7 @@ class EditPane(AbstractPane.AbstractPane):
                 self.set_current_file(file)
 
         try:
-            day_of_month = num2words(file_date.day, to="ordinal_num", lang=locale.getlocale(locale.LC_TIME)[0])
+            day_of_month = num2words(file_date.day, to="ordinal_num", lang=locale.getlocale()[0])
             print(day_of_month)
         except NotImplementedError:
             day_of_month = file_date.day

@@ -2,14 +2,14 @@ QTextEdit{
     font-size: 14pt;
     font-family: "IBM Plex Mono";
     color: rgba(0, 0, 0, 87%);
-    background-color:  rgb(250,249,247);
-    border: 0px solid rgb(250,249,247);
+    background-color:  white;
+    border: 0px solid white;
 
 }
 
 QScrollBar:vertical {
-    border: 0px solid rgb(250,249,247);
-    background-color: rgb(250,249,247);
+    border: 0px solid white;
+    background-color: white;
     margin: 0px 0px 0px 0px;
 }
 QScrollBar::handle:vertical {

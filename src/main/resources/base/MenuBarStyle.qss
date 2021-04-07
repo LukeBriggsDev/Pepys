@@ -1,6 +1,6 @@
 QMenuBar{
 
-    background-color: rgb(250,249,247);
+    background-color: white;
 
 
 }

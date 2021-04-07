@@ -1,18 +1,23 @@
 QAbstractItemView
 {
-selection-background-color: rgb(125,123,123);
-selection-color: rgb(250,249,247);
+    selection-background-color: rgb(125,123,123);
+    selection-color: white;
 
 }
 QWidget
 {
   color: black;
   font-family: "IBM Plex Mono";
-  background-color: rgb(250,249,247);
+  background-color: white;
+}
+
+QObject
+{
+    alternate-background-color: white;
 }
 
 
 QTableView{
     border-width:0px;
-    background-color: rgb(250,249,247);
+    background-color: white;
 }

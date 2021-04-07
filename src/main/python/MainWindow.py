@@ -50,7 +50,7 @@ class MainWindow(QtWidgets.QWidget):
 
         # Folder is not an absolute folder
         try:
-            if not (config_dict['diary_directory'][0] == '/' or config_dict['diary_directory'][1] == ':'):
+            if not (config_dict['diary_directory'][0] == '/' or config_dict['diary_directory'][1] == ':') or not os.path.exists(config_dict['diary_directory']):
                 self.select_diary_directory()
         except IndexError:
             self.select_diary_directory()
