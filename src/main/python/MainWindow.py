@@ -64,7 +64,7 @@ class MainWindow(QtWidgets.QWidget):
         self.edit_pane = EditPane(ctx)
 
         # Menu bar and adding edit pane underneath
-        self.menu_bar = CustomMenuBar(self.edit_pane)
+        self.menu_bar = CustomMenuBar(self.edit_pane, self.ctx)
         self.layout.addWidget(self.menu_bar)
         self.layout.addWidget(self.edit_pane)
 
@@ -80,6 +80,7 @@ class MainWindow(QtWidgets.QWidget):
 
 
         self.edit_pane.open_file_from_date(date.today())
+
 
     def select_diary_directory(self):
         """Request user to select a directory and set it to diary_directory in config

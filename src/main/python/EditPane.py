@@ -69,7 +69,7 @@ class EditPane(AbstractPane.AbstractPane):
 
         # Get folder for today's journal entry
         print(self.current_file)
-        with open(self.current_file, "r+") as file:
+        with open(self.current_file, "w+") as file:
             file.write(self.toPlainText())
 
 

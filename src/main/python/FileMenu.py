@@ -1,14 +1,19 @@
+from __future__ import annotations
 from PySide2 import QtWidgets, QtGui, QtCore
 from EditPane import EditPane
 from CalendarFileSelector import CalendarFileSelector
+import typing
+if typing.TYPE_CHECKING:
+    from AppContext import AppContext
 
 
 class FileMenu(QtWidgets.QMenu):
     """Setup menu for file options to be added to a menu bar."""
 
-    def __init__(self, edit_pane: EditPane) -> None:
+    def __init__(self, edit_pane: EditPane, ctx: AppContext) -> None:
         super().__init__("File")
         self.edit_pane = edit_pane
+        self.ctx = ctx
 
         # Add new file action
         new_file_action = self.addAction("New")
@@ -29,12 +34,8 @@ class FileMenu(QtWidgets.QMenu):
         print("NewFile")
 
     def open_file_date(self) -> None:
-        self.date_dialog = CalendarFileSelector(self.edit_pane)
-        self.date_dialog.layout = QtWidgets.QVBoxLayout()
-        calendar = QtWidgets.QCalendarWidget()
-        self.date_dialog.layout.addWidget(calendar)
-        self.date_dialog.setMinimumSize(480, 480)
-        self.date_dialog.setMaximumSize(480, 480)
+        self.date_dialog = CalendarFileSelector(self.edit_pane, self.ctx)
+
         self.date_dialog.show()
 
 

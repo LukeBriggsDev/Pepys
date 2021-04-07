@@ -25,6 +25,7 @@ class ViewPane(AbstractPane.AbstractPane):
 
         self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.horizontalScrollBar().setEnabled(False)
+        self.setTextInteractionFlags(QtGui.Qt.TextBrowserInteraction)
 
     def update_size(self, new_frame_width: int) -> None:
         super(ViewPane, self).update_size(new_frame_width)
