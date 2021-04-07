@@ -71,11 +71,13 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
         # Emphasis match and format
         for match in regex.finditer(self.emphasis_pattern, text):
             formatter.setFontItalic(True)
+            formatter.setFontWeight(QtGui.QFont.Normal)
             self.setFormat(match.start(), len(match.group()), formatter)
 
         # Strong emphasis match and format
         for match in regex.finditer(self.strong_emphasis_pattern, text):
             formatter.setFontWeight(QtGui.QFont.Bold)
+            formatter.setFontItalic(False)
             self.setFormat(match.start(), len(match.group()), formatter)
 
         # Very strong emphasis match and format
