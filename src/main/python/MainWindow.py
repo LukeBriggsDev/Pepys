@@ -128,10 +128,11 @@ class MainWindow(QtWidgets.QWidget):
 
         for filepath in filepaths:
             if filepath[0] != "/" or filepath[1] != ":":
-                # Replace relative file paths
-                # TODO: Maybe need to make directory separators agnostic for windows
-                html = html.replace(filepath,
-                                    os.path.join("/".join(self.edit_pane._current_file.split("/")[:-1]), filepath))
 
+                print(self.edit_pane.current_file)
+                print(filepath)
+                html = html.replace(filepath, os.path.join(os.path.dirname(self.edit_pane.current_file), filepath))
+
+                print(html)
         self.view_pane.setHtml(html)
         self.view_pane.setVisible(not self.view_pane.isVisible())
