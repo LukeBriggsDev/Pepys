@@ -39,11 +39,20 @@ class EditPane(AbstractPane.AbstractPane):
         # Get folder for today's journal entry
         config_file = self.ctx.get_resource("config.json")
         with open(config_file, "r") as file:
-            file_directory = os.path.join(json.loads(file.read())["diary_directory"], formatted_date)
+            file_directory = os.path.join(json.loads(file.read())["diary_directory"], str(file_date.year), str(file_date.month), formatted_date)
 
         # Make folder for today's entry if not already exist
         if not os.path.exists(file_directory):
-            os.mkdir(file_directory)
+            try:
+                os.mkdir(file_directory)
+            except FileNotFoundError:
+                try:
+                    os.mkdir(os.path.dirname(file_directory))
+                    os.mkdir(file_directory)
+                except FileNotFoundError:
+                    os.mkdir(os.path.dirname(os.path.dirname(file_directory)))
+                    os.mkdir(os.path.dirname(file_directory))
+                    os.mkdir(file_directory)
 
         # Open markdown in r+ mode if it exists, else open in w+ mode
         try:
