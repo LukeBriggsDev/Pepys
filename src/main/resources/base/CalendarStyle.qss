@@ -7,7 +7,7 @@ QAbstractItemView
 QWidget
 {
   color: black;
-  font-family: "IBM Plex Mono";
+  font-family: "Inter";
   background-color: white;
 }
 

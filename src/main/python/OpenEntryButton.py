@@ -1,34 +1,28 @@
 from __future__ import annotations
 from PySide2 import QtWidgets, QtGui, QtCore
-from EditPane import EditPane
-from CalendarFileSelector import CalendarFileSelector
 import typing
+from CalendarFileSelector import CalendarFileSelector
 if typing.TYPE_CHECKING:
     from AppContext import AppContext
+    from EditPane import EditPane
 
-
-class FileMenu(QtWidgets.QMenu):
-    """Setup menu for file options to be added to a menu bar."""
-
-    def __init__(self, edit_pane: EditPane, ctx: AppContext) -> None:
-        super().__init__("File")
+class OpenEntryButton(QtWidgets.QPushButton):
+    def __init__(self, edit_pane: EditPane, ctx: AppContext):
+        super().__init__()
         self.edit_pane = edit_pane
         self.ctx = ctx
+        self.setMinimumSize(32, 32)
+        self.setMaximumSize(32, 32)
+        self.setToolTip("Open Entry")
+        self.setWhatsThis("Click this to select an entry via a calendar")
+        self.setIcon(QtGui.QIcon(ctx.get_resource("icons/calendar.svg")))
 
-        with open(ctx.get_resource("MenuBarStyle.qss")) as file:
-            stylesheet = file.read()
+    def mousePressEvent(self, e:QtGui.QMouseEvent) -> None:
+        self.open_date_picker()
 
 
-        open_file_action = self.addAction("Open Entry")
-        open_file_action.triggered.connect(self.open_file_date)
 
-
-        self.setStyleSheet(stylesheet)
-
-    def new_file(self) -> None:
-        print("NewFile")
-
-    def open_file_date(self) -> None:
+    def open_date_picker(self) -> None:
         self.date_dialog = CalendarFileSelector(self.edit_pane, self.ctx)
 
         self.date_dialog.show()
@@ -47,3 +41,7 @@ class FileMenu(QtWidgets.QMenu):
 
     def save_file(self) -> None:
         self.edit_pane.save_current_file()
+
+# self.date_dialog = CalendarFileSelector(self.edit_pane, self.ctx)
+#
+# self.date_dialog.show()

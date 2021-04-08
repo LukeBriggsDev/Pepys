@@ -14,6 +14,7 @@ class AppContext(ApplicationContext):
         QtGui.QFontDatabase.addApplicationFont(ctx.get_resource("fonts/Inter/Inter.ttf"))
         QtGui.QFontDatabase.addApplicationFont(ctx.get_resource("fonts/IBMPlexMono/IBMPlexMono-Regular.ttf"))
 
+
         # Initialise and set size of main_window
         main_window = MainWindow(self)
         main_window.resize(800, 600)
