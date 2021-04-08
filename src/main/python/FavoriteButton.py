@@ -26,6 +26,7 @@ class FavoriteButton(QtWidgets.QPushButton):
                 self.setIcon(QtGui.QIcon(self.ctx.get_resource("icons/star.svg")))
 
     def mousePressEvent(self, e:QtGui.QMouseEvent) -> None:
+        super().mousePressEvent(e)
         with open(self.ctx.get_resource("config.json"), "r") as file:
             config_dict = json.loads(file.read())
             if self.edit_pane.current_file_date in config_dict["favorites"]:

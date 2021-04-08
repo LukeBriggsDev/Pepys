@@ -63,21 +63,15 @@ class MainWindow(QtWidgets.QWidget):
         # Edit pane
         self.edit_pane = EditPane(ctx)
 
-        # Menu bar and adding edit pane underneath
-        self.tool_bar = CustomToolbar(self.edit_pane, self.ctx)
-        self.layout.addWidget(self.tool_bar)
-        self.layout.addWidget(self.edit_pane)
-
         # View pane
         self.view_pane = ViewPane(ctx)
         self.view_pane.setVisible(False)
+
+        # Menu bar and adding panes underneath
+        self.tool_bar = CustomToolbar(self.edit_pane, self.view_pane, self.ctx)
+        self.layout.addWidget(self.tool_bar)
+        self.layout.addWidget(self.edit_pane)
         self.layout.addWidget(self.view_pane)
-
-        # Switch pane button
-        self.switch_pane_button = QtWidgets.QPushButton("Switch Pane")
-        self.switch_pane_button.clicked.connect(self.switch_pane)
-        self.layout.addWidget(self.switch_pane_button)
-
 
         self.edit_pane.open_file_from_date(date.today())
 
@@ -114,25 +108,3 @@ class MainWindow(QtWidgets.QWidget):
     def closeEvent(self, event:QtGui.QCloseEvent) -> None:
         sys.exit()
 
-
-    def switch_pane(self) -> None:
-        self.edit_pane.setVisible(not self.edit_pane.isVisible())
-        self.edit_pane.update_size(self.width())
-        self.view_pane.update_size(self.width())
-
-        self.view_pane.setHtml(
-            mistune.markdown(self.edit_pane.toPlainText(), renderer=CodeSyntaxHighlighter.HighlightRenderer()))
-        html = self.view_pane.toHtml().replace("<img ", f'<img width="{self.view_pane.width() * 0.5}" ')
-        file_path_pattern = regex.compile('(?<=src=")\S*(?=")')
-        filepaths = [filepath.group() for filepath in regex.finditer(file_path_pattern, self.view_pane.toHtml())]
-
-        for filepath in filepaths:
-            if filepath[0] != "/" or filepath[1] != ":":
-
-                print(self.edit_pane.current_file)
-                print(filepath)
-                html = html.replace(filepath, os.path.join(os.path.dirname(self.edit_pane.current_file), filepath))
-
-                print(html)
-        self.view_pane.setHtml(html)
-        self.view_pane.setVisible(not self.view_pane.isVisible())

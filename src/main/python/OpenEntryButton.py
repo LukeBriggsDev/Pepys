@@ -18,6 +18,7 @@ class OpenEntryButton(QtWidgets.QPushButton):
         self.setIcon(QtGui.QIcon(ctx.get_resource("icons/calendar.svg")))
 
     def mousePressEvent(self, e:QtGui.QMouseEvent) -> None:
+        super().mousePressEvent(e)
         self.open_date_picker()
 
 
