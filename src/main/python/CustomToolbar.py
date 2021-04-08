@@ -6,8 +6,9 @@ if typing.TYPE_CHECKING:
     from AppContext import AppContext
 
 from OpenEntryButton import OpenEntryButton
+from FavoriteButton import FavoriteButton
 
-class CustomMenuBar(QtWidgets.QToolBar):
+class CustomToolbar(QtWidgets.QToolBar):
     """Menu bar to appear with MainWindow"""
     def __init__(self, text_edit: QtWidgets.QTextEdit, ctx: AppContext) -> None:
 
@@ -18,5 +19,7 @@ class CustomMenuBar(QtWidgets.QToolBar):
         self.setStyleSheet(stylesheet)
 
         self.open_entry_button = OpenEntryButton(text_edit, ctx)
+        self.favorite_button = FavoriteButton(text_edit, ctx)
 
         self.addWidget(self.open_entry_button)
+        self.addWidget(self.favorite_button)

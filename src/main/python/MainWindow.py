@@ -11,7 +11,7 @@ import os
 import CodeSyntaxHighlighter
 from EditPane import EditPane
 from ViewPane import ViewPane
-from CustomMenuBar import CustomMenuBar
+from CustomToolbar import CustomToolbar
 import json
 import datetime
 from datetime import date
@@ -64,8 +64,8 @@ class MainWindow(QtWidgets.QWidget):
         self.edit_pane = EditPane(ctx)
 
         # Menu bar and adding edit pane underneath
-        self.menu_bar = CustomMenuBar(self.edit_pane, self.ctx)
-        self.layout.addWidget(self.menu_bar)
+        self.tool_bar = CustomToolbar(self.edit_pane, self.ctx)
+        self.layout.addWidget(self.tool_bar)
         self.layout.addWidget(self.edit_pane)
 
         # View pane

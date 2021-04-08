@@ -24,6 +24,9 @@ class OpenEntryButton(QtWidgets.QPushButton):
 
     def open_date_picker(self) -> None:
         self.date_dialog = CalendarFileSelector(self.edit_pane, self.ctx)
+        self.parentWidget().parentWidget().setFocusProxy(self.date_dialog)
+        self.parentWidget().parentWidget().setDisabled(True)
+        self.date_dialog.setFocusPolicy(QtGui.Qt.StrongFocus)
 
         self.date_dialog.show()
 
@@ -41,7 +44,3 @@ class OpenEntryButton(QtWidgets.QPushButton):
 
     def save_file(self) -> None:
         self.edit_pane.save_current_file()
-
-# self.date_dialog = CalendarFileSelector(self.edit_pane, self.ctx)
-#
-# self.date_dialog.show()

@@ -6,6 +6,7 @@ import typing
 if typing.TYPE_CHECKING:
     from AppContext import AppContext
 import os
+import json
 
 
 class CalendarFileSelector(QtWidgets.QCalendarWidget):
@@ -27,13 +28,24 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
         with open(stylesheet, 'r') as file:
             self.setStyleSheet(file.read())
 
-        format = QtGui.QTextCharFormat()
-        format.setFontFamily("IBM Plex Mono")
-        self.setHeaderTextFormat(format)
+        favorite_format = QtGui.QTextCharFormat()
+        favorite_brush = QtGui.QBrush()
+        favorite_brush.setColor(QtGui.QColor.fromRgb(255, 235, 59))
+        favorite_format.setBackground(favorite_brush)
+
+        with open(ctx.get_resource("config.json")) as file:
+            for day in json.loads(file.read())["favorites"]:
+                formatted_date = [int(x) for x in day.split("-")]
+                self.setDateTextFormat(QtCore.QDate(formatted_date[0], formatted_date[1], formatted_date[2]), favorite_format)
+
 
     def selection_changed_handler(self):
         self.edit_pane.open_file_from_date(date(self.selectedDate().year(),
                                                 self.selectedDate().month(),
                                                 self.selectedDate().day()))
+
+    def closeEvent(self, event:QtGui.QCloseEvent) -> None:
+        self.edit_pane.parentWidget().setFocusPolicy(QtGui.Qt.StrongFocus)
+        self.edit_pane.parentWidget().setDisabled(False)
 
 

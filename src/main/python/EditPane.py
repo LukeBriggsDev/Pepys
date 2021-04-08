@@ -69,6 +69,7 @@ class EditPane(AbstractPane.AbstractPane):
         except NotImplementedError:
             day_of_month = file_date.day
 
+        self.parentWidget().tool_bar.favorite_button.update_favorite()
         self.window().setWindowTitle(file_date.strftime(f"%A {day_of_month} %B %Y"))
 
         print(self.current_file)
@@ -92,3 +93,7 @@ class EditPane(AbstractPane.AbstractPane):
     @property
     def current_file(self):
         return self._current_file
+
+    @property
+    def current_file_date(self):
+        return os.path.split(self.current_file)[1][:-3]
