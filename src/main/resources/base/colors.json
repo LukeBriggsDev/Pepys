@@ -1,0 +1,16 @@
+{
+  "light": {
+    "base": "rgb(255, 255, 255)",
+    "window": "rgb(240, 240, 240)",
+    "dark": "rgb(194, 194, 194)",
+    "text": "rgb(33, 33, 33)",
+    "highlight": "rgb(255, 228, 0)"
+  },
+  "dark": {
+    "base": "rgb(41, 41, 41)",
+    "window": "rgb(36, 36, 36)",
+    "dark": "rgba(0, 0, 0, 1)",
+    "text": "rgb(255, 255, 255)",
+    "highlight": "rgb(255, 228, 0"
+  }
+}

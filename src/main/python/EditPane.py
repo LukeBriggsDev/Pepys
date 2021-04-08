@@ -28,6 +28,7 @@ class EditPane(AbstractPane.AbstractPane):
         self._current_file = ""
         self.markdownHighlighter = MarkdownSyntaxHighlighter(self)
 
+
     def set_current_file(self, filepath: typing.TextIO) -> None:
         self._current_file = filepath.name
         self.setText(filepath.read())
@@ -71,6 +72,7 @@ class EditPane(AbstractPane.AbstractPane):
 
         self.parentWidget().tool_bar.favorite_button.update_favorite()
         self.window().setWindowTitle(file_date.strftime(f"%A {day_of_month} %B %Y"))
+
 
         print(self.current_file)
 

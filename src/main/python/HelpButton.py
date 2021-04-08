@@ -20,3 +20,6 @@ class HelpButton(QtWidgets.QPushButton):
         self.setMinimumSize(32, 32)
         self.setIcon(QtGui.QIcon(ctx.get_resource("icons/question.svg")))
         self.setToolTip("About")
+
+    def mousePressEvent(self, e:QtGui.QMouseEvent) -> None:
+        super().mousePressEvent(e)

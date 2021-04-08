@@ -1,5 +1,6 @@
 from __future__ import annotations
 from PySide2 import QtCore, QtWidgets, QtGui
+from ColorParser import *
 import AbstractPane
 import typing
 if typing.TYPE_CHECKING:
@@ -18,11 +19,8 @@ class ViewPane(QtWidgets.QTextBrowser):
         """
 
         super().__init__()
-        filename = ctx.get_resource("PaneStyle.qss")
-        with open(filename) as file:
-            stylesheet = file.read()
         self.setWordWrapMode(QtGui.QTextOption.WrapAtWordBoundaryOrAnywhere)
-        self.setStyleSheet(stylesheet)
+        #self.setStyleSheet(parse_stylesheet(ctx.get_resource("PaneStyle.qss"), ctx.get_resource("colors.json"), ctx.get_resource("config.json")))
         self.setVerticalScrollBarPolicy(self.verticalScrollBarPolicy().ScrollBarAlwaysOn)
 
         self.setOpenExternalLinks(True)
@@ -30,10 +28,9 @@ class ViewPane(QtWidgets.QTextBrowser):
 
         self.setReadOnly(True)
 
-        filename = ctx.get_resource("ViewPaneStyle.qss")
-        with open(filename) as file:
-            stylesheet = file.read()
-        self.setStyleSheet(self.styleSheet() + stylesheet)
+        #stylesheet = parse_stylesheet(ctx.get_resource("ViewPaneStyle.qss"), ctx.get_resource("colors.json"), ctx.get_resource("config.json"))
+
+        #self.setStyleSheet(self.styleSheet() + stylesheet)
 
         self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.horizontalScrollBar().setEnabled(False)

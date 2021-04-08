@@ -1,15 +1,15 @@
 QTextEdit{
     font-size: 14pt;
     font-family: "Roboto Mono";
-    color: rgba(0, 0, 0, 87%);
-    background-color:  white;
-    border: 0px solid white;
+    color: %text%;
+    background-color:  %base%;
+    border: 0px solid %base%;
 
 }
 
 QScrollBar:vertical {
-    border: 0px solid white;
-    background-color: white;
+    border: 0px solid %base%;
+    background-color: %base%;
     margin: 0px 0px 0px 0px;
 }
 QScrollBar::handle:vertical {

@@ -1,7 +1,7 @@
 from __future__ import annotations
 import sys
 from enum import Enum
-
+from ColorParser import *
 import mistune
 import regex
 from PySide2 import QtWidgets, QtGui, QtCore
@@ -36,12 +36,7 @@ class MainWindow(QtWidgets.QWidget):
 
         self.date_opened = date.today()
 
-        # Load stylesheet
-        filename = ctx.get_resource("styles.qss")
-        with open(filename, "r") as file:
-            stylesheet = file.read()
-
-        self.setStyleSheet(stylesheet)
+        self.setStyleSheet(parse_stylesheet(ctx.get_resource("styles.qss"), ctx.get_resource("colors.json"), ctx.get_resource("config.json")))
 
         # Load config
         config_file = ctx.get_resource("config.json")
@@ -73,6 +68,8 @@ class MainWindow(QtWidgets.QWidget):
         self.layout.addWidget(self.edit_pane)
         self.layout.addWidget(self.view_pane)
 
+
+
         self.edit_pane.open_file_from_date(date.today())
 
 
@@ -101,9 +98,21 @@ class MainWindow(QtWidgets.QWidget):
         :param event: QResizeEvent that caused invocation
         """
 
-        # Perform resize events on edit and view pane
-        self.edit_pane.update_size(self.width())
-        self.view_pane.update_size(self.width())
+        # Increase width of scroll bar left border to create a margin 25% width of the main window.
+        margin_scale = 1 / 4
+        scroll_bar_width = 4
+        self.setStyleSheet(self.styleSheet() +
+            "QScrollBar:vertical {"
+            f"width: {self.width() * margin_scale + scroll_bar_width};"
+            f"border-left-width: {str(self.width() * margin_scale - scroll_bar_width)}px ;"
+            "}")
+
+        # Increase left border of the QTextEdit pane to create a left margin 25% width of the main window
+        self.setStyleSheet(self.styleSheet() +
+                           "QTextEdit { "
+                           f"border-left-width: {self.width() * margin_scale} px;"
+                           "}")
+
 
     def closeEvent(self, event:QtGui.QCloseEvent) -> None:
         sys.exit()

@@ -1,7 +1,10 @@
 from __future__ import annotations
 import typing
+import re
+import json
 
 from PySide2 import QtWidgets, QtGui, QtCore
+from ColorParser import *
 
 if typing.TYPE_CHECKING:
     from AppContext import AppContext
@@ -16,11 +19,10 @@ class AbstractPane(QtWidgets.QTextEdit):
         :param ctx: current ApplicationContext, used to get stylesheet resource
         """
         super().__init__()
-        filename = ctx.get_resource("PaneStyle.qss")
-        with open(filename) as file:
-            stylesheet = file.read()
+
         self.setWordWrapMode(QtGui.QTextOption.WrapAtWordBoundaryOrAnywhere)
-        self.setStyleSheet(stylesheet)
+
+        #self.setStyleSheet(parse_stylesheet(ctx.get_resource("PaneStyle.qss"), ctx.get_resource("colors.json"), ctx.get_resource("config.json")))
         self.setVerticalScrollBarPolicy(self.verticalScrollBarPolicy().ScrollBarAlwaysOn)
 
     def update_size(self, new_frame_width: int) -> None:

@@ -1,23 +1,23 @@
 QAbstractItemView
 {
     selection-background-color: rgb(125,123,123);
-    selection-color: white;
+    selection-color: %base%;
 
 }
 QWidget
 {
-  color: black;
+  color: %text%;
   font-family: "Inter";
-  background-color: white;
+  background-color: %base%;
 }
 
 QObject
 {
-    alternate-background-color: white;
+    alternate-background-color: %window%;
 }
 
 
 QTableView{
     border-width:0px;
-    background-color: white;
+    background-color: %base%;
 }

@@ -1,11 +1,47 @@
 QWidget {
 
-    background-color: palette(base);
+    background-color: %base%;
+    color: %text%;
 
 }
 
-QTextEdit{
-    font-size: 16pt;
-    border-style: none;
+QTextEdit {
+    font-size: 14pt;
+    font-family: "Roboto Mono";
+    color: %text%;
+    background-color:  %base%;
+    border: 0px solid %base%;
 
+}
+
+QScrollBar:vertical {
+    border: 0px solid %base%;
+    background-color: %base%;
+    margin: 0px 0px 0px 0px;
+}
+QScrollBar::handle:vertical {
+    min-height: 0px;
+    border: 0px solid red;
+    border-radius: 4px;
+    background-color: rgb(125,124,123);
+}
+QScrollBar::add-line:vertical {
+    height: 0px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+QScrollBar::sub-line:vertical {
+    height: 0px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}
+
+QToolBar {
+    background-color: %window%;
+    border: 1px solid %dark%;
+
+}
+
+QTextBrowser {
+    font-family: "Inter";
 }
