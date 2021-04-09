@@ -127,6 +127,8 @@ class MainWindow(QtWidgets.QWidget):
                            f"border-left-width: {self.width() * margin_scale} px;"
                            )
 
+        self.view_pane.update_size(self.width())
+
 
     def closeEvent(self, event:QtGui.QCloseEvent) -> None:
         sys.exit()

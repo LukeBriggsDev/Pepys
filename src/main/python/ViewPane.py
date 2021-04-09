@@ -36,11 +36,11 @@ class ViewPane(QtWidgets.QTextBrowser):
         margin_scale = 1 / 4
         scroll_bar_width = 4
 
-        html = regex.sub(r'(?<=<img[^>]*)(width="[\d.]+")', f'width="{self.width() * 0.5}" ',
+        html = regex.sub(r'(?<=<img[^>]*)(width="[\d.]+")', f'width="{new_frame_width * 0.5}" ',
                          self.toHtml())
         self.setHtml(html)
 
-        html = regex.sub(r'(?<=<img[^>]*)(width="[\d.]+")', f'width="{self.width() * 0.5}" ',
+        html = regex.sub(r'(?<=<img[^>]*)(width="[\d.]+")', f'width="{new_frame_width * 0.5}" ',
                          self.toHtml())
         self.setHtml(html)
 

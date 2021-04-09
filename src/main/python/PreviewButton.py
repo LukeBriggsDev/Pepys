@@ -49,7 +49,7 @@ class PreviewButton(QtWidgets.QPushButton):
             self.setIcon(QtGui.QIcon(self.ctx.get_resource(self.ctx.icons["preview_stop"][self.ctx.theme])))
         self.view_pane.setVisible(not self.view_pane.isVisible())
 
-        print(self.view_pane.toHtml())
+        self.view_pane.update_size(self.window().width())
 
     def refresh_icon(self):
         if not self.view_pane.isVisible():

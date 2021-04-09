@@ -8,6 +8,18 @@ from mistune import escape
 class HighlightRenderer(mistune.Renderer):
     """Custom renderer for markdown to html conversion"""
 
+    def header(self, text, level, raw=None):
+        """Rendering header/heading tags like ``<h1>`` ``<h2>``.
+
+        :param text: rendered text content for the header.
+        :param level: a number for the header level, for example: 1.
+        :param raw: raw text content of the header.
+        """
+        if level == 1:
+            return '<h%d>%s</h%d>\n<hr>\n' % (level, text, level)
+        else:
+            return '<h%d>%s</h%d>\n' % (level, text, level)
+
     def block_code(self, code: str, lang: str = None) -> str:
         """ Render markdown code blocks as html.
 
