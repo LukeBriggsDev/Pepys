@@ -36,12 +36,9 @@ class PreviewButton(QtWidgets.QPushButton):
         for filepath in filepaths:
             if filepath[0] != "/" or filepath[1] != ":":
 
-                print(self.edit_pane.current_file)
-                print(filepath)
                 html = html.replace(filepath, os.path.join(os.path.dirname(self.edit_pane.current_file), filepath))
 
-                print(html)
-
+        html = "<br>\n<br>\n" + html
         self.view_pane.setHtml(html)
         if self.view_pane.isVisible():
             self.setIcon(QtGui.QIcon(self.ctx.get_resource(self.ctx.icons["preview"][self.ctx.theme])))
