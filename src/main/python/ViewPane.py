@@ -36,12 +36,10 @@ class ViewPane(QtWidgets.QTextBrowser):
         margin_scale = 1 / 4
         scroll_bar_width = 4
 
-        # TODO: Make resizing large images less laggy
         html = regex.sub(r'(?<=<img[^>]*)(width="[\d.]+")', f'width="{self.width() * 0.5}" ',
                          self.toHtml())
         self.setHtml(html)
 
-        # TODO: Make resizing large images less laggy
         html = regex.sub(r'(?<=<img[^>]*)(width="[\d.]+")', f'width="{self.width() * 0.5}" ',
                          self.toHtml())
         self.setHtml(html)
