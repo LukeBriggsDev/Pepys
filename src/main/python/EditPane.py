@@ -11,7 +11,7 @@ import os
 from num2words import num2words
 import locale
 if typing.TYPE_CHECKING:
-    from AppContext import AppContext
+    from main import AppContext
 
 
 class EditPane(QtWidgets.QTextEdit):

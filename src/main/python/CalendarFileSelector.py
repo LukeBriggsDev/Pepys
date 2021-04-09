@@ -5,7 +5,7 @@ from datetime import date
 from ColorParser import *
 import typing
 if typing.TYPE_CHECKING:
-    from AppContext import AppContext
+    from main import AppContext
 import os
 import json
 

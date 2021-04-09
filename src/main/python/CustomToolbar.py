@@ -4,7 +4,7 @@ import typing
 from ColorParser import *
 from CalendarFileSelector import CalendarFileSelector
 if typing.TYPE_CHECKING:
-    from AppContext import AppContext
+    from main import AppContext
 
 import json
 import regex

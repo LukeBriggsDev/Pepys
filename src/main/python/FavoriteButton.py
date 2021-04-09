@@ -4,7 +4,7 @@ import typing
 import json
 from CalendarFileSelector import CalendarFileSelector
 if typing.TYPE_CHECKING:
-    from AppContext import AppContext
+    from main import AppContext
     from EditPane import EditPane
 
 class FavoriteButton(QtWidgets.QPushButton):

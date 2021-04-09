@@ -3,7 +3,7 @@ from PySide2 import QtCore, QtWidgets, QtGui
 from ColorParser import *
 import typing
 if typing.TYPE_CHECKING:
-    from AppContext import AppContext
+    from main import AppContext
 
 import regex
 

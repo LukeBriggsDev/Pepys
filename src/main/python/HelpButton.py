@@ -9,7 +9,7 @@ import json
 from CalendarFileSelector import CalendarFileSelector
 from AboutWindow import AboutWindow
 if typing.TYPE_CHECKING:
-    from AppContext import AppContext
+    from main import AppContext
     from EditPane import EditPane
     from ViewPane import ViewPane
 

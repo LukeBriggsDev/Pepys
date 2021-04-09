@@ -3,7 +3,7 @@ from PySide2 import QtWidgets, QtGui, QtCore
 import typing
 from CalendarFileSelector import CalendarFileSelector
 if typing.TYPE_CHECKING:
-    from AppContext import AppContext
+    from main import AppContext
     from EditPane import EditPane
 
 class OpenEntryButton(QtWidgets.QPushButton):
