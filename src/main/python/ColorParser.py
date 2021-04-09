@@ -10,5 +10,4 @@ def parse_stylesheet(stylesheet_file: str, colors_file: str, config_file: str):
         for color_role in colors_dict[theme].keys():
             stylesheet = re.sub(f"%{color_role}%", colors_dict[theme][color_role], stylesheet)
 
-    print(stylesheet)
     return stylesheet

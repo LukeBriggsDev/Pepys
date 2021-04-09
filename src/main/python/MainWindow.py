@@ -8,7 +8,7 @@ from PySide2 import QtWidgets, QtGui, QtCore
 from fbs_runtime import PUBLIC_SETTINGS
 from fbs_runtime.application_context.PySide2 import ApplicationContext
 import os
-import CodeSyntaxHighlighter
+import HTMLRenderer
 from EditPane import EditPane
 from ViewPane import ViewPane
 from CustomToolbar import CustomToolbar
@@ -35,8 +35,9 @@ class MainWindow(QtWidgets.QWidget):
         self.ctx = ctx
 
         self.date_opened = date.today()
+        self.original_stylesheet = parse_stylesheet(ctx.get_resource("styles.qss"), ctx.get_resource("colors.json"), ctx.get_resource("config.json"))
 
-        self.setStyleSheet(parse_stylesheet(ctx.get_resource("styles.qss"), ctx.get_resource("colors.json"), ctx.get_resource("config.json")))
+        self.setStyleSheet(self.original_stylesheet)
 
         # Load config
         config_file = ctx.get_resource("config.json")
@@ -101,17 +102,30 @@ class MainWindow(QtWidgets.QWidget):
         # Increase width of scroll bar left border to create a margin 25% width of the main window.
         margin_scale = 1 / 4
         scroll_bar_width = 4
-        self.setStyleSheet(self.styleSheet() +
+        self.edit_pane.verticalScrollBar().setStyleSheet(
             "QScrollBar:vertical {"
             f"width: {self.width() * margin_scale + scroll_bar_width};"
             f"border-left-width: {str(self.width() * margin_scale - scroll_bar_width)}px ;"
             "}")
 
+        self.view_pane.verticalScrollBar().setStyleSheet(
+            "QScrollBar:vertical {"
+            f"width: {self.width() * margin_scale + scroll_bar_width};"
+            f"border-left-width: {str(self.width() * margin_scale - scroll_bar_width)}px ;"
+            "}"
+        )
+
         # Increase left border of the QTextEdit pane to create a left margin 25% width of the main window
-        self.setStyleSheet(self.styleSheet() +
+        self.edit_pane.setStyleSheet(
                            "QTextEdit { "
                            f"border-left-width: {self.width() * margin_scale} px;"
                            "}")
+
+        # Increase left border of the QTextEdit pane to create a left margin 25% width of the main window
+
+        self.view_pane.setStyleSheet(
+                           f"border-left-width: {self.width() * margin_scale} px;"
+                           )
 
 
     def closeEvent(self, event:QtGui.QCloseEvent) -> None:

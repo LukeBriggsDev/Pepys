@@ -45,3 +45,5 @@ QToolBar {
 QTextBrowser {
     font-family: "Inter";
 }
+
+

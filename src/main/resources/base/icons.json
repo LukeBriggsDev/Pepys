@@ -1,0 +1,31 @@
+{
+  "open_entry": {
+    "light": "icons/calendar.svg",
+    "dark": "icons/calendar-white.svg"
+  },
+  "favorite_off" : {
+    "light": "icons/star.svg",
+    "dark": "icons/star-white.svg"
+  },
+  "favorite_on": {
+    "light": "icons/star-fill.svg",
+    "dark": "icons/star-fill-white.svg"
+  },
+  "preview": {
+    "light": "icons/book.svg",
+    "dark": "icons/book-white.svg"
+  },
+  "preview_stop": {
+    "light": "icons/book-fill.svg",
+    "dark": "icons/book-fill-white.svg"
+  },
+  "about": {
+    "light": "icons/question.svg",
+    "dark": "icons/question-white.svg"
+  },
+  "theme_switch": {
+    "light": "icons/brightness-high.svg",
+    "dark": "icons/brightness-low-fill-white.svg"
+  }
+
+}

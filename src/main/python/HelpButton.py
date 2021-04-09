@@ -3,7 +3,7 @@ from PySide2 import QtWidgets, QtGui, QtCore
 import typing
 import mistune
 import regex
-import CodeSyntaxHighlighter
+import HTMLRenderer
 import os
 import json
 from CalendarFileSelector import CalendarFileSelector

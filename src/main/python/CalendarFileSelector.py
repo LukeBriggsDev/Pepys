@@ -25,7 +25,7 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
         self.setMaximumSize(480, 480)
         self.setWindowTitle("Calendar")
 
-        #self.setStyleSheet(parse_stylesheet(ctx.get_resource("CalendarStyle.qss"), ctx.get_resource("colors.json"), ctx.get_resource("config.json")))
+        self.setStyleSheet(parse_stylesheet(ctx.get_resource("CalendarStyle.qss"), ctx.get_resource("colors.json"), ctx.get_resource("config.json")))
 
         favorite_format = QtGui.QTextCharFormat()
         favorite_brush = QtGui.QBrush()

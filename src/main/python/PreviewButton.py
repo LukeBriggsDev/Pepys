@@ -3,7 +3,7 @@ from PySide2 import QtWidgets, QtGui, QtCore
 import typing
 import mistune
 import regex
-import CodeSyntaxHighlighter
+import HTMLRenderer
 import os
 import json
 from CalendarFileSelector import CalendarFileSelector
@@ -26,11 +26,9 @@ class PreviewButton(QtWidgets.QPushButton):
     def mousePressEvent(self, e:QtGui.QMouseEvent) -> None:
         super().mousePressEvent(e)
         self.edit_pane.setVisible(not self.edit_pane.isVisible())
-        self.edit_pane.update_size(self.window().width())
-        self.view_pane.update_size(self.window().width())
 
         self.view_pane.setHtml(
-            mistune.markdown(self.edit_pane.toPlainText(), renderer=CodeSyntaxHighlighter.HighlightRenderer()))
+            mistune.markdown(self.edit_pane.toPlainText(), renderer=HTMLRenderer.HighlightRenderer()))
         html = self.view_pane.toHtml().replace("<img ", f'<img width="{self.view_pane.width() * 0.5}" ')
         file_path_pattern = regex.compile('(?<=src=")\S*(?=")')
         filepaths = [filepath.group() for filepath in regex.finditer(file_path_pattern, self.view_pane.toHtml())]
@@ -46,7 +44,15 @@ class PreviewButton(QtWidgets.QPushButton):
 
         self.view_pane.setHtml(html)
         if self.view_pane.isVisible():
-            self.setIcon(QtGui.QIcon(self.ctx.get_resource("icons/book.svg")))
+            self.setIcon(QtGui.QIcon(self.ctx.get_resource(self.ctx.icons["preview"][self.ctx.theme])))
         else:
-            self.setIcon(QtGui.QIcon(self.ctx.get_resource("icons/book-fill.svg")))
+            self.setIcon(QtGui.QIcon(self.ctx.get_resource(self.ctx.icons["preview_stop"][self.ctx.theme])))
         self.view_pane.setVisible(not self.view_pane.isVisible())
+
+        print(self.view_pane.toHtml())
+
+    def refresh_icon(self):
+        if not self.view_pane.isVisible():
+            self.setIcon(QtGui.QIcon(self.ctx.get_resource(self.ctx.icons["preview"][self.ctx.theme])))
+        else:
+            self.setIcon(QtGui.QIcon(self.ctx.get_resource(self.ctx.icons["preview_stop"][self.ctx.theme])))

@@ -43,24 +43,8 @@ class CustomToolbar(QtWidgets.QToolBar):
 
     def changeEvent(self, event:QtCore.QEvent) -> None:
         if event.type() is QtCore.QEvent.Type.StyleChange:
-            with open(self.ctx.get_resource("config.json")) as config:
-                theme = json.loads(config.read())["theme"]
-
-            if theme == "light":
-                color = "black"
-
-            else:
-                color = "white"
-
-            with open(self.ctx.get_resource("icons/book.svg"), "r+") as icon:
-                icon_file = icon.read()
-
-            with open(self.ctx.get_resource("icons/book.svg"), "w+") as icon:
-                icon.write(regex.sub(r'(?<=src=")\S*(?=")', color, icon_file))
-
-
-
-
-
-
-
+            self.open_entry_button.setIcon(QtGui.QIcon(self.ctx.get_resource(self.ctx.icons["open_entry"][self.ctx.theme])))
+            self.favorite_button.refresh_icon()
+            self.preview_button.refresh_icon()
+            self.about_button.setIcon(QtGui.QIcon(self.ctx.get_resource(self.ctx.icons["about"][self.ctx.theme])))
+            self.theme_switch_button.setIcon(QtGui.QIcon(self.ctx.get_resource(self.ctx.icons["theme_switch"][self.ctx.theme])))

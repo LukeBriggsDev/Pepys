@@ -3,6 +3,7 @@ from PySide2 import QtWidgets, QtGui
 from fbs_runtime import PUBLIC_SETTINGS
 from fbs_runtime.application_context.PySide2 import ApplicationContext
 from MainWindow import MainWindow
+import json
 
 
 class AppContext(ApplicationContext):
@@ -14,7 +15,10 @@ class AppContext(ApplicationContext):
         QtGui.QFontDatabase.addApplicationFont(ctx.get_resource("fonts/Inter/Inter.ttf"))
         QtGui.QFontDatabase.addApplicationFont(ctx.get_resource("fonts/RobotoMono/RobotoMono-VariableFont_wght.ttf"))
         QtGui.QFontDatabase.addApplicationFont(ctx.get_resource("fonts/RobotoMono/RobotoMono-Italic-VariableFont_wght.ttf"))
-
+        with open(ctx.get_resource("icons.json")) as icons:
+            self.icons = json.loads(icons.read())
+        with open(self.get_resource("config.json")) as config:
+            self.theme = json.loads(config.read())["theme"]
 
         # Initialise and set size of main_window
         main_window = MainWindow(self)

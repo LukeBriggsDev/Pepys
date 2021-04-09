@@ -1,6 +1,5 @@
 from __future__ import annotations
 import re as regex
-import AbstractPane
 from PySide2 import QtWidgets, QtGui, QtCore
 import string
 from MarkdownRegex import regexPatterns
@@ -15,14 +14,17 @@ if typing.TYPE_CHECKING:
     from AppContext import AppContext
 
 
-class EditPane(AbstractPane.AbstractPane):
+class EditPane(QtWidgets.QTextEdit):
     """ AbstractPane for writing markdown text."""
 
     def __init__(self, ctx: AppContext) -> None:
-        super().__init__(ctx)
+        super().__init__()
         self.ctx = ctx
         # Set to prevent formatting being pasted from clipboard
         self.setAcceptRichText(False)
+        self.setWordWrapMode(QtGui.QTextOption.WrapAtWordBoundaryOrAnywhere)
+
+        self.setVerticalScrollBarPolicy(self.verticalScrollBarPolicy().ScrollBarAlwaysOn)
 
         # Used to know current directory to be relative to
         self._current_file = ""
@@ -66,7 +68,6 @@ class EditPane(AbstractPane.AbstractPane):
 
         try:
             day_of_month = num2words(file_date.day, to="ordinal_num", lang=locale.getlocale()[0])
-            print(day_of_month)
         except NotImplementedError:
             day_of_month = file_date.day
 
@@ -91,6 +92,23 @@ class EditPane(AbstractPane.AbstractPane):
             self.markdownHighlighter.rehighlightBlock(
                 self.document().findBlock(self.textCursor().position()).previous())
         self.save_current_file()
+
+
+    def enterEvent(self, event: QtCore.QEvent) -> None:
+        """"Override base QTextEdit method, called when mouse is over TextEdit
+
+        :param event: the QEvent that caused the invocation
+        """
+
+        self.verticalScrollBar().setVisible(True)
+
+    def leaveEvent(self, event: QtCore.QEvent) -> None:
+        """"Override base QTextEdit method, called when mouse leaves TextEdit
+
+        :param event: the QEvent that caused the invocation
+        """
+
+        self.verticalScrollBar().setVisible(False)
 
     @property
     def current_file(self):

@@ -2,6 +2,7 @@ import mistune
 from pygments import highlight
 from pygments.formatters import html
 from pygments.lexers import get_lexer_by_name
+from mistune import escape
 
 
 class HighlightRenderer(mistune.Renderer):
@@ -17,11 +18,19 @@ class HighlightRenderer(mistune.Renderer):
         if lang:
             try:
                 lexer = get_lexer_by_name(lang, stripall=True)
-                formatter = html.HtmlFormatter(style='emacs', noclasses=True)
+                formatter = html.HtmlFormatter(style='emacs', noclasses=True, nobackground=True)
                 return highlight(code, lexer, formatter)
             except ValueError:
                 pass
         return '<pre><code>' + mistune.escape(code) + '</code></pre>'
+
+    def codespan(self, text):
+        """Rendering inline `code` text.
+
+        :param text: text content for inline code.
+        """
+        text = escape(text.rstrip(), smart_amp=False)
+        return '<code style="background-color: rgba(0, 0, 0, 0.11);">%s</code>' % text
 
     def strikethrough(self, text: str) -> str:
         """Rendering ~~strikethrough~~ text. Overrides standard method which uses <del> and is unsupported by qt
