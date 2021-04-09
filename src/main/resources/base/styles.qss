@@ -16,6 +16,7 @@ QTextEdit {
     color: %text%;
     background-color:  %base%;
     border: 0px solid %base%;
+    padding-top: 50px;
 
 }
 

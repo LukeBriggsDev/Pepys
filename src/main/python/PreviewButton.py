@@ -38,7 +38,6 @@ class PreviewButton(QtWidgets.QPushButton):
 
                 html = html.replace(filepath, os.path.join(os.path.dirname(self.edit_pane.current_file), filepath))
 
-        html = "<br>\n<br>\n" + html
         self.view_pane.setHtml(html)
         if self.view_pane.isVisible():
             self.setIcon(QtGui.QIcon(self.ctx.get_resource(self.ctx.icons["preview"][self.ctx.theme])))
