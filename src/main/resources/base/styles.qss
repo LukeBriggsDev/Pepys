@@ -5,6 +5,11 @@ QWidget {
 
 }
 
+QLabel {
+    font-size: 14pt;
+    font-family: "Inter";
+}
+
 QTextEdit {
     font-size: 14pt;
     font-family: "Roboto Mono";

@@ -7,6 +7,7 @@ import HTMLRenderer
 import os
 import json
 from CalendarFileSelector import CalendarFileSelector
+from AboutWindow import AboutWindow
 if typing.TYPE_CHECKING:
     from AppContext import AppContext
     from EditPane import EditPane
@@ -23,3 +24,9 @@ class HelpButton(QtWidgets.QPushButton):
 
     def mousePressEvent(self, e:QtGui.QMouseEvent) -> None:
         super().mousePressEvent(e)
+        self.about_window = AboutWindow(self.window(), self.ctx)
+        self.parentWidget().parentWidget().setFocusProxy(self.about_window)
+        self.parentWidget().parentWidget().setDisabled(True)
+        self.about_window.setFocusPolicy(QtGui.Qt.StrongFocus)
+
+        self.about_window.show()
