@@ -4,13 +4,17 @@
     "window": "rgb(240, 240, 240)",
     "dark": "rgb(194, 194, 194)",
     "text": "rgb(33, 33, 33)",
-    "highlight": "rgb(255, 228, 0)"
+    "highlight": "rgb(255, 228, 0)",
+    "link": "rgb(6, 69, 173)",
+    "visited_link": "rgb(11, 0, 128)"
   },
   "dark": {
     "base": "rgb(41, 41, 41)",
     "window": "rgb(36, 36, 36)",
     "dark": "rgba(0, 0, 0, 1)",
     "text": "rgb(255, 255, 255)",
-    "highlight": "rgb(255, 228, 0"
+    "highlight": "rgb(255, 228, 0",
+    "link": "rgb(0,151,255)",
+    "visited_link": "rgb(186,222,255)"
   }
 }

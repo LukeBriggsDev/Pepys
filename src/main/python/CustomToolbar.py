@@ -3,6 +3,7 @@ from PySide2 import QtWidgets, QtGui, QtCore
 import typing
 from ColorParser import *
 from CalendarFileSelector import CalendarFileSelector
+from WebView import WebView
 if typing.TYPE_CHECKING:
     from main import AppContext
 
@@ -13,21 +14,20 @@ from OpenEntryButton import OpenEntryButton
 from FavoriteButton import FavoriteButton
 from PreviewButton import PreviewButton
 from EditPane import EditPane
-from ViewPane import ViewPane
 from HelpButton import HelpButton
 from ThemeSwitchButton import ThemeSwitchButton
 from ExportButton import ExportButton
 
 class CustomToolbar(QtWidgets.QToolBar):
     """Menu bar to appear with MainWindow"""
-    def __init__(self, edit_pane: EditPane, view_pane: ViewPane, ctx: AppContext) -> None:
+    def __init__(self, edit_pane: EditPane, web_view: WebView, ctx: AppContext) -> None:
 
         super().__init__()
         self.ctx = ctx
 
         self.open_entry_button = OpenEntryButton(edit_pane, ctx)
         self.favorite_button = FavoriteButton(edit_pane, ctx)
-        self.preview_button = PreviewButton(edit_pane, view_pane, ctx)
+        self.preview_button = PreviewButton(edit_pane, web_view, ctx)
         self.about_button = HelpButton(ctx)
         self.theme_switch_button= ThemeSwitchButton(ctx)
         self.export_button = ExportButton(ctx)

@@ -48,4 +48,5 @@ class ThemeSwitchButton(QtWidgets.QPushButton):
 
         main_window = self.parentWidget().parentWidget()
         main_window.setStyleSheet(parse_stylesheet(self.ctx.get_resource("styles.qss"), self.ctx.get_resource("colors.json"), self.ctx.get_resource("config.json")))
+        self.parentWidget().preview_button.refresh_page()
         QtCore.QCoreApplication.postEvent(main_window, QtGui.QResizeEvent(main_window.size(), main_window.size()))

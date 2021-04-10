@@ -7,16 +7,17 @@ import HTMLRenderer
 import os
 import json
 from CalendarFileSelector import CalendarFileSelector
+from ColorParser import *
 if typing.TYPE_CHECKING:
     from main import AppContext
     from EditPane import EditPane
-    from ViewPane import ViewPane
+    from WebView import WebView
 
 class PreviewButton(QtWidgets.QPushButton):
-    def __init__(self, edit_pane: EditPane, view_pane: ViewPane, ctx: AppContext):
+    def __init__(self, edit_pane: EditPane, web_view: WebView, ctx: AppContext):
         super().__init__()
         self.edit_pane = edit_pane
-        self.view_pane = view_pane
+        self.view_pane = web_view
         self.ctx = ctx
         self.setMinimumSize(32, 32)
         self.setMinimumSize(32, 32)
@@ -27,27 +28,32 @@ class PreviewButton(QtWidgets.QPushButton):
         super().mousePressEvent(e)
         self.edit_pane.setVisible(not self.edit_pane.isVisible())
 
-        self.view_pane.setHtml(pypandoc.convert_text(self.edit_pane.toPlainText(), "html", format="markdown", extra_args=["--highlight-style=kate", "-s"]))
-        html = self.view_pane.toHtml().replace("<img ", f'<img width="{self.view_pane.width() * 0.5}" ')
-        file_path_pattern = regex.compile('(?<=src=")\S*(?=")')
-        filepaths = [filepath.group() for filepath in regex.finditer(file_path_pattern, self.view_pane.toHtml())]
+        self.refresh_page()
 
-        for filepath in filepaths:
-            if filepath[0] != "/" or filepath[1] != ":":
-
-                html = html.replace(filepath, os.path.join(os.path.dirname(self.edit_pane.current_file), filepath))
-
-        self.view_pane.setHtml(html)
         if self.view_pane.isVisible():
             self.setIcon(QtGui.QIcon(self.ctx.get_resource(self.ctx.icons["preview"][self.ctx.theme])))
         else:
             self.setIcon(QtGui.QIcon(self.ctx.get_resource(self.ctx.icons["preview_stop"][self.ctx.theme])))
         self.view_pane.setVisible(not self.view_pane.isVisible())
 
-        self.view_pane.update_size(self.window().width())
 
     def refresh_icon(self):
         if not self.view_pane.isVisible():
             self.setIcon(QtGui.QIcon(self.ctx.get_resource(self.ctx.icons["preview"][self.ctx.theme])))
         else:
             self.setIcon(QtGui.QIcon(self.ctx.get_resource(self.ctx.icons["preview_stop"][self.ctx.theme])))
+
+    def refresh_page(self):
+        parsed_stylesheet = parse_stylesheet(self.ctx.get_resource('ViewPaneStyle.css'), self.ctx.get_resource('colors.json'), self.ctx.get_resource('config.json'))
+        with open(self.ctx.get_resource("parsed_stylesheet.css"), "w") as file:
+            file.write(parsed_stylesheet)
+
+        html = pypandoc.convert_text(self.edit_pane.toPlainText(), "html", format="markdown",extra_args=[
+            f"--highlight-style={self.ctx.get_resource('syntax.theme')}",
+            "-s",
+            "--include-in-header="
+            f"{self.ctx.get_resource('parsed_stylesheet.css')}"
+        ])
+
+
+        self.view_pane.setHtml(html, QtCore.QUrl().fromLocalFile(self.edit_pane.current_file))

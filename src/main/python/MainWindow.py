@@ -10,7 +10,6 @@ from fbs_runtime.application_context.PySide2 import ApplicationContext
 import os
 import HTMLRenderer
 from EditPane import EditPane
-from ViewPane import ViewPane
 from CustomToolbar import CustomToolbar
 import json
 import datetime
@@ -18,6 +17,7 @@ from datetime import date
 import typing
 from num2words import num2words
 import locale
+from WebView import WebView
 
 if typing.TYPE_CHECKING:
     from main import AppContext
@@ -59,15 +59,13 @@ class MainWindow(QtWidgets.QWidget):
         # Edit pane
         self.edit_pane = EditPane(ctx)
 
-        # View pane
-        self.view_pane = ViewPane(ctx)
-        self.view_pane.setVisible(False)
+        self.web_view = WebView()
 
         # Menu bar and adding panes underneath
-        self.tool_bar = CustomToolbar(self.edit_pane, self.view_pane, self.ctx)
+        self.tool_bar = CustomToolbar(self.edit_pane, self.web_view, self.ctx)
         self.layout.addWidget(self.tool_bar)
         self.layout.addWidget(self.edit_pane)
-        self.layout.addWidget(self.view_pane)
+        self.layout.addWidget(self.web_view)
 
 
 
@@ -108,26 +106,13 @@ class MainWindow(QtWidgets.QWidget):
             f"border-left-width: {str(self.width() * margin_scale - scroll_bar_width)}px ;"
             "}")
 
-        self.view_pane.verticalScrollBar().setStyleSheet(
-            "QScrollBar:vertical {"
-            f"width: {self.width() * margin_scale + scroll_bar_width};"
-            f"border-left-width: {str(self.width() * margin_scale - scroll_bar_width)}px ;"
-            "}"
-        )
-
         # Increase left border of the QTextEdit pane to create a left margin 25% width of the main window
         self.edit_pane.setStyleSheet(
                            "QTextEdit { "
                            f"border-left-width: {self.width() * margin_scale} px;"
                            "}")
 
-        # Increase left border of the QTextEdit pane to create a left margin 25% width of the main window
 
-        self.view_pane.setStyleSheet(
-                           f"border-left-width: {self.width() * margin_scale} px;"
-                           )
-
-        self.view_pane.update_size(self.width())
 
 
     def closeEvent(self, event:QtGui.QCloseEvent) -> None:
