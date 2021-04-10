@@ -4,6 +4,7 @@
     "window": "rgb(240, 240, 240)",
     "dark": "rgb(194, 194, 194)",
     "text": "rgb(33, 33, 33)",
+    "text-alt": "rgb(41, 41, 41)",
     "highlight": "rgb(255, 228, 0)",
     "link": "rgb(6, 69, 173)",
     "visited_link": "rgb(11, 0, 128)"
@@ -13,6 +14,7 @@
     "window": "rgb(36, 36, 36)",
     "dark": "rgba(0, 0, 0, 1)",
     "text": "rgb(255, 255, 255)",
+    "text_alt": "rgb(194, 194, 194)",
     "highlight": "rgb(255, 228, 0",
     "link": "rgb(0,151,255)",
     "visited_link": "rgb(186,222,255)"
