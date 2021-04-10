@@ -8,6 +8,7 @@ import os
 import json
 from CalendarFileSelector import CalendarFileSelector
 from ColorParser import *
+from time import sleep
 if typing.TYPE_CHECKING:
     from main import AppContext
     from EditPane import EditPane
@@ -27,7 +28,6 @@ class PreviewButton(QtWidgets.QPushButton):
     def mousePressEvent(self, e:QtGui.QMouseEvent) -> None:
         super().mousePressEvent(e)
         self.edit_pane.setVisible(not self.edit_pane.isVisible())
-
         self.refresh_page()
 
         if self.view_pane.isVisible():
@@ -54,7 +54,5 @@ class PreviewButton(QtWidgets.QPushButton):
             "--include-in-header="
             f"{self.ctx.get_resource('parsed_stylesheet.css')}"
         ])
-
-        print(html)
 
         self.view_pane.setHtml(html, QtCore.QUrl().fromLocalFile(self.edit_pane.current_file))

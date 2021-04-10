@@ -59,7 +59,7 @@ class MainWindow(QtWidgets.QWidget):
         # Edit pane
         self.edit_pane = EditPane(ctx)
 
-        self.web_view = WebView()
+        self.web_view = WebView(ctx)
 
         # Menu bar and adding panes underneath
         self.tool_bar = CustomToolbar(self.edit_pane, self.web_view, self.ctx)
