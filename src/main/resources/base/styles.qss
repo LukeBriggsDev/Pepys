@@ -1,16 +1,47 @@
-QWidget {
+AboutWindow{
+    background-color: %base%;
+    color: %text%;
+}
+
+QLabel{
+    color: %text%;
+}
+
+QMenu{
+    background-color: %base%;
+}
+
+QMenu::item:disabled{
+
+    color: %text_alt%;
+
+}
+
+QMenu::item:enabled{
+
+    color: %text%;
+
+}
+
+QMenu::item:selected{
+    background-color: %link%;
+    color: %text%;
+}
+
+
+QPushButton{
 
     background-color: %base%;
     color: %text%;
 
 }
 
-QLabel {
+QLabel{
     font-size: 14pt;
     font-family: "Inter";
 }
 
-QTextEdit {
+QTextEdit{
     font-size: 14pt;
     font-family: "Roboto Mono";
     color: %text%;
@@ -19,12 +50,12 @@ QTextEdit {
 
 }
 
-QScrollBar:vertical {
+QScrollBar:vertical{
     border: 0px solid %base%;
     background-color: %base%;
     margin: 0px 0px 0px 0px;
 }
-QScrollBar::handle:vertical {
+QScrollBar::handle:vertical{
     min-height: 0px;
     border: 0px solid red;
     border-radius: 4px;
