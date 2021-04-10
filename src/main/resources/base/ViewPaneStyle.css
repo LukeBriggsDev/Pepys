@@ -127,10 +127,15 @@ pre, code, kbd, samp {
     font-size: 0.98em;
 }
 
+.sourceCode {
+    background-color: %window%;
+}
+
 pre {
     white-space: pre;
     white-space: pre-wrap;
     word-wrap: break-word;
+    padding-left: 1em;
 }
 
 b, strong {
