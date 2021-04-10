@@ -43,6 +43,7 @@ class ViewPane(QtWidgets.QTextBrowser):
         html = regex.sub(r'(?<=<img[^>]*)(width="[\d.]+")', f'width="{new_frame_width * 0.5}" ',
                          self.toHtml())
         self.setHtml(html)
+        print(html)
 
     def enterEvent(self, event: QtCore.QEvent) -> None:
         """"Override base QTextEdit method, called when mouse is over TextEdit

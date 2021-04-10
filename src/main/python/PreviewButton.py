@@ -1,7 +1,7 @@
 from __future__ import annotations
 from PySide2 import QtWidgets, QtGui, QtCore
 import typing
-import mistune
+import pypandoc
 import regex
 import HTMLRenderer
 import os
@@ -27,8 +27,7 @@ class PreviewButton(QtWidgets.QPushButton):
         super().mousePressEvent(e)
         self.edit_pane.setVisible(not self.edit_pane.isVisible())
 
-        self.view_pane.setHtml(
-            mistune.markdown(self.edit_pane.toPlainText(), renderer=HTMLRenderer.HighlightRenderer()))
+        self.view_pane.setHtml(pypandoc.convert_text(self.edit_pane.toPlainText(), "html", format="markdown", extra_args=["--highlight-style=kate", "-s"]))
         html = self.view_pane.toHtml().replace("<img ", f'<img width="{self.view_pane.width() * 0.5}" ')
         file_path_pattern = regex.compile('(?<=src=")\S*(?=")')
         filepaths = [filepath.group() for filepath in regex.finditer(file_path_pattern, self.view_pane.toHtml())]
@@ -38,7 +37,6 @@ class PreviewButton(QtWidgets.QPushButton):
 
                 html = html.replace(filepath, os.path.join(os.path.dirname(self.edit_pane.current_file), filepath))
 
-        html = "<br>\n<br>\n" + html
         self.view_pane.setHtml(html)
         if self.view_pane.isVisible():
             self.setIcon(QtGui.QIcon(self.ctx.get_resource(self.ctx.icons["preview"][self.ctx.theme])))

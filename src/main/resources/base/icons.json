@@ -26,6 +26,10 @@
   "theme_switch": {
     "light": "icons/brightness-high.svg",
     "dark": "icons/brightness-low-fill-white.svg"
+  },
+  "export": {
+    "light": "icons/export.svg",
+    "dark": "icons/export-white.svg"
   }
 
 }

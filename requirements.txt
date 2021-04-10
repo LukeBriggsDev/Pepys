@@ -1,5 +1,4 @@
 PySide2
 regex
-mistune
-pygments
 num2words
+pypandoc

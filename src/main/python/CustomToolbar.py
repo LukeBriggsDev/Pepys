@@ -16,6 +16,7 @@ from EditPane import EditPane
 from ViewPane import ViewPane
 from HelpButton import HelpButton
 from ThemeSwitchButton import ThemeSwitchButton
+from ExportButton import ExportButton
 
 class CustomToolbar(QtWidgets.QToolBar):
     """Menu bar to appear with MainWindow"""
@@ -29,9 +30,11 @@ class CustomToolbar(QtWidgets.QToolBar):
         self.preview_button = PreviewButton(edit_pane, view_pane, ctx)
         self.about_button = HelpButton(ctx)
         self.theme_switch_button= ThemeSwitchButton(ctx)
+        self.export_button = ExportButton(ctx)
 
         self.addWidget(self.open_entry_button)
         self.addWidget(self.favorite_button)
+        self.addWidget(self.export_button)
         spacer = QtWidgets.QWidget()
         spacer.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
         spacer.setStyleSheet("background-color: rgba(0,0,0,0)")
@@ -48,3 +51,4 @@ class CustomToolbar(QtWidgets.QToolBar):
             self.preview_button.refresh_icon()
             self.about_button.setIcon(QtGui.QIcon(self.ctx.get_resource(self.ctx.icons["about"][self.ctx.theme])))
             self.theme_switch_button.setIcon(QtGui.QIcon(self.ctx.get_resource(self.ctx.icons["theme_switch"][self.ctx.theme])))
+            self.export_button.setIcon(QtGui.QIcon(self.ctx.get_resource(self.ctx.icons["export"][self.ctx.theme])))
