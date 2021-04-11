@@ -98,18 +98,21 @@ class MainWindow(QtWidgets.QWidget):
         """
 
         # Increase width of scroll bar left border to create a margin 25% width of the main window.
-        margin_scale = 1 / 4
+        margin_size = max(0, (self.width() - 1000) * 0.5)
+        print(margin_size)
         scroll_bar_width = 4
         self.edit_pane.verticalScrollBar().setStyleSheet(
             "QScrollBar:vertical {"
-            f"width: {self.width() * margin_scale + scroll_bar_width};"
-            f"border-left-width: {str(self.width() * margin_scale - scroll_bar_width)}px ;"
+            f"width: {margin_size + scroll_bar_width};"
+            f"border-left-width: {margin_size - scroll_bar_width}px ;"
             "}")
 
         # Increase left border of the QTextEdit pane to create a left margin 25% width of the main window
+        print("Width", self.width())
+
         self.edit_pane.setStyleSheet(
                            "QTextEdit { "
-                           f"border-left-width: {self.width() * margin_scale} px;"
+                           f"border-left-width: {margin_size} px;"
                            "}")
 
 
