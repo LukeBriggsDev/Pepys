@@ -52,7 +52,8 @@ class PreviewButton(QtWidgets.QPushButton):
             f"--highlight-style={self.ctx.get_resource('syntax.theme')}",
             "-s",
             "--include-in-header="
-            f"{self.ctx.get_resource('parsed_stylesheet.css')}"
+            f"{self.ctx.get_resource('parsed_stylesheet.css')}",
+            f"--mathjax={self.ctx.get_resource('mathjax.js')}"
         ])
 
         self.view_pane.setHtml(html, QtCore.QUrl().fromLocalFile(self.edit_pane.current_file))
