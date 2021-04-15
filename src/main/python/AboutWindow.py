@@ -8,7 +8,6 @@ if typing.TYPE_CHECKING:
     from main import AppContext
 import os
 import json
-from fbs_runtime import PUBLIC_SETTINGS
 
 class AboutWindow(QtWidgets.QWidget):
     def __init__(self, main_window, ctx: AppContext):
@@ -36,7 +35,7 @@ class AboutWindow(QtWidgets.QWidget):
             '<a href = "https://fonts.google.com/specimen/Roboto+Mono">Roboto Mono</a> provided under'
             '<a href = "https://www.apache.org/licenses/LICENSE-2.0">Apache License 2.0</a>'
             '<br><br><br>'
-            f'version {PUBLIC_SETTINGS["version"]}'
+            f'version {ctx.version}'
             '</p>'
 
         )

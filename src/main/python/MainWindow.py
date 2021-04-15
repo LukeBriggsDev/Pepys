@@ -1,22 +1,16 @@
 from __future__ import annotations
-import sys
-from enum import Enum
-from ColorParser import *
-import mistune
-import regex
-from PySide2 import QtWidgets, QtGui, QtCore
-from fbs_runtime import PUBLIC_SETTINGS
-from fbs_runtime.application_context.PySide2 import ApplicationContext
-import os
-import HTMLRenderer
-from EditPane import EditPane
-from CustomToolbar import CustomToolbar
+
 import json
-import datetime
-from datetime import date
+import os
+import sys
 import typing
-from num2words import num2words
-import locale
+from datetime import date
+
+from PySide2 import QtWidgets, QtGui
+
+from ColorParser import *
+from CustomToolbar import CustomToolbar
+from EditPane import EditPane
 from WebView import WebView
 
 if typing.TYPE_CHECKING:

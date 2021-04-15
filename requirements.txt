@@ -2,3 +2,4 @@ PySide2
 regex
 num2words
 pypandoc
+pyinstaller

@@ -1,1 +1,5 @@
-{"diary_directory": "/home/luke/test_folder", "favorites": [], "theme": "dark"}
+{
+    "diary_directory": "/home/luke/test_folder",
+    "favorites": [],
+    "theme": "dark"
+}

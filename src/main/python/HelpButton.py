@@ -1,17 +1,14 @@
 from __future__ import annotations
-from PySide2 import QtWidgets, QtGui, QtCore
+
 import typing
-import mistune
-import regex
-import HTMLRenderer
-import os
-import json
-from CalendarFileSelector import CalendarFileSelector
+
+from PySide2 import QtWidgets, QtGui
+
 from AboutWindow import AboutWindow
+
 if typing.TYPE_CHECKING:
     from main import AppContext
-    from EditPane import EditPane
-    from ViewPane import ViewPane
+
 
 class HelpButton(QtWidgets.QPushButton):
     def __init__(self, ctx: AppContext):

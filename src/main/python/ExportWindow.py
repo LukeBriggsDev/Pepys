@@ -1,14 +1,14 @@
 from __future__ import annotations
-from PySide2 import QtWidgets, QtGui, QtCore
-from EditPane import EditPane
-from datetime import date
-from ColorParser import *
+
 import typing
+
+from PySide2 import QtWidgets, QtGui
+
+from ColorParser import *
+
 if typing.TYPE_CHECKING:
     from main import AppContext
-import os
-import json
-from fbs_runtime import PUBLIC_SETTINGS
+
 
 class ExportWindow(QtWidgets.QWidget):
     def __init__(self, main_window, ctx: AppContext):

@@ -1,14 +1,12 @@
 from __future__ import annotations
-from PySide2 import QtWidgets, QtGui, QtCore
+
 import typing
+
 import pypandoc
-import regex
-import HTMLRenderer
-import os
-import json
-from CalendarFileSelector import CalendarFileSelector
+from PySide2 import QtWidgets, QtGui, QtCore
+
 from ColorParser import *
-from time import sleep
+
 if typing.TYPE_CHECKING:
     from main import AppContext
     from EditPane import EditPane
