@@ -8,8 +8,8 @@
     "highlight": "rgb(255, 228, 0)",
     "link": "rgb(0,101,205)",
     "visited_link": "rgb(11, 0, 128)",
-    "button": "rgb(240, 240, 240)",
-    "button_pressed": "rgb(230, 230, 230)"
+    "button": "rgb(230, 230, 230)",
+    "button_pressed": "rgb(210, 210, 210)"
   },
   "dark": {
     "base": "rgb(41, 41, 41)",
@@ -20,7 +20,7 @@
     "highlight": "rgb(255, 228, 0",
     "link": "rgb(0,151,255)",
     "visited_link": "rgb(186,222,255)",
-    "button": "rgb(45, 45, 45)",
-    "button_pressed": "rgb(55, 55, 55)"
+    "button": "rgb(55, 55, 55)",
+    "button_pressed": "rgb(75, 75, 75)"
   }
 }

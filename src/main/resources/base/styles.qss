@@ -100,13 +100,13 @@ QToolBar QPushButton {
 
 QToolBar QPushButton:hover {
     background-color: %button%;
-    border: 1 solid %dark%;
+    border: 0 solid %dark%;
     border-radius: 4px;
 }
 
 QToolBar QPushButton:pressed {
     background-color: %button_pressed%;
-    border: 1 solid %dark%;
+    border: 0 solid %dark%;
     border-radius: 4px;
 }
 
