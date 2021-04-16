@@ -57,9 +57,12 @@ class MainWindow(QtWidgets.QWidget):
 
         # Menu bar and adding panes underneath
         self.tool_bar = CustomToolbar(self.edit_pane, self.web_view, self.ctx)
+        #self.tool_bar.setAttribute(QtGui.Qt.WA_TranslucentBackground)
+
         self.layout.addWidget(self.tool_bar)
         self.layout.addWidget(self.edit_pane)
         self.layout.addWidget(self.web_view)
+
 
 
 

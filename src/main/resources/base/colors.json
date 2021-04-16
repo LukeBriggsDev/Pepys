@@ -1,13 +1,15 @@
 {
   "light": {
     "base": "rgb(255, 255, 255)",
-    "window": "rgb(240, 240, 240)",
+    "window": "rgb(250, 250, 250)",
     "dark": "rgb(194, 194, 194)",
     "text": "rgb(33, 33, 33)",
     "text_alt": "rgb(150, 150, 150)",
     "highlight": "rgb(255, 228, 0)",
     "link": "rgb(0,101,205)",
-    "visited_link": "rgb(11, 0, 128)"
+    "visited_link": "rgb(11, 0, 128)",
+    "button": "rgb(240, 240, 240)",
+    "button_pressed": "rgb(230, 230, 230)"
   },
   "dark": {
     "base": "rgb(41, 41, 41)",
@@ -17,6 +19,8 @@
     "text_alt": "rgb(150, 150, 150)",
     "highlight": "rgb(255, 228, 0",
     "link": "rgb(0,151,255)",
-    "visited_link": "rgb(186,222,255)"
+    "visited_link": "rgb(186,222,255)",
+    "button": "rgb(45, 45, 45)",
+    "button_pressed": "rgb(55, 55, 55)"
   }
 }

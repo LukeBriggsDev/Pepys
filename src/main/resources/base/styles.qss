@@ -93,6 +93,22 @@ QToolBar {
     border: 1px solid %dark%;
 
 }
+QToolBar QPushButton {
+    background-color: %window%;
+    border: 0px;
+}
+
+QToolBar QPushButton:hover {
+    background-color: %button%;
+    border: 1 solid %dark%;
+    border-radius: 4px;
+}
+
+QToolBar QPushButton:pressed {
+    background-color: %button_pressed%;
+    border: 1 solid %dark%;
+    border-radius: 4px;
+}
 
 QTextBrowser {
     font-family: "Inter";
