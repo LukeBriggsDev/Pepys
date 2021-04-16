@@ -16,30 +16,22 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
     atx_header_pattern = regex.compile(regexPatterns['ATX_HEADER'], regex.MULTILINE)
     setext_header_pattern = regex.compile(regexPatterns['SETEXT_HEADER'], regex.MULTILINE)
     setext_underline_pattern = regex.compile(regexPatterns['SETEXT_UNDERLINE'], regex.MULTILINE)
-    header_formatter = QtGui.QTextCharFormat()
-    header_formatter.setFontWeight(QtGui.QFont.Bold)
 
     # Emphasis format options and regex
     emphasis_pattern = regex.compile(regexPatterns['EMPHASIS'], regex.MULTILINE)
-    emphasis_formatter = QtGui.QTextCharFormat()
-    emphasis_formatter.setFontItalic(True)
 
     # Strong emphasis format options and regex
     strong_emphasis_pattern = regex.compile(regexPatterns['STRONG_EMPHASIS'], regex.MULTILINE)
-    strong_emphasis_formatter = QtGui.QTextCharFormat()
-    strong_emphasis_formatter.setFontWeight(QtGui.QFont.Bold)
-    strong_emphasis_formatter.setFontItalic(False)
 
     # Very strong emphasis options and regex
     very_strong_emphasis_pattern = regex.compile(regexPatterns['VERY_STRONG_EMPHASIS'], regex.MULTILINE)
-    very_strong_emphasis_formatter = QtGui.QTextCharFormat()
-    very_strong_emphasis_formatter.setFontWeight(QtGui.QFont.Bold)
-    very_strong_emphasis_formatter.setFontItalic(True)
 
     # Strikethrough emphasis options and regex
     strikethrough_pattern = regex.compile(regexPatterns['STRIKETHROUGH'], regex.MULTILINE)
-    strikethrough_formatter = QtGui.QTextCharFormat()
-    strikethrough_formatter.setFontStrikeOut(True)
+
+    ## Link options and regex
+    link_pattern = regex.compile(regexPatterns['LINK'], regex.MULTILINE)
+    ange_link_pattern = regex.compile(regexPatterns['ANGLE_LINK'], regex.MULTILINE)
 
     def __init__(self, text_edit:QtWidgets.QTextEdit) -> None:
         """Initialise syntax highlighter.
@@ -68,6 +60,7 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
             formatter.setFontWeight(QtGui.QFont.Bold)
             self.setFormat(match.start(), len(match.group()), formatter)
 
+
         # Emphasis match and format
         for match in regex.finditer(self.emphasis_pattern, text):
             formatter.setFontItalic(True)
@@ -91,6 +84,27 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
             formatter.setFontStrikeOut(True)
             self.setFormat(match.start(), len(match.group()), formatter)
 
+        # Link match and format
+        for match in regex.finditer(self.link_pattern, text):
+            formatter.setFontWeight(QtGui.QFont.Normal)
+            formatter.setFontItalic(False)
+            formatter.setFontStrikeOut(False)
+            brush = QtGui.QBrush()
+            brush.setColor(QtGui.QColor(125, 125, 125))
+            brush.setStyle(QtGui.Qt.SolidPattern)
+            formatter.setForeground(brush)
+            self.setFormat(match.start("url"), len(match.group("url")), formatter)
+
+        # Angle link match and format
+        for match in regex.finditer(self.ange_link_pattern, text):
+            formatter.setFontWeight(QtGui.QFont.Normal)
+            formatter.setFontItalic(False)
+            formatter.setFontStrikeOut(False)
+            brush = QtGui.QBrush()
+            brush.setColor(QtGui.QColor(125, 125, 125))
+            brush.setStyle(QtGui.Qt.SolidPattern)
+            formatter.setForeground(brush)
+            self.setFormat(match.start("url"), len(match.group("url")), formatter)
 
 
 
