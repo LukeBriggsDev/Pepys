@@ -15,6 +15,7 @@ class AboutWindow(QtWidgets.QWidget):
         self.main_window = main_window
         self.setMaximumSize(360, 360)
         self.setMinimumSize(360, 360)
+        self.setWindowFlag(QtGui.Qt.Dialog)
         self.about_label = QtWidgets.QLabel()
         self.about_label.setTextFormat(QtGui.Qt.RichText)
         self.about_label.setTextInteractionFlags(QtGui.Qt.TextBrowserInteraction)

@@ -14,6 +14,7 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
     def __init__(self, edit_pane: EditPane, ctx: AppContext):
         super().__init__()
         self.edit_pane = edit_pane
+        self.setWindowFlag(QtGui.Qt.Dialog)
         date = (os.path.split(self.edit_pane.current_file))[1][:-3].split("-")
         self.setSelectedDate(QtCore.QDate(
             int(date[0]), int(date[1]), int(date[2])

@@ -16,6 +16,7 @@ class ExportWindow(QtWidgets.QWidget):
         self.main_window = main_window
         self.setMaximumSize(800, 600)
         self.setMinimumSize(800, 600)
+        self.setWindowFlag(QtGui.Qt.Dialog)
 
         self.export_options = QtWidgets.QComboBox()
         self.export_options.addItem("HTML")
