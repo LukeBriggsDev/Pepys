@@ -1,6 +1,22 @@
 AboutWindow{
-    background-color: %base%;
+    background-color: %window%;
     color: %text%;
+}
+
+ExportWindow{
+    background-color: %window%;
+    color: %text%;
+    text-align: center;
+}
+
+QComboBox QAbstractItemView {
+    background-color: %window%;
+    color: %text%;
+}
+
+QComboBox:editable {
+    background: %window%;
+    color: %text%
 }
 
 QLabel{
@@ -37,7 +53,7 @@ QPushButton{
 }
 
 QLabel{
-    font-size: 14pt;
+    font-size: 12pt;
     font-family: "Inter";
 }
 

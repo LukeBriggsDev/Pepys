@@ -29,9 +29,12 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
     # Strikethrough emphasis options and regex
     strikethrough_pattern = regex.compile(regexPatterns['STRIKETHROUGH'], regex.MULTILINE)
 
-    ## Link options and regex
+    # Link options and regex
     link_pattern = regex.compile(regexPatterns['LINK'], regex.MULTILINE)
     ange_link_pattern = regex.compile(regexPatterns['ANGLE_LINK'], regex.MULTILINE)
+
+    # Code block regex
+    code_block_pattern = regex.compile(regexPatterns['CODE_BLOCK'], regex.DOTALL)
 
     def __init__(self, text_edit:QtWidgets.QTextEdit) -> None:
         """Initialise syntax highlighter.
@@ -105,6 +108,7 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
             brush.setStyle(QtGui.Qt.SolidPattern)
             formatter.setForeground(brush)
             self.setFormat(match.start("url"), len(match.group("url")), formatter)
+
 
 
 

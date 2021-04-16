@@ -34,7 +34,7 @@
      inkscape:window-x="26"
      inkscape:window-y="23"
      inkscape:window-maximized="0"
-     inkscape:current-layer="layer5"
+     inkscape:current-layer="g8262"
      inkscape:document-rotation="0" />
   <metadata
      id="metadata8035">
@@ -377,34 +377,7 @@
      inkscape:groupmode="layer"
      id="g8262"
      inkscape:label="Buckle Shadow"
-     style="display:inline">
-    <rect
-       x="4.5"
-       y="4.5"
-       width="55"
-       height="55"
-       fill="#141414"
-       filter="url(#filter1057)"
-       opacity="0.3"
-       stroke-linecap="round"
-       stroke-width="2.7444"
-       id="rect8260"
-       transform="matrix(0.12997022,0,0,0.10773082,37.084868,37.057352)"
-       rx="16.089275" />
-    <rect
-       x="4.5"
-       y="4.5"
-       width="55"
-       height="55"
-       fill="#141414"
-       filter="url(#filter1057)"
-       opacity="0.3"
-       stroke-linecap="round"
-       stroke-width="2.7444"
-       id="rect8260-1"
-       transform="matrix(0.31700122,0,0,0.11364696,41.868501,36.69793)"
-       style="filter:url(#filter1057-2)" />
-  </g>
+     style="display:inline" />
   <circle
      cx="-1248.7"
      cy="-1241.6"
@@ -418,24 +391,8 @@
      fill="#5e4aa6"
      fill-rule="evenodd"
      id="circle8053" />
-  <rect
-     style="fill:#de5a2a;fill-opacity:1;stroke:none;stroke-width:2.08535;stroke-opacity:1"
-     id="rect8216-6"
-     width="17.670269"
-     height="6"
-     x="37.43544"
-     y="37.207161"
-     rx="2.4000001" />
   <g
      inkscape:groupmode="layer"
      id="layer1"
-     inkscape:label="Buckle">
-    <rect
-       style="opacity:1;fill:#9a1c1c;fill-opacity:1;stroke:none;stroke-width:2.09472;stroke-opacity:1"
-       id="rect8216"
-       width="17.670269"
-       height="6.0540161"
-       x="43.43544"
-       y="37.187458" />
-  </g>
+     inkscape:label="Buckle" />
 </svg>
