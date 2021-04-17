@@ -17,15 +17,6 @@ class FavoriteButton(QtWidgets.QPushButton):
         self.refresh_icon()
         self.setToolTip("Favourite")
 
-
-    def update_favorite(self):
-        with open(self.ctx.get_resource("config.json"), "r") as file, open(self.ctx.get_resource("config.json"), "r") as config:
-            if self.edit_pane.current_file_date in json.loads(file.read())["favorites"]:
-                self.setIcon(QtGui.QIcon(self.ctx.get_resource(self.ctx.icons["favorite_on"][self.ctx.theme])))
-            else:
-                self.setIcon(QtGui.QIcon(self.ctx.get_resource(self.ctx.icons["favorite_off"][self.ctx.theme])))
-
-
     def mousePressEvent(self, e:QtGui.QMouseEvent) -> None:
         super().mousePressEvent(e)
         with open(self.ctx.get_resource("config.json"), "r") as file:
