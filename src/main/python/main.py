@@ -22,6 +22,8 @@ class AppContext:
             self.icons = json.loads(icons.read())
         with open(self.get_resource("config.json")) as config:
             self.theme = json.loads(config.read())["theme"]
+        with open(self.get_resource("colors.json")) as colors:
+            self.colors = json.loads(colors.read())
 
         #Initialise and set size of main_window
         self.main_window = MainWindow(self)

@@ -16,5 +16,6 @@ regexPatterns = {
     'SETEXT_UNDERLINE': r'(=|-)+ *(?:\n+|$)',
     'LINK': r'\[(?P<text>.*)\]\((?P<url>.+?)(?: \"(?P<title>.+)\")?\)',
     'ANGLE_LINK': r"<(?P<text>(?P<url>[A-Za-z][A-Za-z0-9.+-]{1,31}:[^<>\x00-\x20]*|(?:[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*)))>",
-    'CODE_BLOCK': r'"(?:^|\n) {0,3}(?P<block>([`~]{3})(?P<text>.+?) {0,3}\2)(?:\s+?\n|$)"'
+    'CODE_BLOCK_FENCE': r'(?:^|\n) {0,3}([`~]{3})',
+    'CODE_INLINE': r'`[^`\n\r]+`'
 }

@@ -31,10 +31,13 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
 
     # Link options and regex
     link_pattern = regex.compile(regexPatterns['LINK'], regex.MULTILINE)
-    ange_link_pattern = regex.compile(regexPatterns['ANGLE_LINK'], regex.MULTILINE)
+    angle_link_pattern = regex.compile(regexPatterns['ANGLE_LINK'], regex.MULTILINE)
 
     # Code block regex
-    code_block_pattern = regex.compile(regexPatterns['CODE_BLOCK'], regex.DOTALL)
+    code_block_fence_pattern = regex.compile(regexPatterns['CODE_BLOCK_FENCE'], regex.MULTILINE)
+
+    # Code inline regex
+    code_inline_pattern = regex.compile(regexPatterns['CODE_INLINE'], regex.MULTILINE)
 
     def __init__(self, text_edit:QtWidgets.QTextEdit) -> None:
         """Initialise syntax highlighter.
@@ -47,6 +50,8 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
         """Overrides QSyntaxHighlighter method to provide custom formatting"""
 
         formatter = QtGui.QTextCharFormat()
+
+        self.setCurrentBlockState(0)
 
         # Setext header match and format
         for match in regex.finditer(self.setext_header_pattern, text + "\n" + self.currentBlock().next().text()):
@@ -99,7 +104,7 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
             self.setFormat(match.start("url"), len(match.group("url")), formatter)
 
         # Angle link match and format
-        for match in regex.finditer(self.ange_link_pattern, text):
+        for match in regex.finditer(self.angle_link_pattern, text):
             formatter.setFontWeight(QtGui.QFont.Normal)
             formatter.setFontItalic(False)
             formatter.setFontStrikeOut(False)
@@ -108,6 +113,45 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
             brush.setStyle(QtGui.Qt.SolidPattern)
             formatter.setForeground(brush)
             self.setFormat(match.start("url"), len(match.group("url")), formatter)
+
+        # Code block match and format
+        start_index = 0
+        # Change Formatter
+        formatter.setFontWeight(QtGui.QFont.Normal)
+        formatter.setFontItalic(False)
+        formatter.setFontStrikeOut(False)
+        brush = QtGui.QBrush()
+        brush.setColor(QtGui.QColor(17, 168, 205 ))
+        brush.setStyle(QtGui.Qt.SolidPattern)
+        formatter.setForeground(brush)
+
+        for match in regex.finditer(self.code_inline_pattern, text):
+            self.setFormat(match.start(), len(match.group()), formatter)
+
+        if self.previousBlockState() != 1:
+            try:
+                start_index = regex.search(self.code_block_fence_pattern, text).start()
+            except AttributeError:
+                start_index = -1
+
+        while start_index >= 0:
+            match = regex.search(self.code_block_fence_pattern, text)
+            end_index = match.start() if match != None and match else None
+            comment_length = 0
+            if end_index is None or self.previousBlockState() != 1:
+                print("WA")
+                self.setCurrentBlockState(1)
+                comment_length = len(text) - start_index
+            else:
+                comment_length = end_index - start_index + len(match.group())
+
+            self.setFormat(0, len(text), formatter)
+            try:
+                start_index = regex.search(self.code_block_fence_pattern, text[start_index + comment_length: ]).start()
+            except AttributeError:
+                start_index = -1
+
+
 
 
 
