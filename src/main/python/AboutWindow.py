@@ -51,6 +51,7 @@ class AboutWindow(QtWidgets.QWidget):
         self.setLayout(QtWidgets.QVBoxLayout())
         self.layout().addWidget(self.about_label)
         self.setStyleSheet(parse_stylesheet(ctx.get_resource("styles.qss"), ctx.get_resource("colors.json"), ctx.get_resource("config.json")))
+        self.setWindowTitle("About")
 
 
     def closeEvent(self, event:QtGui.QCloseEvent) -> None:

@@ -51,6 +51,8 @@ class ExportWindow(QtWidgets.QWidget):
 
         self.setStyleSheet(parse_stylesheet(ctx.get_resource("styles.qss"), ctx.get_resource("colors.json"), ctx.get_resource("config.json")))
 
+        self.setWindowTitle("Export")
+
 
     def closeEvent(self, event:QtGui.QCloseEvent) -> None:
         # Re-enable main window
