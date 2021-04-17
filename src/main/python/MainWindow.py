@@ -53,17 +53,16 @@ class MainWindow(QtWidgets.QWidget):
         # Edit pane
         self.edit_pane = EditPane(ctx)
 
-        self.web_view = WebView(ctx)
+
+
+        self.web_view = WebView(self.edit_pane, ctx)
 
         # Menu bar and adding panes underneath
         self.tool_bar = CustomToolbar(self.edit_pane, self.web_view, self.ctx)
-        #self.tool_bar.setAttribute(QtGui.Qt.WA_TranslucentBackground)
 
         self.layout.addWidget(self.tool_bar)
         self.layout.addWidget(self.edit_pane)
         self.layout.addWidget(self.web_view)
-
-
 
 
         self.edit_pane.open_file_from_date(date.today())

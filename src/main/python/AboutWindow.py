@@ -10,16 +10,24 @@ import os
 import json
 
 class AboutWindow(QtWidgets.QWidget):
+    """Window showing basic info, licenses, and version"""
     def __init__(self, main_window, ctx: AppContext):
+        """Constructor
+        :param main_window:
+        """
         super().__init__()
         self.main_window = main_window
         self.setMaximumSize(360, 360)
         self.setMinimumSize(360, 360)
         self.setWindowFlag(QtGui.Qt.Dialog)
         self.about_label = QtWidgets.QLabel()
+
+        # Link settings
         self.about_label.setTextFormat(QtGui.Qt.RichText)
         self.about_label.setTextInteractionFlags(QtGui.Qt.TextBrowserInteraction)
         self.about_label.setOpenExternalLinks(True)
+
+        #Formatting
         self.about_label.setAlignment(QtGui.Qt.AlignCenter)
         self.about_label.setWordWrap(True)
         self.about_label.setText(

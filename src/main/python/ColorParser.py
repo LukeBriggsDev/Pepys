@@ -2,8 +2,14 @@ import json
 import re
 
 
-def parse_stylesheet(stylesheet_file: str, colors_file: str, config_file: str):
-    with open(stylesheet_file, "r") as pane_style, open(colors_file, "r") as colors, open(config_file, "r") as config:
+def parse_stylesheet(stylesheet_file_path: str, colors_file_path: str, config_file_path: str) -> str:
+    """Parses stylesheet files with logical formatting to a readable form
+    :param stylesheet_file_path: path to the stylesheet file to parse
+    :param colors_file_path: path to file containing mapping of logical colours to rgb
+    :param config_file_path: path to config file storing the current theme
+    :return stylesheet as a string
+    """
+    with open(stylesheet_file_path, "r") as pane_style, open(colors_file_path, "r") as colors, open(config_file_path, "r") as config:
         colors_dict = json.loads(colors.read())
         stylesheet = pane_style.read()
         theme = json.loads(config.read())["theme"]

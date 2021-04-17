@@ -6,8 +6,13 @@ if typing.TYPE_CHECKING:
     from main import AppContext
     from EditPane import EditPane
 
-class OpenEntryButton(QtWidgets.QPushButton):
+class CalendarButton(QtWidgets.QPushButton):
+    """Button for opening calendar dialog"""
     def __init__(self, edit_pane: EditPane, ctx: AppContext):
+        """Constructor
+        :param edit_pane: EditPane where the file will be opened
+        :param ctx: AppContext containing global function for accessing resources
+        """
         super().__init__()
         self.edit_pane = edit_pane
         self.ctx = ctx
@@ -21,27 +26,11 @@ class OpenEntryButton(QtWidgets.QPushButton):
         super().mousePressEvent(e)
         self.open_date_picker()
 
-
-
     def open_date_picker(self) -> None:
+        """Open calendar dialog and disable main window"""
         self.date_dialog = CalendarFileSelector(self.edit_pane, self.ctx)
         self.parentWidget().parentWidget().setFocusProxy(self.date_dialog)
         self.parentWidget().parentWidget().setDisabled(True)
         self.date_dialog.setFocusPolicy(QtGui.Qt.StrongFocus)
 
         self.date_dialog.show()
-
-
-    def open_file(self) -> None:
-        """Open file in text edit, called when open_file_action clicked"""
-
-        # Get file from file dialog
-        filename = QtWidgets.QFileDialog.getOpenFileName(self)
-
-        with open(filename[0], 'r') as file:
-            self.edit_pane.set_current_file(filename[0])
-
-        print("OpenFile")
-
-    def save_file(self) -> None:
-        self.edit_pane.save_current_file()

@@ -11,6 +11,7 @@ if typing.TYPE_CHECKING:
 
 
 class ExportWindow(QtWidgets.QWidget):
+    """Window for selecting export options"""
 
     output_formats = {
         "Word Document": "docx",
@@ -52,6 +53,7 @@ class ExportWindow(QtWidgets.QWidget):
 
 
     def closeEvent(self, event:QtGui.QCloseEvent) -> None:
+        # Re-enable main window
         self.main_window.setFocusPolicy(QtGui.Qt.StrongFocus)
         self.main_window.setDisabled(False)
 

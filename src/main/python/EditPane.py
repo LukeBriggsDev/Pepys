@@ -15,7 +15,7 @@ if typing.TYPE_CHECKING:
 
 
 class EditPane(QtWidgets.QTextEdit):
-    """ AbstractPane for writing markdown text."""
+    """ TextEdit for writing markdown text."""
 
     def __init__(self, ctx: AppContext) -> None:
         super().__init__()
@@ -30,6 +30,13 @@ class EditPane(QtWidgets.QTextEdit):
         self._current_file = ""
         self.markdownHighlighter = MarkdownSyntaxHighlighter(self)
 
+    @property
+    def current_file(self):
+        return self._current_file
+
+    @property
+    def current_file_date(self):
+        return os.path.split(self.current_file)[1][:-3]
 
     def set_current_file(self, filepath: typing.TextIO) -> None:
         self._current_file = filepath.name
@@ -71,13 +78,13 @@ class EditPane(QtWidgets.QTextEdit):
         except NotImplementedError:
             day_of_month = file_date.day
 
-        self.parentWidget().tool_bar.favorite_button.update_favorite()
+        self.parentWidget().tool_bar.favorite_button.refresh_icon()
         self.window().setWindowTitle(file_date.strftime(f"%A {day_of_month} %B %Y"))
 
 
         print(self.current_file)
 
-    def save_current_file(self):
+    def save_current_file(self) -> None:
         """Save currently open file"""
 
         # Get folder for today's journal entry
@@ -87,6 +94,10 @@ class EditPane(QtWidgets.QTextEdit):
 
 
     def keyReleaseEvent(self, e: QtGui.QKeyEvent) -> None:
+        """"Override base QTextEdit method, called when key is released
+
+        :param e: the QEvent that caused the invocation
+        """
         # If a key entered is a markdown Setext header underline, re-highlight previous line to form full header
         if e.text() == '=' or e.text() == '-':
             self.markdownHighlighter.rehighlightBlock(
@@ -111,10 +122,3 @@ class EditPane(QtWidgets.QTextEdit):
 
         self.verticalScrollBar().setVisible(False)
 
-    @property
-    def current_file(self):
-        return self._current_file
-
-    @property
-    def current_file_date(self):
-        return os.path.split(self.current_file)[1][:-3]

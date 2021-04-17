@@ -10,28 +10,34 @@ if typing.TYPE_CHECKING:
 import json
 import regex
 
-from OpenEntryButton import OpenEntryButton
+from CalendarButton import CalendarButton
 from FavoriteButton import FavoriteButton
 from PreviewButton import PreviewButton
 from EditPane import EditPane
-from HelpButton import HelpButton
+from AboutButton import AboutButton
 from ThemeSwitchButton import ThemeSwitchButton
 from ExportButton import ExportButton
 
 class CustomToolbar(QtWidgets.QToolBar):
     """Menu bar to appear with MainWindow"""
     def __init__(self, edit_pane: EditPane, web_view: WebView, ctx: AppContext) -> None:
+        """Constructor
+        :param edit_pane: EditPane holding currently editing document
+        :param web_view: WebView to hold the output of the edit pane
+        :param ctx: AppContext holding global variables and functions
+        """
 
         super().__init__()
         self.ctx = ctx
-
-        self.open_entry_button = OpenEntryButton(edit_pane, ctx)
+        # Initialise buttons
+        self.open_entry_button = CalendarButton(edit_pane, ctx)
         self.favorite_button = FavoriteButton(edit_pane, ctx)
         self.preview_button = PreviewButton(edit_pane, web_view, ctx)
-        self.about_button = HelpButton(ctx)
+        self.about_button = AboutButton(ctx)
         self.theme_switch_button= ThemeSwitchButton(ctx)
         self.export_button = ExportButton(ctx)
 
+        # Add buttons to layout
         self.addWidget(self.open_entry_button)
         self.addWidget(self.favorite_button)
         self.addWidget(self.export_button)
@@ -45,6 +51,7 @@ class CustomToolbar(QtWidgets.QToolBar):
 
 
     def changeEvent(self, event:QtCore.QEvent) -> None:
+        # Change button icons to match theme
         if event.type() is QtCore.QEvent.Type.StyleChange:
             self.open_entry_button.setIcon(QtGui.QIcon(self.ctx.get_resource(self.ctx.icons["open_entry"][self.ctx.theme])))
             self.favorite_button.refresh_icon()

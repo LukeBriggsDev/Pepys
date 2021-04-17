@@ -41,7 +41,7 @@ class FavoriteButton(QtWidgets.QPushButton):
             file.truncate()
             self.refresh_icon()
 
-    def refresh_icon(self):
+    def refresh_icon(self) -> None:
         with open(self.ctx.get_resource("config.json"), "r") as file:
             config_dict = json.loads(file.read())
         if self.edit_pane.current_file_date in config_dict["favorites"]:

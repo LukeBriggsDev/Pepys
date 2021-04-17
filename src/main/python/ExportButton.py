@@ -11,7 +11,11 @@ if typing.TYPE_CHECKING:
 
 
 class ExportButton(QtWidgets.QPushButton):
+    """Button for opening export dialog"""
     def __init__(self, ctx: AppContext):
+        """Constructor
+        :param ctx: AppContext containing global methods for accessing resources
+        """
         super().__init__()
         self.ctx = ctx
         self.setMinimumSize(32, 32)
@@ -20,8 +24,10 @@ class ExportButton(QtWidgets.QPushButton):
         self.setToolTip("Export")
 
     def mousePressEvent(self, e:QtGui.QMouseEvent) -> None:
+        # Create export dialog
         super().mousePressEvent(e)
         self.export_window = ExportWindow(self.window(), self.ctx)
+        # Disable current window
         self.parentWidget().parentWidget().setFocusProxy(self.export_window)
         self.parentWidget().parentWidget().setDisabled(True)
         self.export_window.setFocusPolicy(QtGui.Qt.StrongFocus)

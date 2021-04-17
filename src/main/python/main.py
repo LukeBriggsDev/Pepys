@@ -6,14 +6,18 @@ import json
 
 
 class AppContext:
-    """Responsible for connecting to fbs."""
+    """Used to store global variables and functions"""
     def __init__(self):
-        """Override run method to launch main_window first"""
         self.app = QtWidgets.QApplication(sys.argv)
+
         # Add fonts
-        QtGui.QFontDatabase.addApplicationFont(self.get_resource("fonts/Inter/Inter.ttf"))
-        QtGui.QFontDatabase.addApplicationFont(self.get_resource("fonts/RobotoMono/RobotoMono-VariableFont_wght.ttf"))
-        QtGui.QFontDatabase.addApplicationFont(self.get_resource("fonts/RobotoMono/RobotoMono-Italic-VariableFont_wght.ttf"))
+        fonts = ["fonts/Inter/Inter.ttf",
+                 "fonts/RobotoMono/RobotoMono-VariableFont_wght.ttf",
+                 "fonts/RobotoMono/RobotoMono-Italic-VariableFont_wght.ttf"]
+
+        [QtGui.QFontDatabase.addApplicationFont(self.get_resource(font)) for font in fonts]
+
+        # Load icons and themes
         with open(self.get_resource("icons.json")) as icons:
             self.icons = json.loads(icons.read())
         with open(self.get_resource("config.json")) as config:
@@ -32,6 +36,10 @@ class AppContext:
         return self.app.exec_()
 
     def get_resource(self, filepath):
+        """
+        Return absolute file path when given a path relative to base resources
+        :param filepath relative to /resources/base
+        """
         try:
             base_path = sys._MEIPASS
         except Exception:
