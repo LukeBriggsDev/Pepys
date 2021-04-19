@@ -1,10 +1,11 @@
 # -*- mode: python ; coding: utf-8 -*-
+import os
 
 block_cipher = None
 
 
 a = Analysis(['src/main/python/main.py'],
-             pathex=['/home/luke/Documents/Projects/Pepys'],
+             pathex=[os.path.dirname(os.path.realpath('__file__'))],
              binaries=[],
              datas=[("src/main/resources", "resources")],
              hiddenimports=[],
@@ -30,4 +31,4 @@ exe = EXE(pyz,
           upx=True,
           upx_exclude=[],
           runtime_tmpdir=None,
-          console=True )
+          console=False )
