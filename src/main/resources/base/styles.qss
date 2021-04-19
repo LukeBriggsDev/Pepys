@@ -16,7 +16,7 @@ QComboBox QAbstractItemView {
 
 QComboBox:editable {
     background: %window%;
-    color: %text%
+    color: %text%;
 }
 
 QLabel{
