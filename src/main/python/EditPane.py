@@ -99,9 +99,10 @@ class EditPane(QtWidgets.QTextEdit):
         :param e: the QEvent that caused the invocation
         """
         # If a key entered is a markdown Setext header underline, re-highlight previous line to form full header
-        if e.text() == '=' or e.text() == '-':
+        current_line = self.document().findBlock(self.textCursor().position())
+        if '=' in current_line.text() or '-' in current_line.text():
             self.markdownHighlighter.rehighlightBlock(
-                self.document().findBlock(self.textCursor().position()).previous())
+                current_line.previous())
 
         self.save_current_file()
 
