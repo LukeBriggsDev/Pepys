@@ -6,6 +6,9 @@ from MarkdownRegex import regexPatterns
 class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
     """Syntax highlighter for markdown file"""
 
+    IN_CODE_BLOCK = 1
+    IN_METADATA_BLOCK = 2
+
     # Plaintext format options and regex
     text_formatter = QtGui.QTextCharFormat()
     text_formatter.setFontItalic(False)
@@ -38,6 +41,9 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
 
     # Code inline regex
     code_inline_pattern = regex.compile(regexPatterns['CODE_INLINE'], regex.MULTILINE)
+
+    # Metadata fence regex
+    metadata_fence_pattern = regex.compile(regexPatterns['METADATA_FENCE'], regex.MULTILINE)
 
     def __init__(self, text_edit:QtWidgets.QTextEdit) -> None:
         """Initialise syntax highlighter.
@@ -114,6 +120,44 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
             formatter.setForeground(brush)
             self.setFormat(match.start("url"), len(match.group("url")), formatter)
 
+        # Metadata block match and format
+        metadata_start_index = 0
+        # Change Formatter
+        formatter.setFontWeight(QtGui.QFont.Normal)
+        formatter.setFontItalic(False)
+        formatter.setFontStrikeOut(False)
+        brush = QtGui.QBrush()
+        brush.setColor(QtGui.QColor(125, 125, 125))
+        brush.setStyle(QtGui.Qt.SolidPattern)
+        formatter.setForeground(brush)
+
+        if self.previousBlockState() != self.IN_METADATA_BLOCK:
+            try:
+                if self.currentBlock().position() == 0:
+                    metadata_start_index = regex.search(self.metadata_fence_pattern, text).start()
+                else:
+                    metadata_start_index = - 1
+            except AttributeError:
+                metadata_start_index = -1
+
+        while metadata_start_index >= 0:
+            match = regex.search(self.metadata_fence_pattern, text)
+            metadata_end_index = match.start() if match is not None else None
+            metadata_length = 0
+            if metadata_end_index is None or self.previousBlockState() != self.IN_METADATA_BLOCK:
+                self.setCurrentBlockState(self.IN_METADATA_BLOCK)
+                metadata_length = len(text) - metadata_start_index
+            else:
+                metadata_length = metadata_end_index - metadata_start_index + len(match.group())
+            self.setFormat(0, len(text), formatter)
+            try:
+                if self.previousBlockState() != self.IN_METADATA_BLOCK:
+                    metadata_start_index = regex.search(self.metadata_fence_pattern, text[metadata_start_index + metadata_length:]).start()
+                else:
+                    metadata_start_index = -1
+            except AttributeError:
+                metadata_start_index = -1
+
         # Code block match and format
         start_index = 0
         # Change Formatter
@@ -128,7 +172,7 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
         for match in regex.finditer(self.code_inline_pattern, text):
             self.setFormat(match.start(), len(match.group()), formatter)
 
-        if self.previousBlockState() != 1:
+        if self.previousBlockState() != self.IN_CODE_BLOCK:
             try:
                 start_index = regex.search(self.code_block_fence_pattern, text).start()
             except AttributeError:
@@ -136,23 +180,22 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
 
         while start_index >= 0:
             match = regex.search(self.code_block_fence_pattern, text)
-            end_index = match.start() if match != None and match else None
+            end_index = match.start() if match is not None else None
             comment_length = 0
-            if end_index is None or self.previousBlockState() != 1:
-                print("WA")
-                self.setCurrentBlockState(1)
+            if end_index is None or self.previousBlockState() != self.IN_CODE_BLOCK:
+                self.setCurrentBlockState(self.IN_CODE_BLOCK)
                 comment_length = len(text) - start_index
             else:
                 comment_length = end_index - start_index + len(match.group())
 
             self.setFormat(0, len(text), formatter)
             try:
-                start_index = regex.search(self.code_block_fence_pattern, text[start_index + comment_length: ]).start()
+                if self.previousBlockState() != self.IN_CODE_BLOCK:
+                    start_index = regex.search(self.code_block_fence_pattern, text[start_index + comment_length: ]).start()
+                else:
+                    start_index = -1
             except AttributeError:
                 start_index = -1
-
-
-
 
 
 

@@ -211,6 +211,9 @@ img {
     border: 0;
     -ms-interpolation-mode: bicubic;
     vertical-align: middle;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 figure {
@@ -255,6 +258,15 @@ table td {
 .author {
     font-size: 1.2em;
     text-align: center;
+}
+
+.title {
+    text-align: center;
+}
+
+.date {
+    text-align: center;
+    visibility: hidden;
 }
 
 @media only screen and (min-width: 480px) {

@@ -1,4 +1,4 @@
-AboutWindow{
+AAchtsekundenfurzboutWindow{
     background-color: %window%;
     color: %text%;
 }
