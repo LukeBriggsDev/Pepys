@@ -11,11 +11,30 @@ class AppContext:
         self.app = QtWidgets.QApplication(sys.argv)
 
         # Add fonts
-        fonts = ["fonts/Inter/Inter.ttf",
-                 "fonts/RobotoMono/RobotoMono-VariableFont_wght.ttf",
-                 "fonts/RobotoMono/RobotoMono-Italic-VariableFont_wght.ttf"]
+        fonts = ["Inter/Inter-Black.ttf",
+                 "Inter/Inter-Bold.ttf",
+                 "Inter/Inter-ExtraBold.ttf",
+                 "Inter/Inter-Light.ttf",
+                 "Inter/Inter-Medium.ttf",
+                 "Inter/Inter-Regular.ttf",
+                 "Inter/Inter-SemiBold.ttf",
+                 "Inter/Inter-Thin.ttf",
+                 "RobotoMono/RobotoMono-Bold.ttf",
+                 "RobotoMono/RobotoMono-BoldItalic.ttf",
+                 "RobotoMono/RobotoMono-ExtraLight.ttf",
+                 "RobotoMono/RobotoMono-ExtraLightItalic.ttf",
+                 "RobotoMono/RobotoMono-Italic.ttf",
+                 "RobotoMono/RobotoMono-Light.ttf",
+                 "RobotoMono/RobotoMono-LightItalic.ttf",
+                 "RobotoMono/RobotoMono-Medium.ttf",
+                 "RobotoMono/RobotoMono-MediumItalic.ttf",
+                 "RobotoMono/RobotoMono-Regular.ttf",
+                 "RobotoMono/RobotoMono-SemiBold.ttf",
+                 "RobotoMono/RobotoMono-SemiBoldItalic.ttf",
+                 "RobotoMono/RobotoMono-Thin.ttf",
+                 "RobotoMono/RobotoMono-ThinItalic.ttf"]
 
-        [QtGui.QFontDatabase.addApplicationFont(self.get_resource(font)) for font in fonts]
+        [QtGui.QFontDatabase.addApplicationFont(self.get_resource("fonts/" + font)) for font in fonts]
 
         # Load icons and themes
         with open(self.get_resource("icons.json")) as icons:
