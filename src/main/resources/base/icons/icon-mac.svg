@@ -6,36 +6,11 @@
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="58.792702"
    height="57.970001"
    version="1.1"
    viewBox="0 0 58.792702 57.970001"
-   id="svg8079"
-   sodipodi:docname="icon-mac.svg"
-   inkscape:version="1.0.2 (e86c870879, 2021-01-15)">
-  <sodipodi:namedview
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1"
-     objecttolerance="10"
-     gridtolerance="10"
-     guidetolerance="10"
-     inkscape:pageopacity="0"
-     inkscape:pageshadow="2"
-     inkscape:window-width="1535"
-     inkscape:window-height="991"
-     id="namedview8081"
-     showgrid="false"
-     inkscape:zoom="8"
-     inkscape:cx="18.813616"
-     inkscape:cy="39.584426"
-     inkscape:window-x="26"
-     inkscape:window-y="23"
-     inkscape:window-maximized="0"
-     inkscape:current-layer="layer2"
-     inkscape:document-rotation="0" />
+   id="svg8079">
   <metadata
      id="metadata8035">
     <rdf:RDF>
@@ -51,7 +26,6 @@
   <defs
      id="defs8049">
     <linearGradient
-       inkscape:collect="always"
        id="linearGradient8208">
       <stop
          style="stop-color:#b71c1c;stop-opacity:1"
@@ -98,7 +72,6 @@
          id="stop8046" />
     </linearGradient>
     <linearGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient8208"
        id="linearGradient8214"
        x1="25.210049"
@@ -186,9 +159,7 @@
     </filter>
   </defs>
   <g
-     inkscape:groupmode="layer"
      id="layer3"
-     inkscape:label="Shadow"
      transform="translate(-2.1922983,-3.015)">
     <rect
        x="4.5"
@@ -204,9 +175,7 @@
        id="rect8055" />
   </g>
   <g
-     inkscape:groupmode="layer"
      id="layer2"
-     inkscape:label="Diary"
      style="display:inline"
      transform="translate(-2.1922983,-3.015)">
     <rect
@@ -220,9 +189,7 @@
        ry="15.284774" />
   </g>
   <g
-     inkscape:groupmode="layer"
      id="layer5"
-     inkscape:label="Rings Shadow"
      transform="translate(-2.1922983,-3.015)">
     <rect
        x="4.5"
@@ -304,9 +271,7 @@
        style="display:inline;filter:url(#filter1057-2-2-0-6-7-0-7)" />
   </g>
   <g
-     inkscape:groupmode="layer"
      id="layer4"
-     inkscape:label="Rings"
      transform="translate(-2.1922983,-3.015)">
     <rect
        style="display:inline;fill:#000000;fill-opacity:1;stroke:none"
@@ -352,9 +317,7 @@
        y="45.592545" />
   </g>
   <g
-     inkscape:groupmode="layer"
      id="layer6"
-     inkscape:label="Text"
      transform="translate(-2.1922983,-3.015)">
     <text
        xml:space="preserve"
@@ -362,26 +325,21 @@
        x="22.061523"
        y="43.347233"
        id="text8483"><tspan
-         sodipodi:role="line"
          x="22.061523"
          y="43.347233"
          id="tspan8485" /></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:49.6848px;line-height:1.25;font-family:'EB Garamond';-inkscape-font-specification:'EB Garamond, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#e3c12a;fill-opacity:1;stroke-width:1.24211"
-       x="19.183968"
-       y="47.768665"
-       id="text8491"><tspan
-         sodipodi:role="line"
-         id="tspan8489"
-         x="19.183968"
-         y="47.768665"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:49.6848px;font-family:'EB Garamond';-inkscape-font-specification:'EB Garamond, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:1.24211">P</tspan></text>
+    <g
+       aria-label="P"
+       id="text8491"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:49.6848px;line-height:1.25;font-family:'EB Garamond';-inkscape-font-specification:'EB Garamond, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#e3c12a;fill-opacity:1;stroke-width:1.24211">
+      <path
+         d="m 21.817262,48.017089 q -0.645902,0 -1.043381,-0.149054 -0.397478,-0.09937 -0.397478,-0.397478 0,-0.596218 1.639598,-0.894327 1.888023,-0.347793 2.732664,-1.14275 0.894326,-0.794957 0.894326,-2.633295 V 21.8332 q 0,-2.235816 -0.596217,-3.428251 -0.546533,-1.192435 -2.434555,-1.540229 -0.844642,-0.149054 -1.24212,-0.397478 -0.397479,-0.248424 -0.397479,-0.596218 0,-0.298109 0.397479,-0.397478 0.397478,-0.149055 1.043381,-0.149055 1.341489,0 1.987392,0 0.695587,0 1.291804,0.04969 0.596218,0 1.589914,0 0.993696,0 1.987392,-0.04969 1.043381,-0.09937 1.937707,-0.149054 0.894326,-0.09937 1.589914,-0.09937 5.664067,0 9.092318,2.335186 3.477936,2.335186 3.477936,6.508709 0,3.030772 -1.192435,5.614382 -1.192436,2.533925 -3.676676,4.074154 -2.434555,1.540228 -6.260284,1.540228 -1.093066,0 -1.689283,-0.298108 -0.546533,-0.347794 -0.546533,-0.645903 0,-0.198739 0.248424,-0.447163 0.298109,-0.248424 0.546533,-0.248424 0.248424,0 0.745272,0.04969 0.546532,0.04968 1.540228,0.04968 2.981088,0 4.471632,-2.48424 1.540229,-2.48424 1.540229,-6.856503 0,-3.974784 -2.335186,-5.862806 -2.335185,-1.937707 -5.962175,-1.937707 -1.391175,0 -2.285501,0.496848 -0.894327,0.447163 -0.894327,1.589913 v 23.69965 q 0,1.788652 0.745272,2.881718 0.745272,1.093066 2.58361,1.440859 0.844642,0.149055 1.24212,0.347794 0.397478,0.198739 0.397478,0.546533 0,0.298108 -0.397478,0.397478 -0.397478,0.149054 -1.043381,0.149054 -1.341489,0 -2.086761,-0.09937 -0.695588,-0.09937 -1.291805,-0.149055 -0.546533,-0.09937 -1.490544,-0.09937 -1.24212,0 -2.235816,0.09937 -0.944011,0.04969 -1.937707,0.149055 -0.944011,0.09937 -2.285501,0.09937 z"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:49.6848px;font-family:'EB Garamond';-inkscape-font-specification:'EB Garamond, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:1.24211"
+         id="path163" />
+    </g>
   </g>
   <g
-     inkscape:groupmode="layer"
      id="g8262"
-     inkscape:label="Buckle Shadow"
      style="display:inline"
      transform="translate(-2.1922983,-3.015)" />
   <circle
@@ -398,8 +356,6 @@
      fill-rule="evenodd"
      id="circle8053" />
   <g
-     inkscape:groupmode="layer"
      id="layer1"
-     inkscape:label="Buckle"
      transform="translate(-2.1922983,-3.015)" />
 </svg>
