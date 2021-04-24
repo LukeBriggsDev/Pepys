@@ -1,8 +1,6 @@
 {
-    "diary_directory": "/home/luke/test_folder",
+    "diary_directory": "",
     "favorites": [
-        "2021-04-17",
-        "2021-04-16"
     ],
     "theme": "light"
 }

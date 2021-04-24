@@ -52,7 +52,7 @@ class ThemeSwitchButton(QtWidgets.QPushButton):
         # Save change
         with open(self.ctx.get_resource("config.json"), "w") as config:
             current_config["theme"] = self.ctx.theme
-            config.write(json.dumps(current_config))
+            config.write(json.dumps(current_config, sort_keys=True, indent=4))
 
         main_window = self.parentWidget().parentWidget()
         # Set main window stylesheet

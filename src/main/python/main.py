@@ -68,8 +68,8 @@ class AppContext:
 
         return base_path + "/resources/base/" + filepath
 
+
 if __name__ == "__main__":
-    print(os.path.dirname(__file__))
     ctx = AppContext()
 
     sys.exit(ctx.run())

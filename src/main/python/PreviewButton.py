@@ -67,6 +67,4 @@ class PreviewButton(QtWidgets.QPushButton):
             f"--mathjax={self.ctx.get_resource('mathjax.js')}"
         ])
 
-        print(html)
-
         self.view_pane.setHtml(html, QtCore.QUrl().fromLocalFile(self.edit_pane.current_file))

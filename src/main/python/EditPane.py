@@ -93,13 +93,11 @@ class EditPane(QtWidgets.QTextEdit):
         self.parentWidget().tool_bar.favorite_button.refresh_icon()
         self.window().setWindowTitle(long_date)
 
-        print(self.current_file)
 
     def save_current_file(self) -> None:
         """Save currently open file"""
 
         # Get folder for today's journal entry
-        print(self.current_file)
         with open(self.current_file, "w+") as file:
             file.write(self.toPlainText())
 
