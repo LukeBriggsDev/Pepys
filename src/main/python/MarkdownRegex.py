@@ -12,7 +12,7 @@ regexPatterns = {
      ,
     'STRIKETHROUGH': r'~~(?=\S)([\s\S]*?\S)~~', # ~~this~~
     'ATX_HEADER': r'^ *(#{1,6}) *([^\n]+?) *#* *(?:\n+|$)',
-    'SETEXT_HEADER': r'(?:^\n*|\n\n)([^\s].+)\n{0,3}[=\-]+(?: +?\n|$)',
+    'SETEXT_HEADER': r'(?:^\n*|\n\n)([^\s].+)\n[=\-]+(?: +?\n|$)',
     'SETEXT_UNDERLINE': r'^(=|-)+ *(?:\n+|$)',
     'LINK': r'\[(?P<text>.*)\]\((?P<url>.+?)(?: \"(?P<title>.+)\")?\)',
     'ANGLE_LINK': r"<(?P<text>(?P<url>[A-Za-z][A-Za-z0-9.+-]{1,31}:[^<>\x00-\x20]*|(?:[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*)))>",
