@@ -8,3 +8,5 @@
 
 
 ## Bug Fixes
+- Italic text not showing in preview (maybe font issue?)
+- Have preview pane change when date is changed in calendar selector
