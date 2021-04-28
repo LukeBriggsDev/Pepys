@@ -42,6 +42,7 @@ Pepys also uses pandoc syntax, with support for pandoc conversions to other form
 This means that all your entries can be converted completely to HTML, PDF, LaTeX, Microsoft Word, Jupyter Notebook, EPUB, and more!
 
 # Running From Source <a name="running-from-source"></a>
+* It is best to use the latest version in the 'Releases' section
 * **Must have python 3.9 or later**
 * **Must have [pandoc](https://pandoc.org/installing.html) installed**
 * Clone the repository
