@@ -3,7 +3,7 @@
 Pepyes is a journaling application that utilises markdown for writing and storing the journal entries
 
 * [Features](#features)
-* [Running From Source](running-from-source)
+* [Running From Source](#running-from-source)
 
 
 # Features
