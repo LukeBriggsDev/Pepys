@@ -41,7 +41,7 @@ This means that all your entries themselves will be viewable forever in any text
 Pepys also uses pandoc syntax, with support for pandoc conversions to other formats. 
 This means that all your entries can be converted completely to HTML, PDF, LaTeX, Microsoft Word, Jupyter Notebook, EPUB, and more!
 
-# Running From Source
+# Running From Source <a name="running-from-source"></a>
 * **Must have python 3.9 or later**
 * **Must have [pandoc](https://pandoc.org/installing.html) installed**
 * Clone the repository
