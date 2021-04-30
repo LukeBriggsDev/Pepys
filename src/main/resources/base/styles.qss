@@ -1,4 +1,4 @@
-AAchtsekundenfurzboutWindow{
+Window{
     background-color: %window%;
     color: %text%;
 }
@@ -59,7 +59,6 @@ QLabel{
 
 QTextEdit{
     font-size: 14pt;
-    font-family: "Roboto Mono";
     color: %text%;
     background-color:  %base%;
     border: 0px solid %base%;
@@ -108,10 +107,6 @@ QToolBar QPushButton:pressed {
     background-color: %button_pressed%;
     border: 0 solid %dark%;
     border-radius: 4px;
-}
-
-QTextBrowser {
-    font-family: "Inter";
 }
 
 

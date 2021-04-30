@@ -21,6 +21,7 @@ class EditPane(QtWidgets.QTextEdit):
     def __init__(self, ctx: AppContext) -> None:
         super().__init__()
         self.ctx = ctx
+        self.setFontFamily(QtGui.QFontDatabase.systemFont(QtGui.QFontDatabase.FixedFont).family())
         # Set to prevent formatting being pasted from clipboard
         self.setAcceptRichText(False)
         self.setWordWrapMode(QtGui.QTextOption.WrapAtWordBoundaryOrAnywhere)

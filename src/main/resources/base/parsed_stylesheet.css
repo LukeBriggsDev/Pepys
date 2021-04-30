@@ -6,28 +6,28 @@ html {
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
     min-height: 100%;
-    background: rgb(255, 255, 255);
+    background: rgb(41, 41, 41);
 }
 
 body {
-    color: rgb(33, 33, 33);
+    color: rgb(255, 255, 255);
     font-family: sans-serif;
     font-size: 16pt;
     line-height: 1.7;
     padding: 1em;
     margin: auto;
     max-width: 60em;
-    background: rgb(255, 255, 255);
+    background: rgb(41, 41, 41);
     min-height: 100%;
 }
 
 a {
-    color: rgb(0,101,205);
+    color: rgb(0,151,255);
     text-decoration: none;
 }
 
 a:visited {
-    color: rgb(11, 0, 128);
+    color: rgb(186,222,255);
 }
 
 a:hover {
@@ -69,12 +69,15 @@ p {
 img {
     max-width: 100%;
     max-height: 480px;
+    padding-bottom: 2em;
+    padding-top: 1em;
 }
 
 h1, h2, h3, h4, h5, h6 {
-    color: rgb(33, 33, 33);
+    color: rgb(255, 255, 255);
     line-height: 125%;
-    margin-top: 2em;
+    margin-top: 1.25em;
+    margin-bottom: 0.5em;
     font-weight: normal;
 }
 
@@ -124,14 +127,14 @@ hr {
 }
 
 pre, code, kbd, samp {
-    color: rgb(33, 33, 33);
+    color: rgb(255, 255, 255);
     font-family: monospace;
     _font-family: monospace;
     font-size: 0.98em;
 }
 
 .sourceCode {
-    background-color: rgb(250, 250, 250);
+    background-color: rgb(36, 36, 36);
 }
 
 pre {
@@ -235,23 +238,23 @@ figcaption {
 
 table {
     margin-bottom: 2em;
-    border-bottom: 2px solid rgb(250, 250, 250);
-    border-right: 2px solid rgb(250, 250, 250);
+    border-bottom: 2px solid rgb(36, 36, 36);
+    border-right: 2px solid rgb(36, 36, 36);
     border-spacing: 0;
     border-collapse: collapse;
 }
 
 table th {
     padding: .2em 1em;
-    background-color: rgb(250, 250, 250);
-    border-top: 2px solid rgb(250, 250, 250);
-    border-left: 2px solid rgb(250, 250, 250);
+    background-color: rgb(36, 36, 36);
+    border-top: 2px solid rgb(36, 36, 36);
+    border-left: 2px solid rgb(36, 36, 36);
 }
 
 table td {
     padding: .2em 1em;
-    border-top: 2px solid rgb(250, 250, 250);
-    border-left: 2px solid rgb(250, 250, 250);
+    border-top: 2px solid rgb(36, 36, 36);
+    border-left: 2px solid rgb(36, 36, 36);
     vertical-align: top;
 }
 
