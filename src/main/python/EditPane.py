@@ -93,6 +93,7 @@ class EditPane(QtWidgets.QTextEdit):
         self.save_current_file()
         self.parentWidget().tool_bar.favorite_button.refresh_icon()
         self.window().setWindowTitle(long_date)
+        # Update view pane
 
 
     def save_current_file(self) -> None:

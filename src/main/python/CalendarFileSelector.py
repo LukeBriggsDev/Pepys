@@ -19,6 +19,7 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
         """
         super().__init__()
         self.edit_pane = edit_pane
+        self.preview_button = ctx.main_window.tool_bar.preview_button
         self.setWindowFlag(QtGui.Qt.Dialog)
 
         date = self.edit_pane.current_file_date.split("-")
@@ -55,6 +56,7 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
         self.edit_pane.open_file_from_date(date(self.selectedDate().year(),
                                                 self.selectedDate().month(),
                                                 self.selectedDate().day()))
+        self.preview_button.refresh_page()
 
     def closeEvent(self, event:QtGui.QCloseEvent) -> None:
         # Re-enable the window of the edit=pane
