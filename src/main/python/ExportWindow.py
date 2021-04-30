@@ -4,10 +4,11 @@ import typing
 
 from PySide2 import QtWidgets, QtGui
 
+from CONSTANTS import get_resource
 from ColorParser import *
 
 if typing.TYPE_CHECKING:
-    from main import AppContext
+    pass
 
 
 class ExportWindow(QtWidgets.QWidget):
@@ -26,7 +27,7 @@ class ExportWindow(QtWidgets.QWidget):
         "reStructuredText": "rst",
     }
 
-    def __init__(self, main_window, ctx: AppContext):
+    def __init__(self, main_window):
         super().__init__()
         self.main_window = main_window
         self.setMaximumSize(640, 240)
@@ -49,7 +50,7 @@ class ExportWindow(QtWidgets.QWidget):
         self.export_button = QtWidgets.QPushButton("Export")
         self.layout().addWidget(self.export_button)
 
-        self.setStyleSheet(parse_stylesheet(ctx.get_resource("styles.qss"), ctx.get_resource("colors.json"), ctx.get_resource("config.json")))
+        self.setStyleSheet(parse_stylesheet(get_resource("styles.qss"), get_resource("colors.json"), get_resource("config.json")))
 
         self.setWindowTitle("Export")
 

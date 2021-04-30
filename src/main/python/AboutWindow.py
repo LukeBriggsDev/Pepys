@@ -1,17 +1,20 @@
 from __future__ import annotations
-from PySide2 import QtWidgets, QtGui, QtCore
-from EditPane import EditPane
-from datetime import date
-from ColorParser import *
+
 import typing
+
+from PySide2 import QtWidgets, QtGui
+
+from ColorParser import *
+
 if typing.TYPE_CHECKING:
-    from main import AppContext
-import os
-import json
+    pass
+import CONSTANTS
+from CONSTANTS import get_resource
+
 
 class AboutWindow(QtWidgets.QWidget):
     """Window showing basic info, licenses, and version"""
-    def __init__(self, main_window, ctx: AppContext):
+    def __init__(self, main_window):
         """Constructor
         :param main_window:
         """
@@ -31,7 +34,7 @@ class AboutWindow(QtWidgets.QWidget):
         self.about_label.setAlignment(QtGui.Qt.AlignCenter)
         self.about_label.setWordWrap(True)
         self.about_label.setText(
-            f'<img src="{ctx.get_resource("icons/icon-mac.png")}"/>'
+            f'<img src="{get_resource("icons/icon-mac.png")}"/>'
             '<p style="font-size: 11pt">'
             '<b>Pepys:</b><br>'
             'A Straightforward Markdown Journal<br>'
@@ -49,13 +52,13 @@ class AboutWindow(QtWidgets.QWidget):
             '<a style="text-decoration: none; color: rgb(0,125,225);" '
             '   href = "https://www.apache.org/licenses/LICENSE-2.0">Apache License 2.0</a>'
             '<br><br><br>'
-            f'version {ctx.version}'
+            f'version {CONSTANTS.version}'
             '</p>'
 
         )
         self.setLayout(QtWidgets.QVBoxLayout())
         self.layout().addWidget(self.about_label)
-        self.setStyleSheet(parse_stylesheet(ctx.get_resource("styles.qss"), ctx.get_resource("colors.json"), ctx.get_resource("config.json")))
+        self.setStyleSheet(parse_stylesheet(get_resource("styles.qss"), get_resource("colors.json"), get_resource("config.json")))
         self.setWindowTitle("About")
 
 

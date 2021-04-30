@@ -1,5 +1,6 @@
-from PySide2 import QtWidgets, QtGui, QtCore
 import regex
+from PySide2 import QtWidgets, QtGui
+
 from MarkdownRegex import regexPatterns
 
 

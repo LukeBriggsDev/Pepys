@@ -1,25 +1,30 @@
 from __future__ import annotations
-from PySide2 import QtWidgets, QtGui, QtCore
-from EditPane import EditPane
-from datetime import date
-from ColorParser import *
+
 import typing
+from datetime import date
+
+from PySide2 import QtWidgets, QtGui, QtCore
+
+from CONSTANTS import get_resource
+from ColorParser import *
+from EditPane import EditPane
+
 if typing.TYPE_CHECKING:
-    from main import AppContext
-import os
+    pass
 import json
 
 
 class CalendarFileSelector(QtWidgets.QCalendarWidget):
     """Calendar widget for selecting the journal entry to edit"""
-    def __init__(self, edit_pane: EditPane, ctx: AppContext):
+    def __init__(self, edit_pane: EditPane):
         """Constructor
         :param edit_pane: EditPane to open the new file in
         :param ctx: AppContext with function to retrieve resources
         """
         super().__init__()
         self.edit_pane = edit_pane
-        self.preview_button = ctx.main_window.tool_bar.preview_button
+        #FIXME: using parentWidget is bad
+        self.preview_button = edit_pane.parentWidget().tool_bar.preview_button
         self.setWindowFlag(QtGui.Qt.Dialog)
 
         date = self.edit_pane.current_file_date.split("-")
@@ -35,7 +40,7 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
         self.setMaximumSize(480, 480)
         self.setWindowTitle("Calendar")
 
-        self.setStyleSheet(parse_stylesheet(ctx.get_resource("CalendarStyle.qss"), ctx.get_resource("colors.json"), ctx.get_resource("config.json")))
+        self.setStyleSheet(parse_stylesheet(get_resource("CalendarStyle.qss"), get_resource("colors.json"), get_resource("config.json")))
 
         # Set format of how favorites appear in calendar
         favorite_format = QtGui.QTextCharFormat()
@@ -45,7 +50,7 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
         favorite_brush.setColor(QtGui.QColor.fromRgb(33, 33, 33))
         favorite_format.setForeground(favorite_brush)
 
-        with open(ctx.get_resource("config.json")) as file:
+        with open(get_resource("config.json")) as file:
             for day in json.loads(file.read())["favorites"]:
                 formatted_date = [int(x) for x in day.split("-")]
                 self.setDateTextFormat(QtCore.QDate(formatted_date[0], formatted_date[1], formatted_date[2]), favorite_format)

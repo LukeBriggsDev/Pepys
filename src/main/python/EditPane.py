@@ -1,15 +1,16 @@
 from __future__ import annotations
-import re as regex
-from PySide2 import QtWidgets, QtGui, QtCore
-import string
-from MarkdownRegex import regexPatterns
-from MarkdownSyntaxHighlighter import MarkdownSyntaxHighlighter
+
+import json
+import locale
+import os
 import typing
 from datetime import date
-import json
-import os
+
+from PySide2 import QtWidgets, QtGui, QtCore
 from num2words import num2words
-import locale
+
+from CONSTANTS import get_resource
+from MarkdownSyntaxHighlighter import MarkdownSyntaxHighlighter
 
 if typing.TYPE_CHECKING:
     from main import AppContext
@@ -18,9 +19,8 @@ if typing.TYPE_CHECKING:
 class EditPane(QtWidgets.QTextEdit):
     """ TextEdit for writing markdown text."""
 
-    def __init__(self, ctx: AppContext) -> None:
+    def __init__(self) -> None:
         super().__init__()
-        self.ctx = ctx
         self.setFontFamily(QtGui.QFontDatabase.systemFont(QtGui.QFontDatabase.FixedFont).family())
         # Set to prevent formatting being pasted from clipboard
         self.setAcceptRichText(False)
@@ -59,7 +59,7 @@ class EditPane(QtWidgets.QTextEdit):
         long_date = file_date.strftime(f"%A {day_of_month} %B %Y")
 
         # Get folder for today's journal entry
-        config_file = self.ctx.get_resource("config.json")
+        config_file = get_resource("config.json")
         with open(config_file, "r") as file:
             file_directory = os.path.join(json.loads(file.read())["diary_directory"], str(file_date.year),
                                           str(file_date.month), formatted_date)

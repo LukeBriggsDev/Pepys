@@ -1,19 +1,21 @@
 from __future__ import annotations
-from PySide2 import QtWidgets, QtGui, QtCore, QtWebEngineWidgets
-import json
+
 import typing
+
+from PySide2 import QtGui, QtCore, QtWebEngineWidgets
+import CONSTANTS
 from EditPane import EditPane
+
 if typing.TYPE_CHECKING:
     from main import AppContext
 
 class WebView(QtWebEngineWidgets.QWebEngineView):
     """WebEngineView for showing rendered markdown"""
-    def __init__(self, edit_pane:EditPane, ctx: AppContext):
+    def __init__(self, edit_pane:EditPane):
         """Constructor
         :param ctx: AppContext storing global variables and functions
         """
         super().__init__()
-        self.ctx = ctx
         self.edit_pane = edit_pane
         self.setVisible(False)
         # Font settings
@@ -37,7 +39,7 @@ class WebView(QtWebEngineWidgets.QWebEngineView):
     def changeEvent(self, event:QtCore.QEvent) -> None:
         # Change background colour when style changes to match themeZ
         if event.type() is QtCore.QEvent.Type.StyleChange:
-            self.page().setBackgroundColor(self.bg_colors[self.ctx.theme])
+            self.page().setBackgroundColor(self.bg_colors[CONSTANTS.theme])
 
 
 

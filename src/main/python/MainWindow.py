@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import json
 import os
 import sys
 import typing
@@ -14,27 +13,27 @@ from EditPane import EditPane
 from WebView import WebView
 
 if typing.TYPE_CHECKING:
-    from main import AppContext
+    pass
 
+from CONSTANTS import get_resource
 
 class MainWindow(QtWidgets.QWidget):
     """Main application window."""
 
-    def __init__(self, ctx: AppContext) -> None:
+    def __init__(self) -> None:
         """Initialise main window
 
         :param ctx: Current ApplicationContext
         """
         super().__init__()
-        self.ctx = ctx
 
         self.date_opened = date.today()
-        self.original_stylesheet = parse_stylesheet(ctx.get_resource("styles.qss"), ctx.get_resource("colors.json"), ctx.get_resource("config.json"))
+        self.original_stylesheet = parse_stylesheet(get_resource("styles.qss"), get_resource("colors.json"), get_resource("config.json"))
 
         self.setStyleSheet(self.original_stylesheet)
 
         # Load config
-        config_file = ctx.get_resource("config.json")
+        config_file = get_resource("config.json")
         with open(config_file, "r") as file:
             config_dict = json.loads(file.read())
 
@@ -51,14 +50,14 @@ class MainWindow(QtWidgets.QWidget):
         self.layout.setSpacing(0)
 
         # Edit pane
-        self.edit_pane = EditPane(ctx)
+        self.edit_pane = EditPane()
 
 
 
-        self.web_view = WebView(self.edit_pane, ctx)
+        self.web_view = WebView(self.edit_pane)
 
         # Menu bar and adding panes underneath
-        self.tool_bar = CustomToolbar(self.edit_pane, self.web_view, self.ctx)
+        self.tool_bar = CustomToolbar(self.edit_pane, self.web_view)
 
         self.layout.addWidget(self.tool_bar)
         self.layout.addWidget(self.edit_pane)
@@ -72,7 +71,7 @@ class MainWindow(QtWidgets.QWidget):
         """Request user to select a directory and set it to diary_directory in config
         """
         # TODO: Maybe change so only create folder on first save
-        config_file = self.ctx.get_resource("config.json")
+        config_file = get_resource("config.json")
         with open(config_file, "r") as file:
             config_dict = json.loads(file.read())
             file_dialog = QtWidgets.QFileDialog()
