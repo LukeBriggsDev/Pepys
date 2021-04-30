@@ -1,4 +1,4 @@
-Window{
+AboutWindow{
     background-color: %window%;
     color: %text%;
 }
