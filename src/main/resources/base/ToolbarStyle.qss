@@ -1,5 +1,0 @@
-QToolBar {
-    background-color: %window%;
-    border: 1px solid %dark%;
-
-}
