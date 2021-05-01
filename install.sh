@@ -2,7 +2,7 @@
 cp -r ./Pepys ~/.local/share/
 printf "[Desktop Entry]\n \
 Type=Application\n \
-Name[en_GB.UTF-8]=Pepys\n \
+Name=Pepys\n \
 Categories=Office;\n \
 X-GNOME-FullName[en_GB.UTF-8]=Pepys\n \
 Comment[en_GB.UTF-8]=A straightforward markdown journal\n \
