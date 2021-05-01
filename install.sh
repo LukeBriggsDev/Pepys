@@ -1,4 +1,7 @@
 #!/usr/bin/env sh
+if test -f ~/.local/share/Pepys/resources/base/config.json; then
+  rm ./Pepys/resources/base/config.json
+fi
 cp -r ./Pepys ~/.local/share/
 printf "[Desktop Entry]\n \
 Type=Application\n \
