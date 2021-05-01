@@ -1,6 +1,5 @@
 {
-    "diary_directory": "",
-    "favorites": [
-    ],
-    "theme": "light"
+    "diary_directory": "/home/luke/Documents/test_diary",
+    "favorites": [],
+    "theme": "dark"
 }

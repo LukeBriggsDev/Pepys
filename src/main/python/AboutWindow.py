@@ -34,7 +34,7 @@ class AboutWindow(QtWidgets.QWidget):
         self.about_label.setAlignment(QtGui.Qt.AlignCenter)
         self.about_label.setWordWrap(True)
         self.about_label.setText(
-            f'<img src="{get_resource("icons/icon-mac.png")}"/>'
+            f'<img src="{get_resource("icons/appicons/hires/128.png")}"/>'
             '<p style="font-size: 11pt">'
             '<b>Pepys:</b><br>'
             'A Straightforward Markdown Journal<br>'
