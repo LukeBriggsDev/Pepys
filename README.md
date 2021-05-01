@@ -1,9 +1,9 @@
-# Pepyes: A Straightforward Markdown Journal
+# Pepys: A Straightforward Markdown Journal
 *********
-Pepyes is a journaling application that utilises markdown for writing and storing the journal entries
+Pepys is a journaling application that utilises markdown for writing and storing the journal entries
 
 * [Features](#features)
-* [Running From Source](#running-from-source)
+* [Running From Source](#building-from-source)
 
 
 # Features
@@ -41,11 +41,14 @@ This means that all your entries themselves will be viewable forever in any text
 Pepys also uses pandoc syntax, with support for pandoc conversions to other formats. 
 This means that all your entries can be converted completely to HTML, PDF, LaTeX, Microsoft Word, Jupyter Notebook, EPUB, and more!
 
-# Running From Source <a name="running-from-source"></a>
+# Building From Source
+## Linux
 * It is best to use the latest version in the 'Releases' section
-* **Must have python 3.9 or later**
-* **Must have [pandoc](https://pandoc.org/installing.html) installed**
+* Must have python 3.7 or later
+* Must have python dev tools (`sudo apt-get install python3-dev` or `sudo dnf install python3-devel`)
+* Must have [pandoc](https://pandoc.org/installing.html) installed
 * Clone the repository
 * `cd` into the repository
-* `pip install -r requirements.txt`
-* `python src/main/python/main.py`
+* `pip3 install -r requirements.txt`
+* `./build.sh`
+* `./dist/install.sh`
