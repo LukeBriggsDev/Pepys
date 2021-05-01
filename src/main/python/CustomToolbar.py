@@ -25,7 +25,6 @@ class CustomToolbar(QtWidgets.QToolBar):
         """Constructor
         :param edit_pane: EditPane holding currently editing document
         :param web_view: WebView to hold the output of the edit pane
-        :param ctx: AppContext holding global variables and functions
         """
 
         super().__init__()

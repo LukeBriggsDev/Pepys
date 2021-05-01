@@ -13,7 +13,6 @@ class WebView(QtWebEngineWidgets.QWebEngineView):
     """WebEngineView for showing rendered markdown"""
     def __init__(self, edit_pane:EditPane):
         """Constructor
-        :param ctx: AppContext storing global variables and functions
         """
         super().__init__()
         self.edit_pane = edit_pane

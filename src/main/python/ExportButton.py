@@ -15,7 +15,6 @@ class ExportButton(QtWidgets.QPushButton):
     """Button for opening export dialog"""
     def __init__(self):
         """Constructor
-        :param ctx: AppContext containing global methods for accessing resources
         """
         super().__init__()
         self.setMinimumSize(32, 32)

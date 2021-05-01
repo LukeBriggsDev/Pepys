@@ -19,7 +19,6 @@ class PreviewButton(QtWidgets.QPushButton):
         """Constructor
         :param edit_pane: EditPane containing markdown to be converted
         :param web_view: WebView where the preview will be shown
-        :param ctx: AppContext containing global functions and variables
         """
         super().__init__()
         self.edit_pane = edit_pane

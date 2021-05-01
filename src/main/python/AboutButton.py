@@ -15,7 +15,6 @@ class AboutButton(QtWidgets.QPushButton):
     """Button to display about dialog"""
     def __init__(self):
         """Constructor
-        :param ctx: AppContext containing global variables and functions
         """
         super().__init__()
         self.setMinimumSize(32, 32)

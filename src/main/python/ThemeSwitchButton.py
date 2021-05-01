@@ -16,7 +16,6 @@ class ThemeSwitchButton(QtWidgets.QPushButton):
     """Button for toggling the current application theme"""
     def __init__(self):
         """Constructor
-        :param ctx: AppContext containing global functions and variables
         """
         super().__init__()
         self.setMinimumSize(32, 32)

@@ -22,8 +22,6 @@ class MainWindow(QtWidgets.QWidget):
 
     def __init__(self) -> None:
         """Initialise main window
-
-        :param ctx: Current ApplicationContext
         """
         super().__init__()
 

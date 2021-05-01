@@ -15,7 +15,6 @@ class CalendarButton(QtWidgets.QPushButton):
     def __init__(self, edit_pane: EditPane):
         """Constructor
         :param edit_pane: EditPane where the file will be opened
-        :param ctx: AppContext containing global function for accessing resources
         """
         super().__init__()
         self.edit_pane = edit_pane

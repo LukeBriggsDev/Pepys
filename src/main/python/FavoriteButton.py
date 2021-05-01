@@ -16,7 +16,6 @@ class FavoriteButton(QtWidgets.QPushButton):
     def __init__(self, edit_pane: EditPane):
         """Constructor
         :param edit_pane: EditPane currently being edited
-        :param ctx: Current context storing global function for accessing resources
         """
         super().__init__()
         self.edit_pane = edit_pane

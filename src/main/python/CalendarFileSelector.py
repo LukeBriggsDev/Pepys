@@ -19,7 +19,6 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
     def __init__(self, edit_pane: EditPane):
         """Constructor
         :param edit_pane: EditPane to open the new file in
-        :param ctx: AppContext with function to retrieve resources
         """
         super().__init__()
         self.edit_pane = edit_pane
