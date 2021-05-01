@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-cp ./Pepys ~/.local/share/
+cp -r ./Pepys ~/.local/share/
 printf "[Desktop Entry]\n \
 Type=Application\n \
 Name[en_GB.UTF-8]=Pepys\n \
