@@ -1,6 +1,6 @@
 import regex
 from PySide2 import QtWidgets, QtGui
-
+import CONSTANTS
 from MarkdownRegex import regexPatterns
 
 
@@ -74,6 +74,12 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
         for match in regex.finditer(self.atx_header_pattern, text):
             formatter.setFontWeight(QtGui.QFont.Bold)
             self.setFormat(match.start(), len(match.group()), formatter)
+            # Grey out hashes
+            brush = QtGui.QBrush()
+            brush.setColor(QtGui.QColor(150, 150, 150, 75))
+            brush.setStyle(QtGui.Qt.SolidPattern)
+            formatter.setForeground(brush)
+            self.setFormat(match.start(), len(match.group('level')), formatter)
 
 
         # Emphasis match and format

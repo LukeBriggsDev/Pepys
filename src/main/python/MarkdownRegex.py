@@ -11,7 +11,7 @@ regexPatterns = {
      r'((\*\*|__)([*_])|([*_])(\*\*|__))[^\s*](.*?\S.*?)(?:\1)' # ***this*** or ___this___
      ,
     'STRIKETHROUGH': r'~~(?=\S)([\s\S]*?\S)~~', # ~~this~~
-    'ATX_HEADER': r'^ *(#{1,6}) *([^\n]+?) *#* *(?:\n+|$)',
+    'ATX_HEADER': r'^ *(?P<level>#{1,6}) +([^\n]+?) *#* *(?:\n+|$)',
     'SETEXT_HEADER': r'(?:^\n*|\n\n)([^\s].+)\n[=\-]+(?: +?\n|$)',
     'SETEXT_UNDERLINE': r'^(=|-)+ *(?:\n+|$)',
     'LINK': r'\[(?P<text>.*)\]\((?P<url>.+?)(?: \"(?P<title>.+)\")?\)',
