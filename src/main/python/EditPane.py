@@ -113,7 +113,8 @@ class EditPane(QtWidgets.QTextEdit):
         if '=' in current_line.text() or '-' in current_line.text():
             self.markdownHighlighter.rehighlightBlock(
                 current_line.previous())
-
+            self.markdownHighlighter.rehighlightBlock(
+                current_line.next())
         self.save_current_file()
 
     def enterEvent(self, event: QtCore.QEvent) -> None:

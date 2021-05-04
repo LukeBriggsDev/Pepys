@@ -21,6 +21,9 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
     setext_header_pattern = regex.compile(regexPatterns['SETEXT_HEADER'], regex.MULTILINE)
     setext_underline_pattern = regex.compile(regexPatterns['SETEXT_UNDERLINE'], regex.MULTILINE)
 
+    # Separator regex
+    separator_pattern = regex.compile(regexPatterns['SEPARATOR'], regex.MULTILINE)
+
     # Emphasis format options and regex
     emphasis_pattern = regex.compile(regexPatterns['EMPHASIS'], regex.MULTILINE)
 
@@ -60,26 +63,31 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
 
         self.setCurrentBlockState(0)
 
-        # Setext header match and format
-        for match in regex.finditer(self.setext_header_pattern, text + "\n" + self.currentBlock().next().text()):
-            formatter.setFontWeight(QtGui.QFont.Bold)
-            self.setFormat(match.start(), len(match.group()), formatter)
+        # Setext header match and format. Only if there is a newline before hand
+        if (self.currentBlock().previous().text() == "" ):
+                for match in regex.finditer(self.setext_header_pattern, text + "\n" + self.currentBlock().next().text()):
+                    formatter.setFontWeight(QtGui.QFont.Bold)
+                    self.setFormat(match.start(), len(match.group()), formatter)
 
         # Setext underline match and format
         for match in regex.finditer(self.setext_underline_pattern, text):
             formatter.setFontWeight(QtGui.QFont.Bold)
             self.setFormat(match.start(), len(match.group()), formatter)
 
-        # Atx header match and format
-        for match in regex.finditer(self.atx_header_pattern, text):
-            formatter.setFontWeight(QtGui.QFont.Bold)
-            self.setFormat(match.start(), len(match.group()), formatter)
-            # Grey out hashes
-            brush = QtGui.QBrush()
-            brush.setColor(QtGui.QColor(150, 150, 150, 75))
-            brush.setStyle(QtGui.Qt.SolidPattern)
-            formatter.setForeground(brush)
-            self.setFormat(match.start(), len(match.group('level')), formatter)
+        # Atx header match and format. Only if there is a newline or separator beforehand,
+        if (self.currentBlock().previous().text() == "" or
+                regex.search(self.separator_pattern, self.currentBlock().previous().text())) \
+                and not regex.search(self.setext_underline_pattern, self.currentBlock().next().text()):
+
+            for match in regex.finditer(self.atx_header_pattern, text):
+                formatter.setFontWeight(QtGui.QFont.Bold)
+                self.setFormat(match.start(), len(match.group()), formatter)
+                # Grey out hashes
+                brush = QtGui.QBrush()
+                brush.setColor(QtGui.QColor(150, 150, 150, 75))
+                brush.setStyle(QtGui.Qt.SolidPattern)
+                formatter.setForeground(brush)
+                self.setFormat(match.start(), len(match.group('level')), formatter)
 
 
         # Emphasis match and format
