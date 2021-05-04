@@ -146,36 +146,23 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
         brush.setStyle(QtGui.Qt.SolidPattern)
         formatter.setForeground(brush)
 
-        if self.previousBlockState() != self.IN_METADATA_BLOCK:
-            try:
-                if self.currentBlock().position() == 0:
-                    metadata_start_index = regex.search(self.metadata_fence_pattern, text).start()
-                else:
-                    metadata_start_index = - 1
-            except AttributeError:
-                metadata_start_index = -1
+        self.format_fence(text, self.metadata_fence_pattern, formatter, self.IN_METADATA_BLOCK, required_start_block_positon=0)
 
-        while metadata_start_index >= 0:
-            match = regex.search(self.metadata_fence_pattern, text)
-            metadata_end_index = match.start() if match is not None else None
-            metadata_length = 0
-            if metadata_end_index is None or self.previousBlockState() != self.IN_METADATA_BLOCK:
-                self.setCurrentBlockState(self.IN_METADATA_BLOCK)
-                metadata_length = len(text) - metadata_start_index
-            else:
-                metadata_length = metadata_end_index - metadata_start_index + len(match.group())
-            self.setFormat(0, len(text), formatter)
-            try:
-                if self.previousBlockState() != self.IN_METADATA_BLOCK:
-                    metadata_start_index = regex.search(self.metadata_fence_pattern, text[metadata_start_index + metadata_length:]).start()
-                else:
-                    metadata_start_index = -1
-            except AttributeError:
-                metadata_start_index = -1
+        # Inline code block match and format
+        for match in regex.finditer(self.code_inline_pattern, text):
+            inline_formatter = QtGui.QTextCharFormat()
+            inline_formatter.setFontWeight(QtGui.QFont.Normal)
+            inline_formatter.setFontItalic(False)
+            inline_formatter.setFontStrikeOut(False)
+            brush = QtGui.QBrush()
+            brush.setColor(QtGui.QColor(150, 150, 150, 35))
+            brush.setStyle(QtGui.Qt.SolidPattern)
+            inline_formatter.setBackground(brush)
+            self.setFormat(match.start(), len(match.group()), inline_formatter)
 
         # Code block match and format
-        start_index = 0
         # Change Formatter
+        formatter = QtGui.QTextCharFormat()
         formatter.setFontWeight(QtGui.QFont.Normal)
         formatter.setFontItalic(False)
         formatter.setFontStrikeOut(False)
@@ -183,35 +170,48 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
         brush.setColor(QtGui.QColor(17, 168, 205 ))
         brush.setStyle(QtGui.Qt.SolidPattern)
         formatter.setForeground(brush)
+        formatter.setBackground(QtGui.QColor(0,0,0,0))
 
-        for match in regex.finditer(self.code_inline_pattern, text):
-            self.setFormat(match.start(), len(match.group()), formatter)
+        self.format_fence(text, self.code_block_fence_pattern, formatter, self.IN_CODE_BLOCK)
 
-        if self.previousBlockState() != self.IN_CODE_BLOCK:
+
+    def format_fence(self, text: str, fence_pattern: regex.Pattern, formatter: QtGui.QTextCharFormat, block_state_flag: int,
+                     required_start_block_positon:int = None):
+        """Used to format blocks that are fenced
+        :param text: the text of the current block
+        :param fence_pattern: the regex pattern matching the fence
+        :param formatter: the QTextCharFormat to apply to the block
+        :param block_state_flag: the flag to use to check against block state
+        """
+        start_index = 0
+        if self.previousBlockState() != block_state_flag:
             try:
-                start_index = regex.search(self.code_block_fence_pattern, text).start()
-            except AttributeError:
-                start_index = -1
-
-        while start_index >= 0:
-            match = regex.search(self.code_block_fence_pattern, text)
-            end_index = match.start() if match is not None else None
-            comment_length = 0
-            if end_index is None or self.previousBlockState() != self.IN_CODE_BLOCK:
-                self.setCurrentBlockState(self.IN_CODE_BLOCK)
-                comment_length = len(text) - start_index
-            else:
-                comment_length = end_index - start_index + len(match.group())
-
-            self.setFormat(0, len(text), formatter)
-            try:
-                if self.previousBlockState() != self.IN_CODE_BLOCK:
-                    start_index = regex.search(self.code_block_fence_pattern, text[start_index + comment_length: ]).start()
+                if required_start_block_positon is None:
+                    start_index = regex.search(fence_pattern, text).start()
+                elif self.currentBlock().position() == required_start_block_positon:
+                    start_index = regex.search(fence_pattern, text).start()
                 else:
                     start_index = -1
             except AttributeError:
                 start_index = -1
 
+        while start_index >= 0:
+            matches = [match for match in regex.finditer(fence_pattern, text)][0::2]
+            end_index = matches[0].start() if matches != [] else None
+            block_length = 0
+            if end_index is None or self.previousBlockState() != block_state_flag:
+                self.setCurrentBlockState(block_state_flag)
+                block_length = len(text) - start_index
+            else:
+                block_length = end_index - start_index + len(matches[0].group())
 
+            self.setFormat(start_index, block_length, formatter)
+            try:
+                if self.previousBlockState() != block_state_flag:
+                    start_index = regex.search(fence_pattern, text[start_index + block_length: ]).start()
+                else:
+                    start_index = -1
+            except AttributeError:
+                start_index = -1
 
 
