@@ -51,4 +51,5 @@ This means that all your entries can be converted completely to HTML, PDF, LaTeX
 * `cd` into the repository
 * `pip3 install -r requirements.txt`
 * `./build.sh`
-* `./dist/install.sh`
+* `cd dist`
+* `./install.sh`
