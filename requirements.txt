@@ -3,3 +3,4 @@ regex
 num2words
 pypandoc
 pyinstaller
+pyenchant

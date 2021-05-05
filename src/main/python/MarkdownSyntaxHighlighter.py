@@ -2,7 +2,9 @@ import regex
 from PySide2 import QtWidgets, QtGui
 import CONSTANTS
 from MarkdownRegex import regexPatterns
-
+import enchant
+from enchant.tokenize import get_tokenizer
+from enchant.checker import SpellChecker
 
 class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
     """Syntax highlighter for markdown file"""
@@ -10,6 +12,12 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
     IN_CODE_BLOCK = 1
     IN_METADATA_BLOCK = 2
 
+    # Load system default dictionary
+    spell_lang = enchant.get_default_language() if enchant.dict_exists(enchant.get_default_language()) else "en_US"
+    # Load spell dictionary
+    spell_dict = enchant.request_dict(spell_lang)
+    # Load tokenizer
+    spell_tknzr = get_tokenizer(spell_lang)
     # Plaintext format options and regex
     text_formatter = QtGui.QTextCharFormat()
     text_formatter.setFontItalic(False)
@@ -62,6 +70,18 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
         formatter = QtGui.QTextCharFormat()
 
         self.setCurrentBlockState(0)
+
+        # Spell Checking
+        misspelled = [token[0] for token in self.spell_tknzr(text) if token[0][0].islower() and not self.spell_dict.check(token[0])]
+        for word in misspelled:
+            for match in regex.finditer(r"\b" + regex.escape(word) + r"(?=\W)", text):
+                formatter.setUnderlineColor(QtGui.QColor(200, 0, 0))
+                formatter.setUnderlineStyle(QtGui.QTextCharFormat.SpellCheckUnderline)
+                formatter.setFontUnderline(True)
+                self.setFormat(match.start(), len(match.group()), formatter)
+                formatter.setFontUnderline(False)
+
+                self.setFormat(match.end(), 1, formatter)
 
         # Setext header match and format. Only if there is a newline before hand
         if (self.currentBlock().previous().text() == "" ):
