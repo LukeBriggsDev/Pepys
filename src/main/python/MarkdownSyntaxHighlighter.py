@@ -5,17 +5,13 @@ from MarkdownRegex import regexPatterns
 import enchant
 from enchant.tokenize import get_tokenizer
 from enchant.tokenize import EmailFilter, URLFilter
+from CONSTANTS import spell_dict, spell_lang
 
 class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
     """Syntax highlighter for markdown file"""
 
     IN_CODE_BLOCK = 1
     IN_METADATA_BLOCK = 2
-
-    # Load system default dictionary
-    spell_lang = enchant.get_default_language() if enchant.dict_exists(enchant.get_default_language()) else "en_US"
-    # Load spell dictionary
-    spell_dict = enchant.request_dict(spell_lang)
     # Load tokenizer
     try:
         spell_tknzr = get_tokenizer(spell_lang, filters=[EmailFilter, URLFilter])
@@ -73,7 +69,7 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
         # A word is underlined red
         misspelled = [token[0] for token in self.spell_tknzr(text)
                       if token[0][0].islower() and # doesn't start with a capital letter
-                      not self.spell_dict.check(token[0])] # isn't in the dictionary
+                      not spell_dict.check(token[0])] # isn't in the dictionary
         for word in misspelled:
             for match in regex.finditer(r"\b" + regex.escape(word) + r"(?=\W)", text):
                 formatter.setUnderlineColor(QtGui.QColor(200, 0, 0))

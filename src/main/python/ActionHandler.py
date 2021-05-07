@@ -1,6 +1,6 @@
 from PySide2 import QtWidgets, QtGui
 
-class ReplaceActionHandler():
+class ActionHandler():
     """A function that stores a QAction and a function to send the action to as a parameter to when the action is triggered"""
     def __init__(self, action: QtWidgets.QAction, trigger_func):
         self.action = action

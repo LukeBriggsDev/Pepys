@@ -1,6 +1,7 @@
 import json
 import os
 import sys
+import enchant
 
 
 def get_resource(filepath):
@@ -15,6 +16,10 @@ def get_resource(filepath):
 
     return base_path + "/resources/base/" + filepath
 
+# Load system default dictionary
+spell_lang = enchant.get_default_language() if enchant.dict_exists(enchant.get_default_language()) else "en_US"
+# Load spell dictionary
+spell_dict = enchant.DictWithPWL(spell_lang, get_resource("wordlist.txt"))
 
 # Load icons and themes
 with open(get_resource("icons.json")) as icons:
