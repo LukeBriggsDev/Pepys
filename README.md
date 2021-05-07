@@ -47,6 +47,8 @@ This means that all your entries can be converted completely to HTML, PDF, LaTeX
 * Must have python 3.7 or later
 * Must have python dev tools (`sudo apt-get install python3-dev` or `sudo dnf install python3-devel`)
 * Must have [pandoc](https://pandoc.org/installing.html) installed
+* Must have [enchant](https://abiword.github.io/enchant/) installed (On windows it is installed with `pip install pyenchant`, 
+on other OSs you will need to get it from your package manager
 * Clone the repository
 * `cd` into the repository
 * `pip3 install -r requirements.txt`
