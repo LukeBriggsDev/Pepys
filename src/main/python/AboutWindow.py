@@ -41,17 +41,6 @@ class AboutWindow(QtWidgets.QWidget):
             '<a style="text-decoration: none; color: rgb(0,125,225);" '
             '   href="https://lukebriggs.dev">©Luke Briggs</a><br><br><br>'
             '</p>'
-            
-            '<p style="font-size: 8pt">'
-            '<a style="text-decoration: none; color: rgb(0,125,225);" '
-            '   href="https://rsms.me/inter/">Inter</a> provided under '
-            '<a style="text-decoration: none; color: rgb(0,125,225);" '
-            '   href ="https://choosealicense.com/licenses/ofl-1.1/">SIL Open Font License 1.1</a><br>'
-            '<a style="text-decoration: none; color: rgb(0,125,225);" '
-            '   href = "https://fonts.google.com/specimen/Roboto+Mono">Roboto Mono</a> provided under'
-            '<a style="text-decoration: none; color: rgb(0,125,225);" '
-            '   href = "https://www.apache.org/licenses/LICENSE-2.0">Apache License 2.0</a>'
-            '<br><br><br>'
             f'version {CONSTANTS.version}'
             '</p>'
 
