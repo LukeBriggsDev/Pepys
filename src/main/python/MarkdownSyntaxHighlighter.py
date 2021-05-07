@@ -6,6 +6,8 @@ import enchant
 from enchant.tokenize import get_tokenizer
 from enchant.tokenize import EmailFilter, URLFilter
 from CONSTANTS import spell_dict, spell_lang
+import CONSTANTS
+from ColorParser import text_to_rgb
 
 class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
     """Syntax highlighter for markdown file"""
@@ -101,7 +103,8 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
                 self.setFormat(match.start(), len(match.group()), formatter)
                 # Grey out hashes
                 brush = QtGui.QBrush()
-                brush.setColor(QtGui.QColor(150, 150, 150, 75))
+                color = CONSTANTS.colors
+                brush.setColor(text_to_rgb(CONSTANTS.colors[CONSTANTS.theme]["lowlight"]))
                 brush.setStyle(QtGui.Qt.SolidPattern)
                 formatter.setForeground(brush)
                 self.setFormat(match.start(), len(match.group('level')), formatter)
@@ -136,7 +139,7 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
             formatter.setFontItalic(False)
             formatter.setFontStrikeOut(False)
             brush = QtGui.QBrush()
-            brush.setColor(QtGui.QColor(125, 125, 125))
+            brush.setColor(text_to_rgb(CONSTANTS.colors[CONSTANTS.theme]["lowlight"]))
             brush.setStyle(QtGui.Qt.SolidPattern)
             formatter.setForeground(brush)
             formatter.setFontUnderline(QtGui.QTextCharFormat.NoUnderline)
@@ -148,7 +151,7 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
             formatter.setFontItalic(False)
             formatter.setFontStrikeOut(False)
             brush = QtGui.QBrush()
-            brush.setColor(QtGui.QColor(125, 125, 125))
+            brush.setColor(text_to_rgb(CONSTANTS.colors[CONSTANTS.theme]["lowlight"]))
             brush.setStyle(QtGui.Qt.SolidPattern)
             formatter.setForeground(brush)
             formatter.setFontUnderline(QtGui.QTextCharFormat.NoUnderline)
@@ -161,7 +164,7 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
         formatter.setFontItalic(False)
         formatter.setFontStrikeOut(False)
         brush = QtGui.QBrush()
-        brush.setColor(QtGui.QColor(125, 125, 125))
+        brush.setColor(text_to_rgb(CONSTANTS.colors[CONSTANTS.theme]["text_alt"]))
         brush.setStyle(QtGui.Qt.SolidPattern)
         formatter.setForeground(brush)
 
@@ -174,7 +177,7 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
             inline_formatter.setFontItalic(False)
             inline_formatter.setFontStrikeOut(False)
             brush = QtGui.QBrush()
-            brush.setColor(QtGui.QColor(150, 150, 150, 35))
+            brush.setColor(text_to_rgb(CONSTANTS.colors[CONSTANTS.theme]["inline_code_bg"]))
             brush.setStyle(QtGui.Qt.SolidPattern)
             inline_formatter.setBackground(brush)
             inline_formatter.setUnderlineStyle(QtGui.QTextCharFormat.NoUnderline)
@@ -187,11 +190,10 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
         formatter.setFontItalic(False)
         formatter.setFontStrikeOut(False)
         brush = QtGui.QBrush()
-        brush.setColor(QtGui.QColor(69, 33, 236))
+        brush.setColor(text_to_rgb(CONSTANTS.colors[CONSTANTS.theme]["code_block_text"]))
         brush.setStyle(QtGui.Qt.SolidPattern)
         formatter.setForeground(brush)
         formatter.setFontUnderline(QtGui.QTextCharFormat.NoUnderline)
-        formatter.setBackground(QtGui.QColor(0,0,0,0))
 
         self.format_fence(text, self.code_block_fence_pattern, formatter, self.IN_CODE_BLOCK)
 

@@ -1,6 +1,12 @@
 import json
 import re
+from PySide2.QtGui import QColor
 
+def text_to_rgb(color: str) -> QColor:
+    """Takes a colour as a string in the form 'rgb(r, g, b)' and returns a QColor"""
+    levels_str = color[4: -1].split(',')
+    levels = [int(x) for x in levels_str]
+    return QColor(levels[0], levels[1], levels[2])
 
 def parse_stylesheet(stylesheet_file_path: str, colors_file_path: str, config_file_path: str) -> str:
     """Parses stylesheet files with logical formatting to a readable form

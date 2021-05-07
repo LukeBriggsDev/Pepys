@@ -60,5 +60,7 @@ class ThemeSwitchButton(QtWidgets.QPushButton):
 
         # Refresh web_view
         self.parentWidget().preview_button.refresh_page()
+        # Refresh edit pane
+        main_window.edit_pane.markdownHighlighter.rehighlight()
         # Call resize event to cause update
         QtCore.QCoreApplication.postEvent(main_window, QtGui.QResizeEvent(main_window.size(), main_window.size()))
