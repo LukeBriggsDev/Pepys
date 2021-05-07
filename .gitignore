@@ -1,4 +1,4 @@
 /build/
 /dist/
-/resources/base/wordlist.txt
-/resources/base/config.json
+/src/main//resources/base/wordlist.txt
+/src/main/resources/base/config.json
