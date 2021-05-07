@@ -32,7 +32,12 @@ class EditPane(QtWidgets.QTextEdit):
 
     def __init__(self) -> None:
         super().__init__()
+        tab_stop = 4
         self.setFontFamily(QtGui.QFontDatabase.systemFont(QtGui.QFontDatabase.FixedFont).family())
+        # Set tab width
+        metrics = QtGui.QFontMetrics(QtGui.QFontDatabase.systemFont(QtGui.QFontDatabase.FixedFont))
+
+        self.setTabStopDistance(metrics.width("    "))
         # Set to prevent formatting being pasted from clipboard
         self.setAcceptRichText(False)
         self.setWordWrapMode(QtGui.QTextOption.WrapAtWordBoundaryOrAnywhere)
