@@ -5,6 +5,7 @@
 - Better calendar
 - Ability to add images via menu
 - Add space to bottom of page
+- Have spelling suggestions show without having to highlight text
 
 
 ## Bug Fixes

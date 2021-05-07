@@ -5,12 +5,15 @@ import locale
 import os
 import typing
 from datetime import date
+import enchant
+from enchant.tokenize import get_tokenizer
 
 from PySide2 import QtWidgets, QtGui, QtCore
 from num2words import num2words
 
 from CONSTANTS import get_resource
 from MarkdownSyntaxHighlighter import MarkdownSyntaxHighlighter
+from ReplaceActionHandler import ReplaceActionHandler
 
 if typing.TYPE_CHECKING:
     from main import AppContext
@@ -18,6 +21,18 @@ if typing.TYPE_CHECKING:
 
 class EditPane(QtWidgets.QTextEdit):
     """ TextEdit for writing markdown text."""
+
+    # Load system default dictionary
+    spell_lang = enchant.get_default_language() if enchant.dict_exists(enchant.get_default_language()) else "en_US"
+    # Load spell dictionary
+    spell_dict = enchant.request_dict(spell_lang)
+    # Load tokenizer
+    try:
+        spell_tknzr = get_tokenizer(spell_lang)
+    except enchant.errors.TokenizerNotFoundError:
+        spell_tknzr = get_tokenizer()
+
+    spell_suggestion_handlers = []
 
     def __init__(self) -> None:
         super().__init__()
@@ -117,8 +132,45 @@ class EditPane(QtWidgets.QTextEdit):
                 current_line.next())
         self.save_current_file()
 
+    def contextMenuEvent(self, e:QtGui.QContextMenuEvent) -> None:
+        context_menu = self.createCustomContextMenu(e.pos())
+        context_menu.exec_(e.globalPos())
+
+
+    def createCustomContextMenu(self, pos) -> QtWidgets.QMenu:
+        menu = self.createStandardContextMenu()
+        menu.addSeparator()
+        # Find misspelled word in highlighted text
+        misspelled = [token[0] for token in self.spell_tknzr(self.textCursor().selectedText()) if token[0][0].islower() and not self.spell_dict.check(token[0])]
+
+        # If there is a misspelled word and the word matches the whole of the highlighted text
+        if len(misspelled) > 0 and misspelled[0] == self.textCursor().selectedText():
+            spell_suggestion_handlers = []
+            # Get spelling suggestions
+            spell_suggestions = self.spell_dict.suggest(misspelled[0])
+            # Add suggestions to menu until there is no more left or a maximum of 10
+            while len(spell_suggestion_handlers) < 10 and len(spell_suggestion_handlers) < len(spell_suggestions):
+                for suggestion in spell_suggestions:
+                    new_action = menu.addAction(suggestion)
+                    spell_suggestion_handlers.append(ReplaceActionHandler(new_action, self.replace_selection))
+
+            # Save suggestion handlers to object so they persist
+            self.spell_suggestion_handlers = spell_suggestion_handlers
+
+
+            if len(self.spell_suggestion_handlers) == 0:
+                no_suggestions = menu.addAction("No Suggestions")
+                no_suggestions.setEnabled(False)
+
+
+        return menu
+
+    def replace_selection(self, action: QtWidgets.QAction):
+        print("hi")
+        self.textCursor().insertText(action.text())
+
     def enterEvent(self, event: QtCore.QEvent) -> None:
-        """"Override base QTextEdit method, called when mouse is over TextEdit
+        """"Override base QTextEdit mprint(e)ethod, called when mouse is over TextEdit
 
         :param event: the QEvent that caused the invocation
         """

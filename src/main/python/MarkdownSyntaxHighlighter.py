@@ -4,7 +4,6 @@ import CONSTANTS
 from MarkdownRegex import regexPatterns
 import enchant
 from enchant.tokenize import get_tokenizer
-from enchant.checker import SpellChecker
 
 class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
     """Syntax highlighter for markdown file"""
