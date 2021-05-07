@@ -4,6 +4,7 @@ import CONSTANTS
 from MarkdownRegex import regexPatterns
 import enchant
 from enchant.tokenize import get_tokenizer
+from enchant.tokenize import EmailFilter, URLFilter
 
 class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
     """Syntax highlighter for markdown file"""
@@ -17,14 +18,9 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
     spell_dict = enchant.request_dict(spell_lang)
     # Load tokenizer
     try:
-        spell_tknzr = get_tokenizer(spell_lang)
+        spell_tknzr = get_tokenizer(spell_lang, filters=[EmailFilter, URLFilter])
     except enchant.errors.TokenizerNotFoundError:
-        spell_tknzr = get_tokenizer()
-    # Plaintext format options and regex
-    text_formatter = QtGui.QTextCharFormat()
-    text_formatter.setFontItalic(False)
-    text_formatter.setFontWeight(QtGui.QFont.Normal)
-    text_formatter.setFontStrikeOut(False)
+        spell_tknzr = get_tokenizer(filters=[EmailFilter, URLFilter])
 
     # Header format options and regex
     atx_header_pattern = regex.compile(regexPatterns['ATX_HEADER'], regex.MULTILINE)
@@ -74,7 +70,10 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
         self.setCurrentBlockState(0)
 
         # Spell Checking
-        misspelled = [token[0] for token in self.spell_tknzr(text) if token[0][0].islower() and not self.spell_dict.check(token[0])]
+        # A word is underlined red
+        misspelled = [token[0] for token in self.spell_tknzr(text)
+                      if token[0][0].islower() and # doesn't start with a capital letter
+                      not self.spell_dict.check(token[0])] # isn't in the dictionary
         for word in misspelled:
             for match in regex.finditer(r"\b" + regex.escape(word) + r"(?=\W)", text):
                 formatter.setUnderlineColor(QtGui.QColor(200, 0, 0))
@@ -144,6 +143,7 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
             brush.setColor(QtGui.QColor(125, 125, 125))
             brush.setStyle(QtGui.Qt.SolidPattern)
             formatter.setForeground(brush)
+            formatter.setFontUnderline(QtGui.QTextCharFormat.NoUnderline)
             self.setFormat(match.start("url"), len(match.group("url")), formatter)
 
         # Angle link match and format
@@ -155,6 +155,7 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
             brush.setColor(QtGui.QColor(125, 125, 125))
             brush.setStyle(QtGui.Qt.SolidPattern)
             formatter.setForeground(brush)
+            formatter.setFontUnderline(QtGui.QTextCharFormat.NoUnderline)
             self.setFormat(match.start("url"), len(match.group("url")), formatter)
 
         # Metadata block match and format
@@ -180,6 +181,7 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
             brush.setColor(QtGui.QColor(150, 150, 150, 35))
             brush.setStyle(QtGui.Qt.SolidPattern)
             inline_formatter.setBackground(brush)
+            inline_formatter.setUnderlineStyle(QtGui.QTextCharFormat.NoUnderline)
             self.setFormat(match.start(), len(match.group()), inline_formatter)
 
         # Code block match and format
@@ -192,9 +194,12 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
         brush.setColor(QtGui.QColor(69, 33, 236))
         brush.setStyle(QtGui.Qt.SolidPattern)
         formatter.setForeground(brush)
+        formatter.setFontUnderline(QtGui.QTextCharFormat.NoUnderline)
         formatter.setBackground(QtGui.QColor(0,0,0,0))
 
         self.format_fence(text, self.code_block_fence_pattern, formatter, self.IN_CODE_BLOCK)
+
+
 
 
     def format_fence(self, text: str, fence_pattern: regex.Pattern, formatter: QtGui.QTextCharFormat, block_state_flag: int,
@@ -235,5 +240,4 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
                     start_index = -1
             except AttributeError:
                 start_index = -1
-
 
