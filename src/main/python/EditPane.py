@@ -166,8 +166,8 @@ class EditPane(QtWidgets.QTextEdit):
         return menu
 
     def replace_selection(self, action: QtWidgets.QAction):
-        print("hi")
         self.textCursor().insertText(action.text())
+        self.save_current_file()
 
     def enterEvent(self, event: QtCore.QEvent) -> None:
         """"Override base QTextEdit mprint(e)ethod, called when mouse is over TextEdit
