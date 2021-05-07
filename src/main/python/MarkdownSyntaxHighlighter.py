@@ -17,7 +17,10 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
     # Load spell dictionary
     spell_dict = enchant.request_dict(spell_lang)
     # Load tokenizer
-    spell_tknzr = get_tokenizer(spell_lang)
+    try:
+        spell_tknzr = get_tokenizer(spell_lang)
+    except enchant.errors.TokenizerNotFoundError:
+        spell_tknzr = get_tokenizer()
     # Plaintext format options and regex
     text_formatter = QtGui.QTextCharFormat()
     text_formatter.setFontItalic(False)
