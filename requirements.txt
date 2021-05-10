@@ -4,3 +4,4 @@ num2words
 pypandoc
 pyinstaller
 pyenchant
+PyPDF4

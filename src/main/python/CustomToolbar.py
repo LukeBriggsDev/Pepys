@@ -39,7 +39,7 @@ class CustomToolbar(QtWidgets.QToolBar):
         # Add buttons to layout
         self.addWidget(self.open_entry_button)
         self.addWidget(self.favorite_button)
-        #self.addWidget(self.export_button)
+        self.addWidget(self.export_button)
         spacer = QtWidgets.QWidget()
         spacer.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
         spacer.setStyleSheet("background-color: rgba(0,0,0,0)")
