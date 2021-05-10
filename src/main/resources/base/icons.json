@@ -30,6 +30,14 @@
   "export": {
     "light": "icons/export.svg",
     "dark": "icons/export-white.svg"
+  },
+  "right_arrow":{
+    "light": "icons/arrow-right.svg",
+    "dark": "icons/arrow-right-white.svg"
+  },
+  "left_arrow":{
+    "light": "icons/arrow-left.svg",
+    "dark": "icons/arrow-left-white.svg"
   }
 
 }

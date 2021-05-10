@@ -6,6 +6,7 @@ from datetime import date
 from PySide2 import QtWidgets, QtGui, QtCore
 
 from CONSTANTS import get_resource
+import CONSTANTS
 from ColorParser import *
 from EditPane import EditPane
 
@@ -48,6 +49,11 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
         favorite_format.setBackground(favorite_brush)
         favorite_brush.setColor(QtGui.QColor.fromRgb(33, 33, 33))
         favorite_format.setForeground(favorite_brush)
+
+        prev_month_button = self.findChild(QtWidgets.QToolButton, "qt_calendar_prevmonth")
+        next_month_button = self.findChild(QtWidgets.QToolButton, "qt_calendar_nextmonth")
+        prev_month_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["left_arrow"][CONSTANTS.theme])))
+        next_month_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["right_arrow"][CONSTANTS.theme])))
 
         with open(get_resource("config.json")) as file:
             for day in json.loads(file.read())["favorites"]:
