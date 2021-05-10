@@ -61,9 +61,9 @@ class PreviewButton(QtWidgets.QPushButton):
         html = pypandoc.convert_text(self.edit_pane.toPlainText(), "html", format="markdown",extra_args=[
             f"--highlight-style={get_resource('syntax.theme')}",
             "-s",
-            "--include-in-header="
+            "--css="
             f"{get_resource('parsed_stylesheet.css')}",
-            f"--mathjax={get_resource('mathjax.js')}"
+            f"--katex={get_resource('katex/')}"
         ])
 
         self.view_pane.setHtml(html, QtCore.QUrl().fromLocalFile(self.edit_pane.current_file))
