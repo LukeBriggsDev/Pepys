@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import typing
 
-from PySide2 import QtWidgets, QtGui
+from PySide2 import QtWidgets, QtGui, QtCore
 
 from CONSTANTS import get_resource
 from ColorParser import *
@@ -11,46 +11,71 @@ from pathlib import Path
 import PyPDF4
 import os
 import CONSTANTS
+import shutil
 
 if typing.TYPE_CHECKING:
     pass
-
 
 class ExportWindow(QtWidgets.QWidget):
     """Window for selecting export options"""
 
     output_formats = {
-        "Word Document": "docx",
-        "EBook": "epub",
-        "HTML": "html",
-        "PDF": "pdf",
-        "Latex": "latex",
-        "OpenOffice Text Document": "odt",
-        "Plain Text": "plain",
-        "PowerPoint Slide Show": "pptx",
-        "Rich Text Format": "rtf",
-        "reStructuredText": "rst",
+        "Word Document": {"type": "docx", "ext": "docx"},
+        "EBook": {"type": "epub", "ext": "epub"},
+        "HTML": {"type": "html", "ext": "html"},
+        "PDF": {"type": "pdf", "ext": "pdf"},
+        "Latex": {"type": "latex", "ext": "tex"},
+        "OpenOffice Text Document": {"type": "odt", "ext": "odt"},
+        "Plain Text": {"type": "plain", "ext": "txt"},
+        "PowerPoint Slide Show": {"type": "pptx", "ext": "pptx"},
+        "Rich Text Format": {"type": "rtf", "ext": "rtf"},
+        "reStructuredText": {"type": "rst", "ext": "rst"},
     }
 
     def __init__(self, main_window):
         super().__init__()
+        # Window options
         self.main_window = main_window
         self.setMaximumSize(640, 240)
         self.setMinimumSize(640, 240)
         self.setWindowFlag(QtGui.Qt.Dialog)
-        self.setLayout(QtWidgets.QGridLayout())
+        formLayout = QtWidgets.QFormLayout()
 
         self.export_options = QtWidgets.QComboBox()
-        self.export_options.setFixedWidth(240)
+
 
         for output_format in sorted(self.output_formats.keys(), key=str.lower):
             self.export_options.addItem(output_format)
+        formLayout.addRow("Export Format: ", self.export_options)
 
-        self.setLayout(QtWidgets.QVBoxLayout())
+        # Selecting export date
+        self.date_select_layout = QtWidgets.QGridLayout()
 
-        self.export_label = QtWidgets.QLabel("Export Format")
-        self.layout().addWidget(self.export_label, 0, 0)
-        self.layout().addWidget(self.export_options,0, 1, 1, 5)
+        self.date_options = QtWidgets.QComboBox()
+        self.date_options.addItems(["Current Entry", "Custom Range", "All Entries"])
+        self.date_select_layout.addWidget(self.date_options, 0, 0, 2, 1)
+        self.date_options.currentTextChanged.connect(self.disable_custom_date)
+
+        self.custom_date_layout = QtWidgets.QFormLayout()
+        self.start_date_widget = QtWidgets.QDateEdit()
+        self.start_date_widget.setDisplayFormat("yyyy-MM-dd")
+        self.start_date_widget.setDate(QtCore.QDate.currentDate())
+        self.end_date_widget = QtWidgets.QDateEdit()
+        self.end_date_widget.setDisplayFormat("yyyy-MM-dd")
+        self.end_date_widget.setDate(QtCore.QDate.currentDate())
+        self.custom_date_layout.addRow("Start Date:", self.start_date_widget)
+        self.start_date_widget.dateChanged.connect(self.end_date_widget.setMinimumDate)
+        self.custom_date_layout.addRow("End Date:", self.end_date_widget)
+        self.end_date_widget.dateChanged.connect(self.start_date_widget.setMaximumDate)
+        self.date_select_layout.addLayout(self.custom_date_layout, 2, 0, 1, self.custom_date_layout.rowCount())
+
+
+        formLayout.addRow("Select Date: ", self.date_select_layout)
+
+        self.will_collate = QtWidgets.QCheckBox()
+        formLayout.addRow("Collate together:", self.will_collate)
+
+        self.setLayout(formLayout)
 
         self.export_button = QtWidgets.QPushButton("Export")
         self.export_button.clicked.connect(self.export_diary)
@@ -60,40 +85,68 @@ class ExportWindow(QtWidgets.QWidget):
 
         self.setWindowTitle("Export")
 
+        self.disable_custom_date()
+        self.export_options.currentTextChanged.connect(self.format_option_change)
+        self.format_option_change(None)
 
     def closeEvent(self, event:QtGui.QCloseEvent) -> None:
         # Re-enable main window
         self.main_window.setFocusPolicy(QtGui.Qt.StrongFocus)
         self.main_window.setDisabled(False)
 
+    def format_option_change(self, new_text: str):
+        if new_text == "HTML" or new_text == "PDF":
+            self.will_collate.setEnabled(True)
+        else:
+            self.will_collate.setEnabled(False)
+
+    def disable_custom_date(self, *kwargs):
+        if len(kwargs) == 0 or kwargs[0] != "Custom Range":
+            self.start_date_widget.setEnabled(False)
+            self.end_date_widget.setEnabled(False)
+        else:
+            self.start_date_widget.setEnabled(True)
+            self.end_date_widget.setEnabled(True)
+
     def export_diary(self):
         with open(get_resource("config.json"), "r") as file:
             directory = json.loads(file.read())["diary_directory"]
 
-        diary_entries = list(Path(directory).rglob("*.[mM][dD]"))
+        diary_entries = list(Path(directory).rglob("*-*-*.[mM][dD]"))
+
+        # Custom Range
+        if self.date_options.currentText() == "Custom Range":
+            diary_entries = [entry for entry in diary_entries
+                             if self.start_date_widget.date().toString("yyyy-MM-dd") <= entry.name[:-3] <= self.end_date_widget.date().toString("yyyy-MM-dd")]
+
+        # Current Date
+        if self.date_options.currentText() == "Current Entry":
+            diary_entries = list(Path(directory).rglob(f"{QtCore.QDate.currentDate().toString('yyyy-MM-dd')}.[mM][dD]"))
+
         format = self.output_formats[self.export_options.currentText()]
 
         pdoc_args = ["--standalone",
                      f"--katex={get_resource('katex/')}"]
 
-        if format == "pdf":
+        if format["type"] == "pdf":
             # Convert to html before pdf to apply css
             pdoc_args.append("-thtml")
 
-        if format == "html" or format=="pdf":
+        if format["type"] == "html" or format["type"]=="pdf":
             parse_stylesheet(get_resource("ViewPaneStyle.css"), get_resource("colors.json"), get_resource("config.json"))
             pdoc_args.append("--css="+get_resource("parsed_stylesheet.css"))
             pdoc_args.append("--self-contained")
 
 
         print(format)
+        print(diary_entries)
         finished = 0
         # Conversion
         for entry in diary_entries:
             os.chdir(entry.parent.as_posix())
             try:
-                pypandoc.convert_file(entry.as_posix(), format,
-                                      outputfile=(entry.parent.as_posix() + "/" + entry.name[:-3] + "." + format),
+                pypandoc.convert_file(entry.as_posix(), format["type"],
+                                      outputfile=(entry.parent.as_posix() + "/" + entry.name[:-3] + "." + format["ext"]),
                                       extra_args=pdoc_args)
             except RuntimeError as err:
                 print("ERROR IN FILE " + entry.name)
@@ -102,16 +155,42 @@ class ExportWindow(QtWidgets.QWidget):
             print(str(finished) + "/" + str(len(diary_entries)))
         print("Conversion finished")
 
-        # Collate pdfs together into one pdf
-        if format == "pdf":
-            print("Starting pdf collation")
-            file_merger = PyPDF4.PdfFileMerger(strict=False)
-            pdf_list = sorted(list(Path(directory).rglob("*-*-*.[pP][dD][fF]")), key=lambda x: x.name)
-            for pdf in pdf_list:
-                print(pdf.name)
-                file_merger.append(pdf.as_posix(), pdf.name[:-4])
-            file_merger.write(directory + "/diary.pdf")
-            print("pdf collation finished")
+        if self.will_collate.isChecked():
+            # Collate pdfs together into one pdf
+            if format["type"] == "pdf":
+                print("Starting pdf collation")
+                file_merger = PyPDF4.PdfFileMerger(strict=False)
+                pdf_list = sorted([Path(entry.as_posix[:-3] + ".pdf") for entry in diary_entries], key=lambda x: x.name)
+                for pdf in pdf_list:
+                    print(pdf.name)
+                    file_merger.append(pdf.as_posix(), pdf.name[:-4])
+                file_merger.write(directory + "/diary.pdf")
+                print("pdf collation finished")
+
+            if format["type"] == "html":
+                print("Starting html collation")
+                html_list = sorted([Path(entry.as_posix()[:-3] + ".html") for entry in diary_entries], key=lambda x: x.name)
+                html = ""
+                try:
+                    os.mkdir(os.path.join(Path(directory), "html_export"))
+                except FileExistsError:
+                    shutil.rmtree(os.path.join(Path(directory), "html_export"), ignore_errors=True)
+                    os.mkdir(os.path.join(Path(directory), "html_export"))
+
+                for document in html_list:
+                    shutil.move(document, os.path.join(Path(directory), "html_export", document.name))
+
+                with open(os.path.join(Path(directory), "html_export", "_index.html"), "w") as f:
+                    shutil.copyfile(get_resource("parsed_stylesheet.css"), os.path.join(Path(directory), "html_export", "styles.css"))
+                    f.write('<!DOCTYPE HTML>'
+                            '<HTML>'
+                            '<HEAD><LINK rel="stylesheet" href="styles.css" type="text/css">'
+                            '</HEAD>')
+                    for page in html_list:
+                        f.write(f'<a href="{page.name}">{page.name[:-5]}</a><br>')
+                    f.write('</HTMl>')
+
+                print("HTML collation finished")
 
 
 

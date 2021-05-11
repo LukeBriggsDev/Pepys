@@ -14,6 +14,16 @@ QComboBox QAbstractItemView {
     color: %text%;
 }
 
+QDateEdit:disabled{
+    background-color: %window%;
+    color: %lowlight%;
+}
+
+QDateEdit:editable{
+    background-color: %base%;
+    color: %text%;
+}
+
 QComboBox:editable {
     background: %window%;
     color: %text%;
