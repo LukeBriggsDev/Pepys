@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import typing
+from threading import Thread
 
 from PySide2 import QtWidgets, QtGui, QtCore
 
@@ -109,6 +110,22 @@ class ExportWindow(QtWidgets.QWidget):
             self.end_date_widget.setEnabled(True)
 
     def export_diary(self):
+
+        # Load dialog
+        self.load_dialog = QtWidgets.QDialog(self)
+        self.load_dialog.setMinimumSize(400, 100)
+        self.load_dialog.setWindowTitle("Exporting...")
+        progress_label = QtWidgets.QLabel()
+        progress_label.setAlignment(QtGui.Qt.AlignCenter)
+        progress_bar = QtWidgets.QProgressBar()
+        self.load_dialog.setLayout(QtWidgets.QVBoxLayout())
+        self.load_dialog.layout().setAlignment(QtGui.Qt.AlignTop)
+        self.load_dialog.layout().addWidget(progress_label)
+        self.load_dialog.layout().addWidget(progress_bar)
+        self.load_dialog.show()
+        self.setDisabled(True)
+        self.load_dialog.setEnabled(True)
+
         with open(get_resource("config.json"), "r") as file:
             directory = json.loads(file.read())["diary_directory"]
 
@@ -125,6 +142,7 @@ class ExportWindow(QtWidgets.QWidget):
 
         format = self.output_formats[self.export_options.currentText()]
 
+
         pdoc_args = ["--standalone",
                      f"--katex={get_resource('katex/')}"]
 
@@ -138,8 +156,9 @@ class ExportWindow(QtWidgets.QWidget):
             pdoc_args.append("--self-contained")
 
 
-        print(format)
-        print(diary_entries)
+        progress_label.setText("Converting to " + str(format["type"]))
+        progress_bar.setMaximum(len(diary_entries))
+        QtWidgets.QApplication.processEvents()
         finished = 0
         # Conversion
         for entry in diary_entries:
@@ -149,26 +168,34 @@ class ExportWindow(QtWidgets.QWidget):
                                       outputfile=(entry.parent.as_posix() + "/" + entry.name[:-3] + "." + format["ext"]),
                                       extra_args=pdoc_args)
             except RuntimeError as err:
-                print("ERROR IN FILE " + entry.name)
+                progress_label.setText("ERROR IN FILE " + entry.name)
+                QtWidgets.QApplication.processEvents()
                 print(err)
             finished += 1
-            print(str(finished) + "/" + str(len(diary_entries)))
-        print("Conversion finished")
+            progress_label.setText(str(finished) + "/" + str(len(diary_entries)))
+            progress_bar.setValue(finished)
+            QtWidgets.QApplication.processEvents()
+        progress_label.setText("Conversion finished")
+        QtWidgets.QApplication.processEvents()
 
         if self.will_collate.isChecked():
             # Collate pdfs together into one pdf
             if format["type"] == "pdf":
-                print("Starting pdf collation")
+                progress_label.setText("Starting pdf collation")
+                QtWidgets.QApplication.processEvents()
                 file_merger = PyPDF4.PdfFileMerger(strict=False)
                 pdf_list = sorted([Path(entry.as_posix[:-3] + ".pdf") for entry in diary_entries], key=lambda x: x.name)
                 for pdf in pdf_list:
-                    print(pdf.name)
+                    progress_label.setText(pdf.name)
+                    QtWidgets.QApplication.processEvents()
                     file_merger.append(pdf.as_posix(), pdf.name[:-4])
                 file_merger.write(directory + "/diary.pdf")
-                print("pdf collation finished")
+                progress_label.setText("pdf collation finished")
+                QtWidgets.QApplication.processEvents()
 
             if format["type"] == "html":
-                print("Starting html collation")
+                progress_label.setText("Starting html collation")
+                QtWidgets.QApplication.processEvents()
                 html_list = sorted([Path(entry.as_posix()[:-3] + ".html") for entry in diary_entries], key=lambda x: x.name)
                 html = ""
                 try:
@@ -190,9 +217,10 @@ class ExportWindow(QtWidgets.QWidget):
                         f.write(f'<a href="{page.name}">{page.name[:-5]}</a><br>')
                     f.write('</HTMl>')
 
-                print("HTML collation finished")
+                progress_label.setText("HTML collation finished")
+                QtWidgets.QApplication.processEvents()
 
 
-
-
+        self.setEnabled(True)
+        self.load_dialog.close()
 
