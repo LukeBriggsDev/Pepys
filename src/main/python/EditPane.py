@@ -7,6 +7,9 @@ import typing
 from datetime import date
 import enchant
 from enchant.tokenize import get_tokenizer
+import shutil
+import pathlib
+import CONSTANTS
 
 from PySide2 import QtWidgets, QtGui, QtCore
 from num2words import num2words
@@ -138,7 +141,17 @@ class EditPane(QtWidgets.QTextEdit):
 
     def contextMenuEvent(self, e:QtGui.QContextMenuEvent) -> None:
         context_menu = self.createCustomContextMenu(e.pos())
+        context_menu.addAction(QtGui.QIcon(get_resource(CONSTANTS.icons["plus"][CONSTANTS.theme])), "Insert Image", self.insert_image)
         context_menu.exec_(e.globalPos())
+
+    def insert_image(self):
+        image_dialog = QtWidgets.QFileDialog(caption="Insert Image", directory=pathlib.Path.home().as_posix(),
+                                             filter="Image Files(*.apng *.avif *.gif *.jpg *.jpeg *.jfif *.pjpeg, *.pjp *.png *.svg *.webp)")
+        image_dialog.exec_()
+        image = image_dialog.selectedFiles()[0]
+        shutil.copy(image, pathlib.Path(self.current_file).parent)
+        self.insertPlainText(f"![]({pathlib.Path(image).name})")
+
 
 
     def createCustomContextMenu(self, pos) -> QtWidgets.QMenu:

@@ -6,6 +6,8 @@ from PySide2 import QtWidgets, QtGui, QtCore
 
 from WebView import WebView
 import json
+import pathlib
+import shutil
 
 from src.main.python.ColorParser import parse_stylesheet
 
@@ -75,6 +77,14 @@ class CustomToolbar(QtWidgets.QToolBar):
         self.export_button.setToolTip("Export")
         self.export_button.clicked.connect(self.export_clicked)
 
+        # Insert button
+        self.insert_button = QtWidgets.QPushButton()
+        self.insert_button.setMinimumSize(32, 32)
+        self.insert_button.setMaximumSize(32, 32)
+        self.insert_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["plus"][CONSTANTS.theme])))
+        self.insert_button.setToolTip("Insert")
+        self.insert_button.clicked.connect(self.insert_clicked)
+
         # Theme switch button
         self.theme_switch_button = QtWidgets.QPushButton()
         self.theme_switch_button.setMinimumSize(32, 32)
@@ -99,6 +109,7 @@ class CustomToolbar(QtWidgets.QToolBar):
         spacer.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
         spacer.setStyleSheet("background-color: rgba(0,0,0,0)")
         self.addWidget(spacer)
+        self.addWidget(self.insert_button)
         self.addWidget(self.preview_button)
         self.addWidget(self.theme_switch_button)
         self.addWidget(self.about_button)
@@ -117,6 +128,7 @@ class CustomToolbar(QtWidgets.QToolBar):
                 self.preview_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["preview_stop"][CONSTANTS.theme])))
 
             self.about_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["about"][CONSTANTS.theme])))
+            self.insert_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["plus"][CONSTANTS.theme])))
             self.theme_switch_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["theme_switch"][CONSTANTS.theme])))
             self.export_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["export"][CONSTANTS.theme])))
 
@@ -174,6 +186,12 @@ class CustomToolbar(QtWidgets.QToolBar):
         else:
             self.preview_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["preview_stop"][CONSTANTS.theme])))
         self.web_view.setVisible(not self.web_view.isVisible())
+
+    def insert_clicked(self):
+        self.insert_menu = QtWidgets.QMenu()
+        self.insert_menu.addAction("Insert image", self.edit_pane.insert_image)
+        self.insert_menu.popup(self.mapToGlobal(self.insert_button.pos() + QtCore.QPoint(- self.insert_button.width(), self.insert_button.height())))
+        pass
 
     def theme_switch(self):
 
