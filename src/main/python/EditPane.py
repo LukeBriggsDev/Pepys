@@ -141,7 +141,6 @@ class EditPane(QtWidgets.QTextEdit):
 
     def contextMenuEvent(self, e:QtGui.QContextMenuEvent) -> None:
         context_menu = self.createCustomContextMenu(e.pos())
-        context_menu.addAction(QtGui.QIcon(get_resource(CONSTANTS.icons["plus"][CONSTANTS.theme])), "Insert Image", self.insert_image)
         context_menu.exec_(e.globalPos())
 
     def insert_image(self):
@@ -156,6 +155,8 @@ class EditPane(QtWidgets.QTextEdit):
 
     def createCustomContextMenu(self, pos) -> QtWidgets.QMenu:
         menu = self.createStandardContextMenu()
+        menu.addSeparator()
+        menu.addAction(QtGui.QIcon(get_resource(CONSTANTS.icons["plus"][CONSTANTS.theme])), "Insert Image", self.insert_image)
         menu.addSeparator()
         self.word_cursor = self.cursorForPosition(pos)
         self.word_cursor.select(QtGui.QTextCursor.WordUnderCursor)

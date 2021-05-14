@@ -74,6 +74,7 @@ class ExportWindow(QtWidgets.QWidget):
         formLayout.addRow("Select Date: ", self.date_select_layout)
 
         self.will_collate = QtWidgets.QCheckBox()
+        self.will_collate.setFixedSize(38, 38)
         formLayout.addRow("Collate together:", self.will_collate)
 
         self.setLayout(formLayout)
