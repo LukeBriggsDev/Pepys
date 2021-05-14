@@ -157,11 +157,13 @@ class EditPane(QtWidgets.QTextEdit):
     def createCustomContextMenu(self, pos) -> QtWidgets.QMenu:
         menu = self.createStandardContextMenu()
         menu.addSeparator()
+        self.word_cursor = self.cursorForPosition(pos)
+        self.word_cursor.select(QtGui.QTextCursor.WordUnderCursor)
         # Find misspelled word in highlighted text
-        misspelled = [token[0] for token in self.spell_tknzr(self.textCursor().selectedText()) if token[0][0].islower() and not spell_dict.check(token[0])]
+        misspelled = [token[0] for token in self.spell_tknzr(self.word_cursor.selectedText()) if token[0][0].islower() and not spell_dict.check(token[0])]
 
         # If there is a misspelled word and the word matches the whole of the highlighted text
-        if len(misspelled) > 0 and misspelled[0] == self.textCursor().selectedText():
+        if len(misspelled) > 0 and misspelled[0] == self.word_cursor.selectedText():
             # Add 'Add to Dictionary option'
             self.add_to_dict_action_handler = ActionHandler(menu.addAction("Add to dictionary"), self.add_to_word_list)
             menu.addSeparator()
@@ -187,7 +189,7 @@ class EditPane(QtWidgets.QTextEdit):
         return menu
 
     def replace_selection(self, action: QtWidgets.QAction):
-        self.textCursor().insertText(action.text())
+        self.word_cursor.insertText(action.text())
         self.save_current_file()
 
     def add_to_word_list(self, action: QtWidgets.QAction):
