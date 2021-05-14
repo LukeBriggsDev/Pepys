@@ -9,6 +9,7 @@ from CONSTANTS import get_resource
 import CONSTANTS
 from ColorParser import *
 from EditPane import EditPane
+from WebView import WebView
 
 if typing.TYPE_CHECKING:
     pass
@@ -17,14 +18,13 @@ import json
 
 class CalendarFileSelector(QtWidgets.QCalendarWidget):
     """Calendar widget for selecting the journal entry to edit"""
-    def __init__(self, edit_pane: EditPane):
+    def __init__(self, edit_pane: EditPane, web_view: WebView):
         """Constructor
         :param edit_pane: EditPane to open the new file in
         """
         super().__init__()
         self.edit_pane = edit_pane
-        #FIXME: using parentWidget is bad
-        self.preview_button = edit_pane.parentWidget().tool_bar.preview_button
+        self.web_view = web_view
         self.setWindowFlag(QtGui.Qt.Dialog)
 
         date = self.edit_pane.current_file_date.split("-")
@@ -66,7 +66,7 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
         self.edit_pane.open_file_from_date(date(self.selectedDate().year(),
                                                 self.selectedDate().month(),
                                                 self.selectedDate().day()))
-        self.preview_button.refresh_page()
+        self.web_view.refresh_page()
 
     def closeEvent(self, event:QtGui.QCloseEvent) -> None:
         # Re-enable the window of the edit=pane

@@ -30,6 +30,8 @@ class EditPane(QtWidgets.QTextEdit):
 
     spell_suggestion_handlers = []
 
+    file_changed = QtCore.Signal()
+
     def __init__(self) -> None:
         super().__init__()
         tab_stop = 4
@@ -107,7 +109,8 @@ class EditPane(QtWidgets.QTextEdit):
                              'tags: []\n'
                              '---\n')
         self.save_current_file()
-        self.parentWidget().tool_bar.favorite_button.refresh_icon()
+        self.file_changed.emit()
+        #self.parentWidget().tool_bar.favorite_button.refresh_icon()
         self.window().setWindowTitle(long_date)
         # Update view pane
 

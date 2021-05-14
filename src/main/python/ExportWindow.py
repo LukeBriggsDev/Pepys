@@ -100,6 +100,7 @@ class ExportWindow(QtWidgets.QWidget):
             self.will_collate.setEnabled(True)
         else:
             self.will_collate.setEnabled(False)
+            self.will_collate.setChecked(False)
 
     def disable_custom_date(self, *kwargs):
         if len(kwargs) == 0 or kwargs[0] != "Custom Range":
