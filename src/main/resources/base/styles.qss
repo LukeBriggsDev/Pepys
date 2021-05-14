@@ -3,6 +3,12 @@ AboutWindow{
     color: %text%;
 }
 
+QDialog{
+    background-color: %window%;
+    color: %text%;
+    text-align: center;
+}
+
 ExportWindow{
     background-color: %window%;
     color: %text%;

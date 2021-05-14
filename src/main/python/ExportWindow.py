@@ -80,7 +80,7 @@ class ExportWindow(QtWidgets.QWidget):
         self.setLayout(formLayout)
 
         self.export_button = QtWidgets.QPushButton("Export")
-        self.export_button.clicked.connect(self.export_diary)
+        self.export_button.clicked.connect(self.export_clicked)
         self.layout().addWidget(self.export_button)
 
         self.setStyleSheet(parse_stylesheet(get_resource("styles.qss"), get_resource("colors.json"), get_resource("config.json")))
@@ -111,10 +111,16 @@ class ExportWindow(QtWidgets.QWidget):
             self.start_date_widget.setEnabled(True)
             self.end_date_widget.setEnabled(True)
 
+    def export_clicked(self):
+        self.export_diary()
+        self.setEnabled(True)
+
+
     def export_diary(self):
 
         # Load dialog
         self.load_dialog = QtWidgets.QDialog(self)
+        self.load_dialog.setWindowModality(QtGui.Qt.WindowModal)
         self.load_dialog.setMinimumSize(400, 100)
         self.load_dialog.setWindowTitle("Exporting...")
         progress_label = QtWidgets.QLabel()
@@ -164,19 +170,22 @@ class ExportWindow(QtWidgets.QWidget):
         finished = 0
         # Conversion
         for entry in diary_entries:
-            os.chdir(entry.parent.as_posix())
-            try:
-                pypandoc.convert_file(entry.as_posix(), format["type"],
-                                      outputfile=(entry.parent.as_posix() + "/" + entry.name[:-3] + "." + format["ext"]),
-                                      extra_args=pdoc_args)
-            except RuntimeError as err:
-                progress_label.setText("ERROR IN FILE " + entry.name)
+            if self.load_dialog.isVisible():
+                os.chdir(entry.parent.as_posix())
+                try:
+                    pypandoc.convert_file(entry.as_posix(), format["type"],
+                                          outputfile=(entry.parent.as_posix() + "/" + entry.name[:-3] + "." + format["ext"]),
+                                          extra_args=pdoc_args)
+                except RuntimeError as err:
+                    progress_label.setText("ERROR IN FILE " + entry.name)
+                    QtWidgets.QApplication.processEvents()
+                    print(err)
+                finished += 1
+                progress_label.setText(str(finished) + "/" + str(len(diary_entries)))
+                progress_bar.setValue(finished)
                 QtWidgets.QApplication.processEvents()
-                print(err)
-            finished += 1
-            progress_label.setText(str(finished) + "/" + str(len(diary_entries)))
-            progress_bar.setValue(finished)
-            QtWidgets.QApplication.processEvents()
+            else:
+                return 1
         progress_label.setText("Conversion finished")
         QtWidgets.QApplication.processEvents()
 
@@ -186,7 +195,7 @@ class ExportWindow(QtWidgets.QWidget):
                 progress_label.setText("Starting pdf collation")
                 QtWidgets.QApplication.processEvents()
                 file_merger = PyPDF4.PdfFileMerger(strict=False)
-                pdf_list = sorted([Path(entry.as_posix[:-3] + ".pdf") for entry in diary_entries], key=lambda x: x.name)
+                pdf_list = sorted([Path(entry.as_posix()[:-3] + ".pdf") for entry in diary_entries], key=lambda x: x.name)
                 for pdf in pdf_list:
                     progress_label.setText(pdf.name)
                     QtWidgets.QApplication.processEvents()
@@ -223,6 +232,5 @@ class ExportWindow(QtWidgets.QWidget):
                 QtWidgets.QApplication.processEvents()
 
 
-        self.setEnabled(True)
         self.load_dialog.close()
 
