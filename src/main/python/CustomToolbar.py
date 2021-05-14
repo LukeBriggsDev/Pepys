@@ -216,7 +216,7 @@ class CustomToolbar(QtWidgets.QToolBar):
 
         main_window = self.parentWidget()
         # Set main window stylesheet
-        main_window.setStyleSheet(parse_stylesheet(get_resource("styles.qss"), get_resource("colors.json"), get_resource("config.json")))
+        main_window.setStyleSheet(parse_stylesheet(get_resource("styles.qss"), CONSTANTS.theme))
 
         # Refresh web_view
         self.web_view.refresh_page()

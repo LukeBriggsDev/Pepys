@@ -83,7 +83,7 @@ class ExportWindow(QtWidgets.QWidget):
         self.export_button.clicked.connect(self.export_clicked)
         self.layout().addWidget(self.export_button)
 
-        self.setStyleSheet(parse_stylesheet(get_resource("styles.qss"), get_resource("colors.json"), get_resource("config.json")))
+        self.setStyleSheet(parse_stylesheet(get_resource("styles.qss"),CONSTANTS.theme))
 
         self.setWindowTitle("Export")
 
@@ -157,9 +157,11 @@ class ExportWindow(QtWidgets.QWidget):
         if format["type"] == "pdf":
             # Convert to html before pdf to apply css
             pdoc_args.append("-thtml")
+            pass
 
         if format["type"] == "html" or format["type"]=="pdf":
-            parse_stylesheet(get_resource("ViewPaneStyle.css"), get_resource("colors.json"), get_resource("config.json"))
+            with open(get_resource("parsed_stylesheet.css"), "w+") as f:
+                f.write(parse_stylesheet(get_resource("ViewPaneStyle.css"), "light"))
             pdoc_args.append("--css="+get_resource("parsed_stylesheet.css"))
             pdoc_args.append("--self-contained")
 
@@ -199,7 +201,7 @@ class ExportWindow(QtWidgets.QWidget):
                 for pdf in pdf_list:
                     progress_label.setText(pdf.name)
                     QtWidgets.QApplication.processEvents()
-                    file_merger.append(pdf.as_posix(), pdf.name[:-4])
+                    file_merger.append(pdf.as_posix(), pdf.name[:-4], import_bookmarks=False)
                 file_merger.write(directory + "/diary.pdf")
                 progress_label.setText("pdf collation finished")
                 QtWidgets.QApplication.processEvents()

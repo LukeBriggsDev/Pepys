@@ -45,9 +45,7 @@ class WebView(QtWebEngineWidgets.QWebEngineView):
 
     def refresh_page(self):
         """Convert markdown to html and set webView"""
-        parsed_stylesheet = parse_stylesheet(get_resource('ViewPaneStyle.css'),
-                                             get_resource('colors.json'),
-                                             get_resource('config.json'))
+        parsed_stylesheet = parse_stylesheet(get_resource('ViewPaneStyle.css'), CONSTANTS.theme)
 
         # Write parsed stylesheet to file so it can be passed to pandoc
         with open(get_resource("parsed_stylesheet.css"), "w") as file:

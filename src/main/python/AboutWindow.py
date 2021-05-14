@@ -47,7 +47,7 @@ class AboutWindow(QtWidgets.QWidget):
         )
         self.setLayout(QtWidgets.QVBoxLayout())
         self.layout().addWidget(self.about_label)
-        self.setStyleSheet(parse_stylesheet(get_resource("styles.qss"), get_resource("colors.json"), get_resource("config.json")))
+        self.setStyleSheet(parse_stylesheet(get_resource("styles.qss"), CONSTANTS.theme))
         self.setWindowTitle("About")
 
 

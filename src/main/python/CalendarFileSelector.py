@@ -40,7 +40,7 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
         self.setMaximumSize(480, 480)
         self.setWindowTitle("Calendar")
 
-        self.setStyleSheet(parse_stylesheet(get_resource("CalendarStyle.qss"), get_resource("colors.json"), get_resource("config.json")))
+        self.setStyleSheet(parse_stylesheet(get_resource("CalendarStyle.qss"), CONSTANTS.theme))
 
         # Set format of how favorites appear in calendar
         favorite_format = QtGui.QTextCharFormat()

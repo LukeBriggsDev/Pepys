@@ -26,7 +26,7 @@ class MainWindow(QtWidgets.QWidget):
         super().__init__()
 
         self.date_opened = date.today()
-        self.original_stylesheet = parse_stylesheet(get_resource("styles.qss"), get_resource("colors.json"), get_resource("config.json"))
+        self.original_stylesheet = parse_stylesheet(get_resource("styles.qss"), CONSTANTS.theme)
 
         self.setStyleSheet(self.original_stylesheet)
 
