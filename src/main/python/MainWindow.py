@@ -24,6 +24,7 @@ class MainWindow(QtWidgets.QWidget):
         """Initialise main window
         """
         super().__init__()
+        self.setWindowIcon(QtGui.QIcon(get_resource("icons/appicons/icon.svg")))
 
         self.date_opened = date.today()
         self.original_stylesheet = parse_stylesheet(get_resource("styles.qss"), CONSTANTS.theme)
