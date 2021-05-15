@@ -9,7 +9,7 @@ import json
 import pathlib
 import shutil
 
-from src.main.python.ColorParser import parse_stylesheet
+from ColorParser import parse_stylesheet
 
 if typing.TYPE_CHECKING:
     pass

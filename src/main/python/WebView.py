@@ -7,7 +7,7 @@ import CONSTANTS
 from CONSTANTS import get_resource
 import pypandoc
 from EditPane import EditPane
-from src.main.python.ColorParser import parse_stylesheet
+from ColorParser import parse_stylesheet
 
 if typing.TYPE_CHECKING:
     from main import AppContext

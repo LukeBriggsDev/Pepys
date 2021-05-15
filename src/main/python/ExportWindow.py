@@ -164,6 +164,7 @@ class ExportWindow(QtWidgets.QWidget):
                 f.write(parse_stylesheet(get_resource("ViewPaneStyle.css"), "light"))
             pdoc_args.append("--css="+get_resource("parsed_stylesheet.css"))
             pdoc_args.append("--self-contained")
+            pdoc_args.append("--pdf-engine-opt=--enable-local-fileaccess")
 
 
         progress_label.setText("Converting to " + str(format["type"]))

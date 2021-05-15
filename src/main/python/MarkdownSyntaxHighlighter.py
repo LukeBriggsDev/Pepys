@@ -200,7 +200,7 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
 
 
 
-    def format_fence(self, text: str, fence_pattern: regex.Pattern, formatter: QtGui.QTextCharFormat, block_state_flag: int,
+    def format_fence(self, text: str, fence_pattern, formatter: QtGui.QTextCharFormat, block_state_flag: int,
                      required_start_block_positon:int = None):
         """Used to format blocks that are fenced
         :param text: the text of the current block
