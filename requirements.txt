@@ -5,3 +5,4 @@ pypandoc
 pyinstaller
 pyenchant
 PyPDF4
+setproctitle
