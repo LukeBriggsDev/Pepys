@@ -17,6 +17,7 @@ if typing.TYPE_CHECKING:
 from EditPane import EditPane
 from AboutWindow import AboutWindow
 from ExportWindow import ExportWindow
+from TableWindow import TableWindow
 from CONSTANTS import get_resource
 from CalendarFileSelector import CalendarFileSelector
 import CONSTANTS
@@ -190,8 +191,20 @@ class CustomToolbar(QtWidgets.QToolBar):
     def insert_clicked(self):
         self.insert_menu = QtWidgets.QMenu()
         self.insert_menu.addAction("Insert image", self.edit_pane.insert_image)
+        self.insert_menu.addAction("Insert table", self.open_table_options)
         self.insert_menu.popup(self.mapToGlobal(self.insert_button.pos() + QtCore.QPoint(- self.insert_button.width(), self.insert_button.height())))
         pass
+
+    def open_table_options(self):
+        self.table_option_dialog = TableWindow()
+        insert_button = QtWidgets.QPushButton("Create Table")
+        insert_button.clicked.connect(self.table_handler)
+        self.table_option_dialog.layout().addWidget(insert_button)
+        self.table_option_dialog.exec_()
+
+    def table_handler(self):
+        self.edit_pane.insert_table(self.table_option_dialog.table_cells)
+        self.table_option_dialog.close()
 
     def theme_switch(self):
 

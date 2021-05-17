@@ -151,6 +151,48 @@ class EditPane(QtWidgets.QTextEdit):
         shutil.copy(image, pathlib.Path(self.current_file).parent)
         self.insertPlainText(f"![]({pathlib.Path(image).name})")
 
+    def insert_table(self, table: list[list[QtWidgets.QTextEdit]]):
+        table_str = ""
+
+        # List of column widths
+        column_widths = [0] * len(table[0])
+        for row in range(len(table)):
+            for col in range(len(table[row])):
+                if len(max(table[row][col].toPlainText().split("\n"), key=len)) > column_widths[col]:
+                    column_widths[col] = len(max(table[row][col].toPlainText().split("\n"), key=len))
+
+        # Create top bar
+        table_str += "-" * (sum(column_widths) + len(table[0]) -1) + "\n"
+        # Main content
+        for row in range(len(table)):
+            column_text = [text_edit.toPlainText() for text_edit in table[row]]
+            # List of columns, each column is a list split by newline
+            column_by_lines = [column.split("\n") for column in column_text]
+            # Number of lines of longest column
+            max_lines = len(max(column_by_lines, key=len))
+
+            for line in range(max_lines):
+                for col in range(len(column_text)):
+                    try:
+                        table_str += column_by_lines[col][line]
+                        tallest_line = max(column_by_lines[col], key=len)
+                        # If current line is the longest in the table
+                        if len(column_by_lines[col][line]) == column_widths[col]:
+                            table_str += " "
+                        else:
+                            table_str += " " * (column_widths[col] - len(column_by_lines[col][line]) + 1)
+                    except IndexError:
+                        table_str += " " * column_widths[col] + " "
+                table_str += "\n"
+            if row == 0:
+                for col in range(len(table[0])):
+                    table_str += "-"* column_widths[col] + " "
+            table_str += "\n"
+
+        # Create bottom bar
+        table_str += "-" * (sum(column_widths) + len(table[0]) -1) + "\n"
+
+        self.insertPlainText(table_str)
 
 
     def createCustomContextMenu(self, pos) -> QtWidgets.QMenu:
