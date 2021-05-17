@@ -1,5 +1,3 @@
-#!/usr/bin/env python3.8
-
 import sys
 import os
 import setproctitle
@@ -9,7 +7,7 @@ from CONSTANTS import get_resource
 from MainWindow import MainWindow
 
 if __name__ == "__main__":
-    os.environ["QT_QPA_PLATFORM"] = "xcb"
+    os.putenv("QT_QPA_PLATFORM", "xcb")
     app = QtWidgets.QApplication(sys.argv)
     app.setApplicationName("Pepys")
     app.setApplicationDisplayName("Pepys")
