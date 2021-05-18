@@ -7,4 +7,4 @@
 - Add file chooser when exporting files
 
 ## Bug Fixes
-- Move config and written files to 
+- Move config and written files to user directories

@@ -236,7 +236,7 @@ class EditPane(QtWidgets.QTextEdit):
         self.save_current_file()
 
     def add_to_word_list(self, action: QtWidgets.QAction):
-        spell_dict.add_to_pwl(self.textCursor().selectedText())
+        spell_dict.add_to_pwl(self.word_cursor.selectedText())
         self.markdownHighlighter.rehighlight()
 
     def enterEvent(self, event: QtCore.QEvent) -> None:
