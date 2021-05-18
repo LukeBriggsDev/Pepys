@@ -7,7 +7,8 @@ from CONSTANTS import get_resource
 from MainWindow import MainWindow
 
 if __name__ == "__main__":
-    os.putenv("QT_QPA_PLATFORM", "xcb")
+    if sys.platform.lower().startswith("linux"):
+        os.putenv("QT_QPA_PLATFORM", "xcb")
     app = QtWidgets.QApplication(sys.argv)
     app.setApplicationName("Pepys")
     app.setApplicationDisplayName("Pepys")
