@@ -203,7 +203,7 @@ class CustomToolbar(QtWidgets.QToolBar):
         self.table_option_dialog.exec_()
 
     def table_handler(self):
-        self.edit_pane.insert_table(self.table_option_dialog.table_cells)
+        self.edit_pane.insert_table(self.table_option_dialog.table_cells, self.table_option_dialog.table_type.currentIndex(), self.table_option_dialog.include_headers.isChecked())
         self.table_option_dialog.close()
 
     def theme_switch(self):

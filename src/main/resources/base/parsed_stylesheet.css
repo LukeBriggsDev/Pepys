@@ -236,23 +236,23 @@ figcaption {
 
 table {
     margin-bottom: 2em;
-    border-bottom: 2px solid rgb(250, 250, 250);
-    border-right: 2px solid rgb(250, 250, 250);
+    border-bottom: 2px solid rgb(200, 200, 200);
+    border-right: 2px solid rgb(200, 200, 200);
     border-spacing: 0;
     border-collapse: collapse;
 }
 
 table th {
     padding: .2em 1em;
-    background-color: rgb(250, 250, 250);
-    border-top: 2px solid rgb(250, 250, 250);
-    border-left: 2px solid rgb(250, 250, 250);
+    background-color: rgb(200, 200, 200);
+    border-top: 2px solid rgb(200, 200, 200);
+    border-left: 2px solid rgb(200, 200, 200);
 }
 
 table td {
     padding: .2em 1em;
-    border-top: 2px solid rgb(250, 250, 250);
-    border-left: 2px solid rgb(250, 250, 250);
+    border-top: 2px solid rgb(200, 200, 200);
+    border-left: 2px solid rgb(200, 200, 200);
     vertical-align: top;
 }
 
