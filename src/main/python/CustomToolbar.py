@@ -190,6 +190,7 @@ class CustomToolbar(QtWidgets.QToolBar):
 
     def insert_clicked(self):
         self.insert_menu = QtWidgets.QMenu()
+        self.insert_menu.setStyleSheet(parse_stylesheet(get_resource("styles.qss"),CONSTANTS.theme))
         self.insert_menu.addAction("Insert image", self.edit_pane.insert_image)
         self.insert_menu.addAction("Insert table", self.open_table_options)
         self.insert_menu.popup(self.mapToGlobal(self.insert_button.pos() + QtCore.QPoint(- self.insert_button.width(), self.insert_button.height())))

@@ -30,6 +30,10 @@ QComboBox QAbstractItemView {
     color: %text%;
 }
 
+QDateEdit{
+    width: 200%;
+}
+
 QDateEdit:disabled{
     background-color: %window%;
     color: %lowlight%;
@@ -40,6 +44,12 @@ QDateEdit:editable{
     color: %text%;
 }
 
+QSpinBox{
+    background: %base%;
+    color: %text%;
+    width: 100%;
+}
+
 QComboBox:editable {
     background: %window%;
     color: %text%;
@@ -48,6 +58,8 @@ QComboBox:editable {
 QLabel{
     color: %text%;
 }
+
+
 
 QMenu{
     background-color: %base%;
