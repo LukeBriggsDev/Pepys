@@ -46,7 +46,7 @@ class TableWindow(QtWidgets.QDialog):
             if self.table_widget.item(i, col) is not None and \
                     self.table_widget.fontMetrics().horizontalAdvance(self.table_widget.item(i, col).text()) > self.table_widget.fontMetrics().horizontalAdvance(max_size):
                 max_size = self.table_widget.item(i, col).text()
-        self.table_widget.setColumnWidth(col, self.table_widget.fontMetrics().horizontalAdvance(max_size) + 10)
+        self.table_widget.setColumnWidth(col, self.table_widget.fontMetrics().horizontalAdvance(max_size) + 32)
 
     def set_headers(self, state: QtCore.Qt.CheckState):
 
