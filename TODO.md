@@ -8,4 +8,3 @@
 
 ## Bug Fixes
 - Move config and written files to user directories
-- Fix non-persistence of text when resizing table
