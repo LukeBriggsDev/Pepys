@@ -203,7 +203,20 @@ class CustomToolbar(QtWidgets.QToolBar):
         self.table_option_dialog.exec_()
 
     def table_handler(self):
-        self.edit_pane.insert_table(self.table_option_dialog.table_cells, self.table_option_dialog.table_type.currentIndex(), self.table_option_dialog.include_headers.isChecked())
+        table = self.table_option_dialog.table_widget
+        row_list = []
+        for row in range(table.rowCount()):
+            col_list = []
+            for col in range(table.columnCount()):
+                try:
+                    col_list.append(table.item(row, col).text())
+                except AttributeError:
+                    # Empty Cell
+                    col_list.append(" ")
+            row_list.append(col_list)
+        self.edit_pane.insert_table(row_list,
+                                    self.table_option_dialog.table_type.currentIndex(),
+                                    self.table_option_dialog.include_headers.isChecked())
         self.table_option_dialog.close()
 
     def theme_switch(self):

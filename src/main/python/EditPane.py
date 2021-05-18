@@ -151,9 +151,9 @@ class EditPane(QtWidgets.QTextEdit):
         shutil.copy(image, pathlib.Path(self.current_file).parent)
         self.insertPlainText(f"![]({pathlib.Path(image).name})")
 
-    def insert_table(self, table: list[list[QtWidgets.QTextEdit]], type: int, include_headers: bool):
+    def insert_table(self, table: list[list[str]], type: int, include_headers: bool):
         """Insert a table based off a given list of lists of text edits [row][col] and the type of table
-            :param table: list of rows, each being a list of columns within the row with QTextEdits as elements
+            :param table: list of rows, each being a list of columns within the row with text as elements
             :param type: the type of table to enter.
                         0 = simple multiline table
                         1 = grid table
@@ -170,8 +170,8 @@ class EditPane(QtWidgets.QTextEdit):
         # Assign lengths of column widths to corresponding index
         for row in range(len(table)):
             for col in range(len(table[row])):
-                if len(max(table[row][col].toPlainText().split("\n"), key=len)) > column_widths[col]:
-                    column_widths[col] = len(max(table[row][col].toPlainText().split("\n"), key=len))
+                if len(max(table[row][col].split("\n"), key=len)) > column_widths[col]:
+                    column_widths[col] = len(max(table[row][col].split("\n"), key=len))
 
         # Create top bar
         if type == grid_table:
@@ -184,7 +184,7 @@ class EditPane(QtWidgets.QTextEdit):
 
         # Main content
         for row in range(len(table)):
-            column_text = [text_edit.toPlainText() for text_edit in table[row]]
+            column_text = [text for text in table[row]]
             # List of columns, each column is a list split by newline
             column_by_lines = [column.split("\n") for column in column_text]
             # Number of lines of longest column
