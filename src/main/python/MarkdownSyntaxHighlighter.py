@@ -162,8 +162,9 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
         formatter.setFontWeight(QtGui.QFont.Bold)
         formatter.setFontItalic(False)
         formatter.setFontStrikeOut(False)
-        brush = QtWidgets.QApplication.palette().brush(QtGui.QPalette.Active,
-                                                       QtGui.QPalette.Dark if CONSTANTS.theme == "light" else QtGui.QPalette.Light)
+        brush = QtGui.QBrush()
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        brush.setColor(QtGui.QColor.fromRgba(0x88888888))
         formatter.setForeground(brush)
 
         self.format_fence(text, self.metadata_fence_pattern, formatter, self.IN_METADATA_BLOCK, required_start_block_positon=0)
