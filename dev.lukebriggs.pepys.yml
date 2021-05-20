@@ -88,3 +88,4 @@ modules:
     buildsystem: simple
     build-commands:
       - echo "python3 /app/src/main/python/main.py" > /app/bin/runner.sh
+      - chmod +x /app/bin/runner.sh
