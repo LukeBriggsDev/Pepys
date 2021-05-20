@@ -32,7 +32,7 @@ class EditPane(QtWidgets.QTextEdit):
         spell_tknzr = get_tokenizer()
 
     spell_suggestion_handlers = []
-    file_changed = QtCore.Signal()
+    file_changed = QtCore.pyqtSignal()
 
     def __init__(self) -> None:
         super().__init__()

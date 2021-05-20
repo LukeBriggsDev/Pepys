@@ -8,7 +8,7 @@ add-extensions:
     subdirectories: true
     autodelete: true
     version: '20.08'
-command: test.sh
+command: runner.sh
 finish-args:
   - --share=ipc
   - --socket=x11
@@ -87,4 +87,4 @@ modules:
   - name: test
     buildsystem: simple
     build-commands:
-      - echo Hello World > /app/bin/test.sh
+      - echo "python3 /app/src/main/python/main.py" > /app/bin/runner.sh
