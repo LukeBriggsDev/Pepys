@@ -3,6 +3,7 @@ import os
 import sys
 import enchant
 import pathlib
+from PySide2 import QtGui, QtWidgets
 
 def get_resource(filepath):
     """
@@ -37,8 +38,8 @@ spell_dict = enchant.DictWithPWL(spell_lang, get_resource("wordlist.txt"))
 # Load icons and themes
 with open(get_resource("icons.json")) as icons:
     icons = json.loads(icons.read())
-with open(get_resource("config.json")) as config:
-    theme = json.loads(config.read())["theme"]
+
+theme = "light"
 with open(get_resource("colors.json")) as colors:
     colors = json.loads(colors.read())
 

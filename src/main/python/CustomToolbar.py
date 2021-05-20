@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import typing
 
-from PyQt5 import QtWidgets, QtGui, QtCore
+from PySide2 import QtWidgets, QtGui, QtCore
 
 from WebView import WebView
 import json
@@ -49,7 +49,7 @@ class CustomToolbar(QtWidgets.QToolBar):
         # Favorite button
         self.favorite_button = QtWidgets.QPushButton()
         self.favorite_button.setMinimumSize(32, 32)
-        self.favorite_button.setMinimumSize(32, 32)
+        self.favorite_button.setMaximumSize(32, 32)
         self.refresh_favorite()
         self.setToolTip("Favourite")
         self.favorite_button.clicked.connect(self.favorite_clicked)
@@ -57,7 +57,7 @@ class CustomToolbar(QtWidgets.QToolBar):
         # Preview button
         self.preview_button = QtWidgets.QPushButton()
         self.preview_button.setMinimumSize(32, 32)
-        self.preview_button.setMinimumSize(32, 32)
+        self.preview_button.setMaximumSize(32, 32)
         self.preview_button.setIcon(QtGui.QIcon(get_resource("icons/book.svg")))
         self.preview_button.setToolTip("Preview")
         self.preview_button.clicked.connect(self.preview_clicked)
@@ -65,7 +65,7 @@ class CustomToolbar(QtWidgets.QToolBar):
         # About button
         self.about_button = QtWidgets.QPushButton()
         self.about_button.setMinimumSize(32, 32)
-        self.about_button.setMinimumSize(32, 32)
+        self.about_button.setMaximumSize(32, 32)
         self.about_button.setIcon(QtGui.QIcon(get_resource("icons/question.svg")))
         self.about_button.setToolTip("About")
         self.about_button.clicked.connect(self.about_clicked)
@@ -73,7 +73,7 @@ class CustomToolbar(QtWidgets.QToolBar):
         # Export Button
         self.export_button = QtWidgets.QPushButton()
         self.export_button.setMinimumSize(32, 32)
-        self.export_button.setMinimumSize(32, 32)
+        self.export_button.setMaximumSize(32, 32)
         self.export_button.setIcon(QtGui.QIcon(get_resource("icons/export.svg")))
         self.export_button.setToolTip("Export")
         self.export_button.clicked.connect(self.export_clicked)
@@ -85,22 +85,14 @@ class CustomToolbar(QtWidgets.QToolBar):
         self.insert_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["plus"][CONSTANTS.theme])))
         self.insert_button.setToolTip("Insert")
         self.insert_button.clicked.connect(self.insert_clicked)
-
-        # Theme switch button
-        self.theme_switch_button = QtWidgets.QPushButton()
-        self.theme_switch_button.setMinimumSize(32, 32)
-        self.theme_switch_button.setMinimumSize(32, 32)
-        self.theme_switch_button.setToolTip("Change theme")
-        self.theme_switch_button.clicked.connect(self.theme_switch)
+        #
+        # # Theme switch button
+        # self.theme_switch_button = QtWidgets.QPushButton()
+        # self.theme_switch_button.setMinimumSize(32, 32)
+        # self.theme_switch_button.setMaximumSize(32, 32)
+        # self.theme_switch_button.setToolTip("Change theme")
+        # self.theme_switch_button.clicked.connect(self.theme_switch)
         # Read current theme
-        with open(get_resource("config.json"), "r") as config:
-            theme = json.loads(config.read())["theme"]
-        # Set corresponding icon
-        if theme == "light":
-            self.theme_switch_button.setIcon(QtGui.QIcon(get_resource("icons/brightness-high.svg")))
-        else:
-            self.theme_switch_button.setIcon(QtGui.QIcon(get_resource("icons/brightness-low-fill.svg")))
-        self.theme_switch_button.setToolTip("Change Theme")
 
         # Add buttons to layout
         self.addWidget(self.open_entry_button)
@@ -112,13 +104,30 @@ class CustomToolbar(QtWidgets.QToolBar):
         self.addWidget(spacer)
         self.addWidget(self.insert_button)
         self.addWidget(self.preview_button)
-        self.addWidget(self.theme_switch_button)
         self.addWidget(self.about_button)
+        self.setStyleSheet("""
+        CustomToolbar{
+            background-color: palette(window);
+            border: 1px solid palette(dark);
+        }
+        QPushButton{
+            background-color: window;
+            border: 0px;
+            border-radius: 4px;
+        }
+        QPushButton:hover{
+            background-color: palette(midlight);
+        }
+        QPushButton:pressed{
+            background-color: palette(dark);
+        }
+        
+""")
 
 
     def changeEvent(self, event:QtCore.QEvent) -> None:
         # Change button icons to match theme
-        if event.type() == QtCore.QEvent.Type.StyleChange:
+        if event.type() == QtCore.QEvent.StyleChange:
             self.open_entry_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["open_entry"][CONSTANTS.theme])))
             self.refresh_favorite()
 
@@ -127,10 +136,8 @@ class CustomToolbar(QtWidgets.QToolBar):
                 self.preview_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["preview"][CONSTANTS.theme])))
             else:
                 self.preview_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["preview_stop"][CONSTANTS.theme])))
-
             self.about_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["about"][CONSTANTS.theme])))
             self.insert_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["plus"][CONSTANTS.theme])))
-            self.theme_switch_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["theme_switch"][CONSTANTS.theme])))
             self.export_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["export"][CONSTANTS.theme])))
 
     def about_clicked(self):
@@ -140,7 +147,7 @@ class CustomToolbar(QtWidgets.QToolBar):
         # Disable main window
         self.window().setFocusProxy(self.about_window)
         self.window().setDisabled(True)
-        self.about_window.setFocusPolicy(QtCore.Qt.FocusPolicy.StrongFocus)
+        self.about_window.setFocusPolicy(QtCore.Qt.StrongFocus)
 
         self.about_window.show()
 
@@ -148,8 +155,7 @@ class CustomToolbar(QtWidgets.QToolBar):
         """Open calendar dialog and disable main window"""
         self.date_dialog = CalendarFileSelector(self.edit_pane, self.web_view)
         self.window().setFocusProxy(self.date_dialog)
-        self.window().setDisabled(True)
-        self.date_dialog.setFocusPolicy(QtCore.Qt.FocusPolicy.StrongFocus)
+        self.date_dialog.setFocusPolicy(QtCore.Qt.StrongFocus)
 
         self.date_dialog.show()
 
@@ -190,7 +196,6 @@ class CustomToolbar(QtWidgets.QToolBar):
 
     def insert_clicked(self):
         self.insert_menu = QtWidgets.QMenu()
-        self.insert_menu.setStyleSheet(parse_stylesheet(get_resource("styles.qss"),CONSTANTS.theme))
         self.insert_menu.addAction("Insert image", self.edit_pane.insert_image)
         self.insert_menu.addAction("Insert table", self.open_table_options)
         self.insert_menu.popup(self.mapToGlobal(self.insert_button.pos() + QtCore.QPoint(- self.insert_button.width(), self.insert_button.height())))
@@ -242,8 +247,6 @@ class CustomToolbar(QtWidgets.QToolBar):
             config.write(json.dumps(current_config, sort_keys=True, indent=4))
 
         main_window = self.parentWidget()
-        # Set main window stylesheet
-        main_window.setStyleSheet(parse_stylesheet(get_resource("styles.qss"), CONSTANTS.theme))
 
         # Refresh web_view
         self.web_view.refresh_page()
@@ -257,6 +260,6 @@ class CustomToolbar(QtWidgets.QToolBar):
         # Disable current window
         self.window().setFocusProxy(self.export_window)
         self.window().setDisabled(True)
-        self.export_window.setFocusPolicy(QtCore.Qt.FocusPolicy.StrongFocus)
+        self.export_window.setFocusPolicy(QtCore.Qt.StrongFocus)
 
         self.export_window.show()

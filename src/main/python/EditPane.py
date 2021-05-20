@@ -11,7 +11,7 @@ import shutil
 import pathlib
 import CONSTANTS
 
-from PyQt5 import QtWidgets, QtGui, QtCore
+from PySide2 import QtWidgets, QtGui, QtCore
 from num2words import num2words
 
 from CONSTANTS import get_resource, spell_lang, spell_dict
@@ -32,11 +32,12 @@ class EditPane(QtWidgets.QTextEdit):
         spell_tknzr = get_tokenizer()
 
     spell_suggestion_handlers = []
-    file_changed = QtCore.pyqtSignal()
+    file_changed = QtCore.Signal()
 
     def __init__(self) -> None:
         super().__init__()
         tab_stop = 4
+        self.setFontPointSize(14)
         font = QtGui.QFont("monospace")
         font.setStyleHint(QtGui.QFont.TypeWriter)
         self.setFont(font)
@@ -44,12 +45,12 @@ class EditPane(QtWidgets.QTextEdit):
         # Set tab width
         metrics = QtGui.QFontMetrics(QtGui.QFontDatabase.systemFont(QtGui.QFontDatabase.FixedFont))
 
-        self.setTabStopDistance(metrics.width("    "))
+        self.setTabStopDistance(metrics.width(" " * tab_stop))
         # Set to prevent formatting being pasted from clipboard
         self.setAcceptRichText(False)
         self.setWordWrapMode(QtGui.QTextOption.WrapAtWordBoundaryOrAnywhere)
 
-        self.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOn)
+        self.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
 
         # Used to know current directory to be relative to
         self._current_file = ""

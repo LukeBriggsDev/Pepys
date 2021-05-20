@@ -1,6 +1,7 @@
 import json
 import re
-from PyQt5.QtGui import QColor
+from PySide2 import QtWidgets
+from PySide2.QtGui import QColor
 import CONSTANTS
 
 def text_to_rgb(color: str) -> QColor:
@@ -12,14 +13,36 @@ def text_to_rgb(color: str) -> QColor:
 def parse_stylesheet(stylesheet_file_path: str, theme: str) -> str:
     """Parses stylesheet files with logical formatting to a readable form
     :param stylesheet_file_path: path to the stylesheet file to parse
-    :param colors_file_path: path to file containing mapping of logical colours to rgb
-    :param config_file_path: path to config file storing the current theme
+    :param theme: theme to convert colors to
     :return stylesheet as a string
     """
+    palette = QtWidgets.QApplication.palette()
+    palette_map = {
+        "WindowText": palette.ColorRole.WindowText,
+        "Button": palette.ColorRole.Button,
+        "Light": palette.ColorRole.Light,
+        "Midlight": palette.ColorRole.Midlight,
+        "Dark": palette.ColorRole.Dark,
+        "Mid": palette.ColorRole.Mid,
+        "Text": palette.ColorRole.Text,
+        "BrightText": palette.ColorRole.BrightText,
+        "ButtonText": palette.ColorRole.ButtonText,
+        "Base": palette.ColorRole.Base,
+        "Window": palette.ColorRole.Window,
+        "Shadow": palette.ColorRole.Shadow,
+        "Highlight": palette.ColorRole.Highlight,
+        "HighlightedText": palette.ColorRole.HighlightedText,
+        "Link": palette.ColorRole.Link,
+        "LinkVisited": palette.ColorRole.LinkVisited,
+        "AlternateBase": palette.ColorRole.AlternateBase,
+        "NoRole": palette.ColorRole.NoRole,
+        "ToolTipBase": palette.ColorRole.ToolTipBase,
+        "ToolTipText": palette.ColorRole.ToolTipText,
+        "PlaceholderText": palette.ColorRole.PlaceholderText
+    }
     with open(stylesheet_file_path, "r") as pane_style:
-        colors_dict = CONSTANTS.colors
         stylesheet = pane_style.read()
-        for color_role in colors_dict[theme].keys():
-            stylesheet = re.sub(f"%{color_role}%", colors_dict[theme][color_role], stylesheet)
+        for color_role in palette_map.keys():
+            stylesheet = re.sub(f"%{color_role}%", palette.color(palette_map[color_role]).name(), stylesheet)
 
     return stylesheet

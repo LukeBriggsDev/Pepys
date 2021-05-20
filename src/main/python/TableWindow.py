@@ -1,4 +1,4 @@
-from PyQt5 import QtWidgets, QtGui, QtCore
+from PySide2 import QtWidgets, QtGui, QtCore
 import CONSTANTS
 from CONSTANTS import get_resource
 from ColorParser import parse_stylesheet
@@ -9,7 +9,6 @@ class TableWindow(QtWidgets.QDialog):
         super().__init__()
         self.table_cells = []
         self.setMinimumSize(800, 600)
-        self.setStyleSheet(parse_stylesheet(get_resource("styles.qss"), CONSTANTS.theme))
         self.table_option_layout = QtWidgets.QFormLayout()
         self.row_spinbox = QtWidgets.QSpinBox()
         self.row_spinbox.setMinimum(1)
@@ -56,9 +55,11 @@ class TableWindow(QtWidgets.QDialog):
                     if state == QtCore.Qt.CheckState.Checked:
                         font = cell.font()
                         font.setBold(True)
+                        cell.setBackground(QtWidgets.QApplication.palette().color(QtGui.QPalette.Window))
                         cell.setFont(font)
                     else:
                         self.table_widget.item(0, col)
                         font = cell.font()
                         font.setBold(False)
+                        cell.setBackground(QtWidgets.QApplication.palette().color(QtGui.QPalette.Base))
                         cell.setFont(font)

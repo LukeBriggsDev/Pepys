@@ -3,7 +3,7 @@ from __future__ import annotations
 import typing
 from datetime import date
 
-from PyQt5 import QtWidgets, QtGui, QtCore
+from PySide2 import QtWidgets, QtGui, QtCore
 
 from CONSTANTS import get_resource
 import CONSTANTS
@@ -40,7 +40,58 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
         self.setMaximumSize(480, 480)
         self.setWindowTitle("Calendar")
 
-        self.setStyleSheet(parse_stylesheet(get_resource("CalendarStyle.qss"), CONSTANTS.theme))
+        self.setStyleSheet("""
+        QMenu { 
+            font-size:16px; 
+            width: 150px; 
+            left: 20px; 
+            background-color: palette(base);
+        }
+        QWidget{
+            background-color: palette(base)
+        }
+        QToolButton {
+            icon-size: 24px, 24px;
+            background-color: palette(base);
+        }
+        QAbstractItemView {
+            selection-background-color: rgb(255, 174, 0);
+        }
+        QToolButton::menu-arrow {
+        }
+        QToolButton::menu-button {
+        }
+        QToolButton::menu-indicator{
+            width: 50px;
+        }
+        QToolButton::menu-indicator:pressed, QToolButton::menu-indicator:open{
+            top:10px; 
+            left: 10px;
+        }
+        QListView {
+        background-color:white;
+        }
+        QSpinBox {
+            width:200px; 
+            border-width: 2px;
+        }
+        QSpinBox::up-button { 
+            subcontrol-origin: border;
+            subcontrol-position: top right; 
+            width:50px; border-image: url(icons:arrow_up_n.png);
+        }
+        QSpinBox::down-button {
+            subcontrol-origin: border; 
+            subcontrol-position: bottom right;
+            border-width: 1px; 
+            width:10px;
+            }
+        QSpinBox::down-arrow { 
+            width:6px; 
+            height:6px;
+        image: url(icons:arrow_down_n.png); 
+        }
+""")
 
         # Set format of how favorites appear in calendar
         favorite_format = QtGui.QTextCharFormat()
@@ -70,7 +121,7 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
 
     def closeEvent(self, event:QtGui.QCloseEvent) -> None:
         # Re-enable the window of the edit=pane
-        self.edit_pane.parentWidget().setFocusPolicy(QtCore.Qt.FocusPolicy.StrongFocus)
+        self.edit_pane.parentWidget().setFocusPolicy(QtCore.Qt.StrongFocus)
         self.edit_pane.parentWidget().setDisabled(False)
 
 

@@ -1,23 +1,45 @@
-QAbstractItemView
-{
-    selection-background-color: rgb(125,123,123);
-    selection-color: %base%;
-
+QMenu {
+    font-size:16px;
+    width: 150px;
+    left: 20px;
+    background-color: palette(window);
 }
-QWidget
-{
-  color: %text%;
-  font-family: "Inter";
-  background-color: %base%;
+QToolButton {
+    icon-size: 48px, 48px;
+    background-color: palette(window);
+    height: 100px; width: 200px;
 }
-
-QObject
-{
-    alternate-background-color: %window%;
+QAbstractItemView {
+    selection-background-color: rgb(255, 174, 0);
 }
-
-
-QTableView{
-    border-width:0px;
-    background-color: %base%;
+QToolButton::menu-arrow {
 }
+QToolButton::menu-button {
+}
+QToolButton::menu-indicator{
+    width: 50px;
+}
+QToolButton::menu-indicator:pressed, QToolButton::menu-indicator:open{
+    top:10px;
+    left: 10px;
+}
+QListView {
+background-color:white;
+}
+QSpinBox {
+width:200px;
+border-width: 2px;
+}
+QSpinBox::up-button {
+subcontrol-origin: border;
+subcontrol-position: top right;
+width:50px;
+}
+QSpinBox::down-button {
+subcontrol-origin: border;
+subcontrol-position: bottom right;
+border-width: 1px;
+width:50px;}
+QSpinBox::down-arrow {
+width:26px;
+height:17px;

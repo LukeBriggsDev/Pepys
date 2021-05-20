@@ -1,150 +1,85 @@
-AboutWindow{
-    background-color: %window%;
-    color: %text%;
+MainWindow{
+    background-color: palette(window);
+    border: 0px solid palette(base);
 }
 
 QDialog{
-    background-color: %window%;
-    color: %text%;
     text-align: center;
+    background-color: palette(window);
+    color: palette(text);
 }
 
 QTableWidget{
-    background-color: %window%;
-    color: %text%;
     text-align: center;
+    background-color: palette(window);
+    color: palette(text);
 }
 
 QTableWidget::item{
-    border: 1px solid %lowlight%
+    border-width: 1px;
+    border-style: solid;
 }
 
 ExportWindow{
-    background-color: %window%;
-    color: %text%;
+
     text-align: center;
 }
 
-QComboBox QAbstractItemView {
-    background-color: %window%;
-    color: %text%;
-}
-
 QDateEdit{
-    width: 200%;
+    width: 200px;
 }
 
-QDateEdit:disabled{
-    background-color: %window%;
-    color: %lowlight%;
-}
-
-QDateEdit:editable{
-    background-color: %base%;
-    color: %text%;
-}
 
 QSpinBox{
-    background: %base%;
-    color: %text%;
-    width: 100%;
-}
-
-QComboBox:editable {
-    background: %window%;
-    color: %text%;
-}
-
-QLabel{
-    color: %text%;
-}
-
-
-
-QMenu{
-    background-color: %base%;
-}
-
-QMenu::item:disabled{
-
-    color: %text_alt%;
-
-}
-
-QMenu::item:enabled{
-
-    color: %text%;
-
-}
-
-QMenu::item:selected{
-    background-color: %link%;
-    color: %text%;
-}
-
-
-QPushButton{
-
-    background-color: %base%;
-    color: %text%;
-
+    width: 100px;
 }
 
 QLabel{
     font-size: 12pt;
-    font-family: "Inter";
 }
 
 QTextEdit{
     font-size: 14pt;
-    color: %text%;
-    background-color:  %base%;
-    border: 0px solid %base%;
-
+    color: palette(text);
+    background-color: palette(base);
+    border: 0px solid palette(base);
 }
 
 QScrollBar:vertical{
-    border: 0px solid %base%;
-    background-color: %base%;
+    border: 0px solid palette(base);
+    background-color: palette(base);
     margin: 0px 0px 0px 0px;
 }
 QScrollBar::handle:vertical{
     min-height: 0px;
     border: 0px solid red;
     border-radius: 4px;
-    background-color: rgb(125,124,123);
+    background-color: palette(shadow);
 }
-QScrollBar::add-line:vertical {
+QScrollBar::add-line:vertical{
     height: 0px;
     subcontrol-position: bottom;
     subcontrol-origin: margin;
 }
-QScrollBar::sub-line:vertical {
+QScrollBar::sub-line:vertical{
     height: 0px;
     subcontrol-position: top;
     subcontrol-origin: margin;
 }
 
-QToolBar {
-    background-color: %window%;
-    border: 1px solid %dark%;
-
+QToolBar{
+    background-color: palette(base);
 }
-QToolBar QPushButton {
-    background-color: %window%;
-    border: 0px;
+QToolBar QPushButton{
+    background-color: white;
 }
 
-QToolBar QPushButton:hover {
-    background-color: %button%;
-    border: 0 solid %dark%;
-    border-radius: 4px;
+QToolBar QPushButton:hover{
+    background-color: palette(mid);
 }
 
-QToolBar QPushButton:pressed {
-    background-color: %button_pressed%;
-    border: 0 solid %dark%;
-    border-radius: 4px;
+QToolBar QPushButton:pressed{
+    background-color: palette(dark);
 }
 
 

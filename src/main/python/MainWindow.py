@@ -5,7 +5,7 @@ import sys
 import typing
 from datetime import date
 
-from PyQt5 import QtWidgets, QtGui
+from PySide2 import QtWidgets, QtGui
 
 from ColorParser import *
 from CustomToolbar import CustomToolbar
@@ -25,9 +25,11 @@ class MainWindow(QtWidgets.QWidget):
         """
         super().__init__()
         self.date_opened = date.today()
-        self.original_stylesheet = parse_stylesheet(get_resource("styles.qss"), CONSTANTS.theme)
+        self.setStyleSheet("""MainWindow{
+    background-color: palette(base);
+    border: 0px solid palette(base);
+}""")
 
-        self.setStyleSheet(self.original_stylesheet)
 
         # Load config
         config_file = get_resource("config.json")
@@ -88,20 +90,22 @@ class MainWindow(QtWidgets.QWidget):
 
         :param event: QResizeEvent that caused invocation
         """
-
+        print("WA")
         # Increase width of scroll bar left border to create a margin 25% width of the main window.
         margin_size = max(0, int((self.width() - 1000) * 0.5))
-        scroll_bar_width = 4
+        print(margin_size)
+        scroll_bar_width = 6
         self.edit_pane.verticalScrollBar().setStyleSheet(
             "QScrollBar:vertical {"
             f"width: {margin_size + scroll_bar_width};"
-            f"border-left-width: {margin_size - scroll_bar_width}px ;"
+            f"margin-left: {margin_size - scroll_bar_width}px;"
             "}")
 
         # Increase left border of the QTextEdit pane to create a left margin 25% width of the main window
         self.edit_pane.setStyleSheet(
                            "QTextEdit { "
-                           f"border-left-width: {margin_size} px;"
+                           f"margin-left: {margin_size} px;"
+                           f"border: 0px solid palette(base);"
                            "}")
 
 

@@ -3,7 +3,7 @@ from __future__ import annotations
 import typing
 from threading import Thread
 
-from PyQt5 import QtWidgets, QtGui, QtCore
+from PySide2 import QtWidgets, QtGui, QtCore
 
 from CONSTANTS import get_resource
 from ColorParser import *
@@ -39,9 +39,8 @@ class ExportWindow(QtWidgets.QWidget):
         self.main_window = main_window
         self.setMaximumSize(640, 240)
         self.setMinimumSize(640, 240)
-        self.setWindowFlag(QtCore.Qt.WindowType.Dialog)
+        self.setWindowFlag(QtCore.Qt.Dialog)
         formLayout = QtWidgets.QFormLayout()
-
         self.export_options = QtWidgets.QComboBox()
 
 
@@ -59,16 +58,18 @@ class ExportWindow(QtWidgets.QWidget):
 
         self.custom_date_layout = QtWidgets.QFormLayout()
         self.start_date_widget = QtWidgets.QDateEdit()
+        self.start_date_widget.setMinimumWidth(200)
         self.start_date_widget.setDisplayFormat("yyyy-MM-dd")
         self.start_date_widget.setDate(QtCore.QDate.currentDate())
         self.end_date_widget = QtWidgets.QDateEdit()
+        self.end_date_widget.setMinimumWidth(200)
         self.end_date_widget.setDisplayFormat("yyyy-MM-dd")
         self.end_date_widget.setDate(QtCore.QDate.currentDate())
         self.custom_date_layout.addRow("Start Date:", self.start_date_widget)
         self.start_date_widget.dateChanged.connect(self.end_date_widget.setMinimumDate)
         self.custom_date_layout.addRow("End Date:", self.end_date_widget)
         self.end_date_widget.dateChanged.connect(self.start_date_widget.setMaximumDate)
-        self.date_select_layout.addLayout(self.custom_date_layout, 2, 0, 1, self.custom_date_layout.rowCount())
+        self.date_select_layout.addLayout(self.custom_date_layout, 2, 0, self.custom_date_layout.rowCount(), 2)
 
 
         formLayout.addRow("Select Date: ", self.date_select_layout)
@@ -82,8 +83,6 @@ class ExportWindow(QtWidgets.QWidget):
         self.export_button = QtWidgets.QPushButton("Export")
         self.export_button.clicked.connect(self.export_clicked)
         self.layout().addWidget(self.export_button)
-
-        self.setStyleSheet(parse_stylesheet(get_resource("styles.qss"),CONSTANTS.theme))
 
         self.setWindowTitle("Export")
 
@@ -158,7 +157,7 @@ class ExportWindow(QtWidgets.QWidget):
 
         if format["type"] == "pdf":
             # Convert to html before pdf to apply css
-            #pdoc_args.append("-thtml")
+            pdoc_args.append("-thtml")
             pass
 
         if format["type"] == "html" or format["type"]=="pdf":
@@ -166,7 +165,7 @@ class ExportWindow(QtWidgets.QWidget):
                 f.write(parse_stylesheet(get_resource("ViewPaneStyle.css"), "light"))
             pdoc_args.append("--css="+get_resource("parsed_stylesheet.css"))
             pdoc_args.append("--self-contained")
-            #pdoc_args.append("--pdf-engine-opt=--enable-local-file-access")
+            pdoc_args.append("--pdf-engine-opt=--enable-local-file-access")
 
 
         progress_label.setText("Converting to " + str(format["type"]))

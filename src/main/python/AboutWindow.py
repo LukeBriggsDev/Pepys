@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import typing
 
-from PyQt5 import QtWidgets, QtGui, QtCore
+from PySide2 import QtWidgets, QtGui, QtCore
 
 from ColorParser import *
 
@@ -22,16 +22,16 @@ class AboutWindow(QtWidgets.QWidget):
         self.main_window = main_window
         self.setMaximumSize(360, 360)
         self.setMinimumSize(360, 360)
-        self.setWindowFlag(QtCore.Qt.WindowType.Dialog)
+        self.setWindowFlag(QtCore.Qt.Dialog)
         self.about_label = QtWidgets.QLabel()
 
         # Link settings
-        self.about_label.setTextFormat(QtCore.Qt.TextFormat.RichText)
-        self.about_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextBrowserInteraction)
+        self.about_label.setTextFormat(QtCore.Qt.RichText)
+        self.about_label.setTextInteractionFlags(QtCore.Qt.TextBrowserInteraction)
         self.about_label.setOpenExternalLinks(True)
 
         #Formatting
-        self.about_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.about_label.setAlignment(QtCore.Qt.AlignCenter)
         self.about_label.setWordWrap(True)
         self.about_label.setText(
             f'<img src="{get_resource("icons/appicons/hires/128.png")}"/>'
@@ -47,11 +47,15 @@ class AboutWindow(QtWidgets.QWidget):
         )
         self.setLayout(QtWidgets.QVBoxLayout())
         self.layout().addWidget(self.about_label)
-        self.setStyleSheet(parse_stylesheet(get_resource("styles.qss"), CONSTANTS.theme))
+        self.setStyleSheet("""    
+        text-align: center;
+        background-color: palette(window);
+        color: palette(text);
+    """)
         self.setWindowTitle("About")
 
 
     def closeEvent(self, event:QtGui.QCloseEvent) -> None:
-        self.main_window.setFocusPolicy(QtCore.Qt.FocusPolicy.StrongFocus)
+        self.main_window.setFocusPolicy(QtCore.Qt.StrongFocus)
         self.main_window.setDisabled(False)
 
