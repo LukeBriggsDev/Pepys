@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import locale
 import os
+import sys
 import typing
 from datetime import date
 import enchant
@@ -38,8 +39,14 @@ class EditPane(QtWidgets.QTextEdit):
         super().__init__()
         tab_stop = 4
         self.setFontPointSize(14)
-        font = QtGui.QFont("monospace")
-        font.setStyleHint(QtGui.QFont.TypeWriter)
+        font = QtGui.QFont()
+        if sys.platform.startswith("linux"):
+            font = QtGui.QFont("monospace")
+        elif sys.platform.startswith("darwin"):
+            font = QtGui.QFont("SF Mono")
+        elif sys.platform.startswith("win"):
+            font = QtGui.QFont("Consolas")
+        font.setStyleHint(QtGui.QFont.Monospace)
         self.setFont(font)
         print(self.font().family())
         # Set tab width
