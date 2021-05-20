@@ -38,6 +38,10 @@
   "left_arrow":{
     "light": "icons/arrow-left.svg",
     "dark": "icons/arrow-left-white.svg"
+  },
+  "plus": {
+    "light": "icons/plus.svg",
+    "dark": "icons/plus-white.svg"
   }
 
 }

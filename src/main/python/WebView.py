@@ -2,9 +2,12 @@ from __future__ import annotations
 
 import typing
 
-from PySide2 import QtGui, QtCore, QtWebEngineWidgets
+from PyQt5 import QtGui, QtCore, QtWebEngineWidgets
 import CONSTANTS
+from CONSTANTS import get_resource
+import pypandoc
 from EditPane import EditPane
+from ColorParser import parse_stylesheet
 
 if typing.TYPE_CHECKING:
     from main import AppContext
@@ -39,6 +42,25 @@ class WebView(QtWebEngineWidgets.QWebEngineView):
         # Change background colour when style changes to match themeZ
         if event.type() is QtCore.QEvent.Type.StyleChange:
             self.page().setBackgroundColor(self.bg_colors[CONSTANTS.theme])
+
+    def refresh_page(self):
+        """Convert markdown to html and set webView"""
+        parsed_stylesheet = parse_stylesheet(get_resource('ViewPaneStyle.css'), CONSTANTS.theme)
+
+        # Write parsed stylesheet to file so it can be passed to pandoc
+        with open(get_resource("parsed_stylesheet.css"), "w") as file:
+            file.write(parsed_stylesheet)
+
+        # Convert markdown to html using pandoc
+        html = pypandoc.convert_text(self.edit_pane.toPlainText(), "html", format="markdown",extra_args=[
+            f"--highlight-style={get_resource('syntax.theme')}",
+            "-s",
+            "--css="
+            f"{get_resource('parsed_stylesheet.css')}",
+            f"--katex={get_resource('katex/')}"
+        ])
+
+        self.setHtml(html, QtCore.QUrl().fromLocalFile(self.edit_pane.current_file))
 
 
 

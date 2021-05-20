@@ -7,8 +7,11 @@ import typing
 from datetime import date
 import enchant
 from enchant.tokenize import get_tokenizer
+import shutil
+import pathlib
+import CONSTANTS
 
-from PySide2 import QtWidgets, QtGui, QtCore
+from PyQt5 import QtWidgets, QtGui, QtCore
 from num2words import num2words
 
 from CONSTANTS import get_resource, spell_lang, spell_dict
@@ -29,11 +32,15 @@ class EditPane(QtWidgets.QTextEdit):
         spell_tknzr = get_tokenizer()
 
     spell_suggestion_handlers = []
+    file_changed = QtCore.pyqtSignal()
 
     def __init__(self) -> None:
         super().__init__()
         tab_stop = 4
-        self.setFontFamily(QtGui.QFontDatabase.systemFont(QtGui.QFontDatabase.FixedFont).family())
+        font = QtGui.QFont("monospace")
+        font.setStyleHint(QtGui.QFont.TypeWriter)
+        self.setFont(font)
+        print(self.font().family())
         # Set tab width
         metrics = QtGui.QFontMetrics(QtGui.QFontDatabase.systemFont(QtGui.QFontDatabase.FixedFont))
 
@@ -42,7 +49,7 @@ class EditPane(QtWidgets.QTextEdit):
         self.setAcceptRichText(False)
         self.setWordWrapMode(QtGui.QTextOption.WrapAtWordBoundaryOrAnywhere)
 
-        self.setVerticalScrollBarPolicy(self.verticalScrollBarPolicy().ScrollBarAlwaysOn)
+        self.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOn)
 
         # Used to know current directory to be relative to
         self._current_file = ""
@@ -107,7 +114,8 @@ class EditPane(QtWidgets.QTextEdit):
                              'tags: []\n'
                              '---\n')
         self.save_current_file()
-        self.parentWidget().tool_bar.favorite_button.refresh_icon()
+        self.file_changed.emit()
+        #self.parentWidget().tool_bar.favorite_button.refresh_icon()
         self.window().setWindowTitle(long_date)
         # Update view pane
 
@@ -137,15 +145,106 @@ class EditPane(QtWidgets.QTextEdit):
         context_menu = self.createCustomContextMenu(e.pos())
         context_menu.exec_(e.globalPos())
 
+    def insert_image(self):
+        image_dialog = QtWidgets.QFileDialog(caption="Insert Image", directory=pathlib.Path.home().as_posix(),
+                                             filter="Image Files(*.apng *.avif *.gif *.jpg *.jpeg *.jfif *.pjpeg, *.pjp *.png *.svg *.webp)")
+        image_dialog.exec_()
+        image = image_dialog.selectedFiles()[0]
+        shutil.copy(image, pathlib.Path(self.current_file).parent)
+        self.insertPlainText(f"![]({pathlib.Path(image).name})")
+        self.save_current_file()
+
+    def insert_table(self, table: list[list[str]], type: int, include_headers: bool):
+        """Insert a table based off a given list of lists of text edits [row][col] and the type of table
+            :param table: list of rows, each being a list of columns within the row with text as elements
+            :param type: the type of table to enter.
+                        0 = simple multiline table
+                        1 = grid table
+            :param include_headers: Whether the top row should be treated as a header
+        """
+        grid_table = 1
+        simple_table = 0
+        table_str = ""
+        vertex_char = "+" if type == grid_table else " "
+        divider_char = "|" if type == grid_table else " "
+
+        # List of column widths
+        column_widths = [0] * len(table[0])
+        # Assign lengths of column widths to corresponding index
+        for row in range(len(table)):
+            for col in range(len(table[row])):
+                if len(max(table[row][col].split("\n"), key=len)) > column_widths[col]:
+                    column_widths[col] = len(max(table[row][col].split("\n"), key=len))
+
+        # Create top bar
+        if type == grid_table:
+            table_str += vertex_char
+            for col in range(len(table[0])):
+                table_str += "-"* column_widths[col] + vertex_char
+            table_str += "\n"
+        else:
+            table_str += "-" * (sum(column_widths) + ((len(table[0]) -1) * len(divider_char))) + vertex_char + "\n"
+
+        # Main content
+        for row in range(len(table)):
+            column_text = [text for text in table[row]]
+            # List of columns, each column is a list split by newline
+            column_by_lines = [column.split("\n") for column in column_text]
+            # Number of lines of longest column
+            max_lines = len(max(column_by_lines, key=len))
+
+            for line in range(max_lines):
+                # Add divider to beginning of grid table line
+                if type == grid_table:
+                    table_str += divider_char
+
+                for col in range(len(column_text)):
+                    try:
+                        table_str += column_by_lines[col][line]
+                        # If current line is the longest in the table
+                        if len(column_by_lines[col][line]) == column_widths[col]:
+                            table_str += divider_char
+                        else:
+                            table_str += " " * (column_widths[col] - len(column_by_lines[col][line])) + divider_char
+                    except IndexError:
+                        table_str += " " * column_widths[col] + divider_char
+                table_str += "\n"
+
+            # Creat double dashed line on first line if headers enabled
+            if row ==0 and type == grid_table and include_headers:
+                table_str += vertex_char
+                for col in range(len(table[0])):
+                    table_str += "="* column_widths[col] + vertex_char
+
+            # Create simple dashed line on first row (header on simple table) or at the end of each row in a grid table
+            elif (row == 0 and type == simple_table and include_headers) or (type == grid_table):
+                if type == grid_table:
+                    table_str += vertex_char
+                for col in range(len(table[0])):
+                    table_str += "-"* column_widths[col] + vertex_char
+
+            table_str += "\n"
+
+        # Create bottom bar
+        if type == simple_table:
+            table_str += "-" * (sum(column_widths) + len(table[0]) -1) + "\n"
+
+        self.insertPlainText(table_str)
+        self.save_current_file()
+
 
     def createCustomContextMenu(self, pos) -> QtWidgets.QMenu:
         menu = self.createStandardContextMenu()
         menu.addSeparator()
+        menu.addAction(QtGui.QIcon(get_resource(CONSTANTS.icons["plus"][CONSTANTS.theme])), "Insert Image", self.insert_image)
+        menu.addSeparator()
+        self.word_cursor = self.cursorForPosition(pos)
+        self.word_cursor.select(QtGui.QTextCursor.WordUnderCursor)
         # Find misspelled word in highlighted text
-        misspelled = [token[0] for token in self.spell_tknzr(self.textCursor().selectedText()) if token[0][0].islower() and not spell_dict.check(token[0])]
+        misspelled = [token[0] for token in self.spell_tknzr(self.word_cursor.selectedText()) if token[0][0].islower() and not spell_dict.check(token[0])]
 
         # If there is a misspelled word and the word matches the whole of the highlighted text
-        if len(misspelled) > 0 and misspelled[0] == self.textCursor().selectedText():
+        if len(misspelled) > 0 and misspelled[0] == self.word_cursor.selectedText():
             # Add 'Add to Dictionary option'
             self.add_to_dict_action_handler = ActionHandler(menu.addAction("Add to dictionary"), self.add_to_word_list)
             menu.addSeparator()
@@ -171,11 +270,11 @@ class EditPane(QtWidgets.QTextEdit):
         return menu
 
     def replace_selection(self, action: QtWidgets.QAction):
-        self.textCursor().insertText(action.text())
+        self.word_cursor.insertText(action.text())
         self.save_current_file()
 
     def add_to_word_list(self, action: QtWidgets.QAction):
-        spell_dict.add_to_pwl(self.textCursor().selectedText())
+        spell_dict.add_to_pwl(self.word_cursor.selectedText())
         self.markdownHighlighter.rehighlight()
 
     def enterEvent(self, event: QtCore.QEvent) -> None:

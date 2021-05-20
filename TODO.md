@@ -1,11 +1,10 @@
 # TODO
 ## Features
-- Spell Checker
 - Better tag support
 - Better calendar
-- Ability to add images via menu
 - Add space to bottom of page
-- Have spelling suggestions show without having to highlight text
-
+- Switch to QT palletes for styling
+- Add file chooser when exporting files
 
 ## Bug Fixes
+- Disable spell check in html tags

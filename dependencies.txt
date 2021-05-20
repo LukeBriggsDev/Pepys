@@ -1,2 +1,4 @@
 pandoc
 enchant
+wkhtmltopdf (patched)
+texlive-mdwtools

@@ -3,12 +3,13 @@ from __future__ import annotations
 import typing
 from datetime import date
 
-from PySide2 import QtWidgets, QtGui, QtCore
+from PyQt5 import QtWidgets, QtGui, QtCore
 
 from CONSTANTS import get_resource
 import CONSTANTS
 from ColorParser import *
 from EditPane import EditPane
+from WebView import WebView
 
 if typing.TYPE_CHECKING:
     pass
@@ -17,15 +18,14 @@ import json
 
 class CalendarFileSelector(QtWidgets.QCalendarWidget):
     """Calendar widget for selecting the journal entry to edit"""
-    def __init__(self, edit_pane: EditPane):
+    def __init__(self, edit_pane: EditPane, web_view: WebView):
         """Constructor
         :param edit_pane: EditPane to open the new file in
         """
         super().__init__()
         self.edit_pane = edit_pane
-        #FIXME: using parentWidget is bad
-        self.preview_button = edit_pane.parentWidget().tool_bar.preview_button
-        self.setWindowFlag(QtGui.Qt.Dialog)
+        self.web_view = web_view
+        self.setWindowFlag(QtCore.Qt.WindowType.Dialog)
 
         date = self.edit_pane.current_file_date.split("-")
         self.setSelectedDate(QtCore.QDate(
@@ -40,7 +40,7 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
         self.setMaximumSize(480, 480)
         self.setWindowTitle("Calendar")
 
-        self.setStyleSheet(parse_stylesheet(get_resource("CalendarStyle.qss"), get_resource("colors.json"), get_resource("config.json")))
+        self.setStyleSheet(parse_stylesheet(get_resource("CalendarStyle.qss"), CONSTANTS.theme))
 
         # Set format of how favorites appear in calendar
         favorite_format = QtGui.QTextCharFormat()
@@ -66,11 +66,11 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
         self.edit_pane.open_file_from_date(date(self.selectedDate().year(),
                                                 self.selectedDate().month(),
                                                 self.selectedDate().day()))
-        self.preview_button.refresh_page()
+        self.web_view.refresh_page()
 
     def closeEvent(self, event:QtGui.QCloseEvent) -> None:
         # Re-enable the window of the edit=pane
-        self.edit_pane.parentWidget().setFocusPolicy(QtGui.Qt.StrongFocus)
+        self.edit_pane.parentWidget().setFocusPolicy(QtCore.Qt.FocusPolicy.StrongFocus)
         self.edit_pane.parentWidget().setDisabled(False)
 
 

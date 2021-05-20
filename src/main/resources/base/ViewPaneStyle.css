@@ -1,5 +1,3 @@
-<style type="text/css">
-
 html {
     font-size: 16pt;
     overflow-y: scroll;
@@ -238,23 +236,23 @@ figcaption {
 
 table {
     margin-bottom: 2em;
-    border-bottom: 2px solid %window%;
-    border-right: 2px solid %window%;
+    border-bottom: 2px solid %lowlight%;
+    border-right: 2px solid %lowlight%;
     border-spacing: 0;
     border-collapse: collapse;
 }
 
 table th {
     padding: .2em 1em;
-    background-color: %window%;
-    border-top: 2px solid %window%;
-    border-left: 2px solid %window%;
+    background-color: %lowlight%;
+    border-top: 2px solid %lowlight%;
+    border-left: 2px solid %lowlight%;
 }
 
 table td {
     padding: .2em 1em;
-    border-top: 2px solid %window%;
-    border-left: 2px solid %window%;
+    border-top: 2px solid %lowlight%;
+    border-left: 2px solid %lowlight%;
     vertical-align: top;
 }
 
@@ -348,8 +346,4 @@ table td {
     h2, h3 {
         page-break-after: avoid;
     }
-
 }
-
-
-</style>

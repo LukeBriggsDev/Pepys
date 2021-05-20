@@ -5,7 +5,7 @@ import sys
 import typing
 from datetime import date
 
-from PySide2 import QtWidgets, QtGui
+from PyQt5 import QtWidgets, QtGui
 
 from ColorParser import *
 from CustomToolbar import CustomToolbar
@@ -24,9 +24,8 @@ class MainWindow(QtWidgets.QWidget):
         """Initialise main window
         """
         super().__init__()
-
         self.date_opened = date.today()
-        self.original_stylesheet = parse_stylesheet(get_resource("styles.qss"), get_resource("colors.json"), get_resource("config.json"))
+        self.original_stylesheet = parse_stylesheet(get_resource("styles.qss"), CONSTANTS.theme)
 
         self.setStyleSheet(self.original_stylesheet)
 
@@ -91,7 +90,7 @@ class MainWindow(QtWidgets.QWidget):
         """
 
         # Increase width of scroll bar left border to create a margin 25% width of the main window.
-        margin_size = max(0, (self.width() - 1000) * 0.5)
+        margin_size = max(0, int((self.width() - 1000) * 0.5))
         scroll_bar_width = 4
         self.edit_pane.verticalScrollBar().setStyleSheet(
             "QScrollBar:vertical {"
