@@ -25,10 +25,19 @@ class MainWindow(QtWidgets.QWidget):
         """
         super().__init__()
         self.date_opened = date.today()
-        self.setStyleSheet("""MainWindow{
-    background-color: palette(base);
-    border: 0px solid palette(base);
-}""")
+        self.setStyleSheet("""
+        MainWindow{
+            background-color: palette(base);
+            border: 0px solid palette(base);
+        }
+        MainWindow:!active{
+            background-color: palette(base);
+        }
+        MainWindow EditPane:!active{
+            background-color: palette(base);
+        }
+""")
+
 
 
         # Load config
