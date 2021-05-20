@@ -24,10 +24,10 @@ modules:
     build-commands:
       - ls
       - mkdir -p /app/src
-      - cp  -r ./main /app/src
+      - cp  -r ./src/main /app/src
     sources:
-      - type: archive
-        path: https://github.com/LukeBriggsDev/Pepys/archive/refs/heads/master.zip
+      - type: git
+        url: https://github.com/LukeBriggsDev/Pepys.git
 
   - python3-requirements.json
 

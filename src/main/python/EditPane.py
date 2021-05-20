@@ -11,7 +11,7 @@ import shutil
 import pathlib
 import CONSTANTS
 
-from PySide2 import QtWidgets, QtGui, QtCore
+from PyQt5 import QtWidgets, QtGui, QtCore
 from num2words import num2words
 
 from CONSTANTS import get_resource, spell_lang, spell_dict

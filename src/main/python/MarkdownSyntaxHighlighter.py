@@ -1,5 +1,5 @@
 import regex
-from PySide2 import QtWidgets, QtGui, QtCore
+from PyQt5 import QtWidgets, QtGui, QtCore
 import CONSTANTS
 from MarkdownRegex import regexPatterns
 import enchant

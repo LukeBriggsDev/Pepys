@@ -2,7 +2,7 @@ import sys
 import os
 import pathlib
 import setproctitle
-from PySide2 import QtWidgets, QtGui, QtCore
+from PyQt5 import QtWidgets, QtGui, QtCore
 from CONSTANTS import get_resource
 import CONSTANTS
 

@@ -3,7 +3,7 @@ from __future__ import annotations
 import typing
 from datetime import date
 
-from PySide2 import QtWidgets, QtGui, QtCore
+from PyQt5 import QtWidgets, QtGui, QtCore
 
 from CONSTANTS import get_resource
 import CONSTANTS

@@ -3,7 +3,7 @@ import os
 import sys
 import enchant
 import pathlib
-from PySide2 import QtGui, QtWidgets
+from PyQt5 import QtGui, QtWidgets
 
 def get_resource(filepath):
     """
