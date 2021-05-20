@@ -1,4 +1,4 @@
-from PySide2 import QtWidgets, QtGui, QtCore
+from PyQt5 import QtWidgets, QtGui, QtCore
 import CONSTANTS
 from CONSTANTS import get_resource
 from ColorParser import parse_stylesheet
@@ -53,7 +53,7 @@ class TableWindow(QtWidgets.QDialog):
             for col in range(self.table_widget.columnCount()):
                 cell = self.table_widget.item(0, col)
                 if cell is not None:
-                    if state == QtCore.Qt.Checked:
+                    if state == QtCore.Qt.CheckState.Checked:
                         font = cell.font()
                         font.setBold(True)
                         cell.setFont(font)

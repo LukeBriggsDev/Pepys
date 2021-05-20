@@ -3,7 +3,7 @@ from __future__ import annotations
 import typing
 from datetime import date
 
-from PySide2 import QtWidgets, QtGui, QtCore
+from PyQt5 import QtWidgets, QtGui, QtCore
 
 from CONSTANTS import get_resource
 import CONSTANTS
@@ -25,7 +25,7 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
         super().__init__()
         self.edit_pane = edit_pane
         self.web_view = web_view
-        self.setWindowFlag(QtGui.Qt.Dialog)
+        self.setWindowFlag(QtCore.Qt.WindowType.Dialog)
 
         date = self.edit_pane.current_file_date.split("-")
         self.setSelectedDate(QtCore.QDate(
@@ -70,7 +70,7 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
 
     def closeEvent(self, event:QtGui.QCloseEvent) -> None:
         # Re-enable the window of the edit=pane
-        self.edit_pane.parentWidget().setFocusPolicy(QtGui.Qt.StrongFocus)
+        self.edit_pane.parentWidget().setFocusPolicy(QtCore.Qt.FocusPolicy.StrongFocus)
         self.edit_pane.parentWidget().setDisabled(False)
 
 

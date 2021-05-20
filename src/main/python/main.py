@@ -1,14 +1,20 @@
 import sys
 import os
+import pathlib
 import setproctitle
-from PySide2 import QtWidgets, QtGui
+from PyQt5 import QtWidgets, QtGui
 from CONSTANTS import get_resource
 
 from MainWindow import MainWindow
 
 if __name__ == "__main__":
+    print("Starting Pepys")
     if sys.platform.lower().startswith("linux"):
         os.putenv("QT_QPA_PLATFORM", "xcb")
+
+    if not os.path.isfile(pathlib.Path.home().as_posix()+"/.pepys/wordlist.txt"):
+        with open(pathlib.Path.home().as_posix()+"/.pepys/wordlist.txt", "w+") as file:
+            file.write("")
     app = QtWidgets.QApplication(sys.argv)
     app.setApplicationName("Pepys")
     app.setApplicationDisplayName("Pepys")

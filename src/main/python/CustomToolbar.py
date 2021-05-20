@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import typing
 
-from PySide2 import QtWidgets, QtGui, QtCore
+from PyQt5 import QtWidgets, QtGui, QtCore
 
 from WebView import WebView
 import json
@@ -118,7 +118,7 @@ class CustomToolbar(QtWidgets.QToolBar):
 
     def changeEvent(self, event:QtCore.QEvent) -> None:
         # Change button icons to match theme
-        if event.type() is QtCore.QEvent.Type.StyleChange:
+        if event.type() == QtCore.QEvent.Type.StyleChange:
             self.open_entry_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["open_entry"][CONSTANTS.theme])))
             self.refresh_favorite()
 
@@ -140,7 +140,7 @@ class CustomToolbar(QtWidgets.QToolBar):
         # Disable main window
         self.window().setFocusProxy(self.about_window)
         self.window().setDisabled(True)
-        self.about_window.setFocusPolicy(QtGui.Qt.StrongFocus)
+        self.about_window.setFocusPolicy(QtCore.Qt.FocusPolicy.StrongFocus)
 
         self.about_window.show()
 
@@ -149,7 +149,7 @@ class CustomToolbar(QtWidgets.QToolBar):
         self.date_dialog = CalendarFileSelector(self.edit_pane, self.web_view)
         self.window().setFocusProxy(self.date_dialog)
         self.window().setDisabled(True)
-        self.date_dialog.setFocusPolicy(QtGui.Qt.StrongFocus)
+        self.date_dialog.setFocusPolicy(QtCore.Qt.FocusPolicy.StrongFocus)
 
         self.date_dialog.show()
 
@@ -257,6 +257,6 @@ class CustomToolbar(QtWidgets.QToolBar):
         # Disable current window
         self.window().setFocusProxy(self.export_window)
         self.window().setDisabled(True)
-        self.export_window.setFocusPolicy(QtGui.Qt.StrongFocus)
+        self.export_window.setFocusPolicy(QtCore.Qt.FocusPolicy.StrongFocus)
 
         self.export_window.show()

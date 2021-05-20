@@ -1,8 +1,10 @@
-PySide2
+wheel
 regex
 num2words
 pypandoc
-pyinstaller
 pyenchant
 PyPDF4
 setproctitle
+PyQt5
+PyQtWebEngine
+pyinstaller

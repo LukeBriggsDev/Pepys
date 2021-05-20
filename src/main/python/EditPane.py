@@ -11,7 +11,7 @@ import shutil
 import pathlib
 import CONSTANTS
 
-from PySide2 import QtWidgets, QtGui, QtCore
+from PyQt5 import QtWidgets, QtGui, QtCore
 from num2words import num2words
 
 from CONSTANTS import get_resource, spell_lang, spell_dict
@@ -32,13 +32,15 @@ class EditPane(QtWidgets.QTextEdit):
         spell_tknzr = get_tokenizer()
 
     spell_suggestion_handlers = []
-
-    file_changed = QtCore.Signal()
+    file_changed = QtCore.pyqtSignal()
 
     def __init__(self) -> None:
         super().__init__()
         tab_stop = 4
-        self.setFontFamily(QtGui.QFontDatabase.systemFont(QtGui.QFontDatabase.FixedFont).family())
+        font = QtGui.QFont("monospace")
+        font.setStyleHint(QtGui.QFont.TypeWriter)
+        self.setFont(font)
+        print(self.font().family())
         # Set tab width
         metrics = QtGui.QFontMetrics(QtGui.QFontDatabase.systemFont(QtGui.QFontDatabase.FixedFont))
 
@@ -47,7 +49,7 @@ class EditPane(QtWidgets.QTextEdit):
         self.setAcceptRichText(False)
         self.setWordWrapMode(QtGui.QTextOption.WrapAtWordBoundaryOrAnywhere)
 
-        self.setVerticalScrollBarPolicy(self.verticalScrollBarPolicy().ScrollBarAlwaysOn)
+        self.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOn)
 
         # Used to know current directory to be relative to
         self._current_file = ""

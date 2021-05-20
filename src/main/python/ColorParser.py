@@ -1,6 +1,6 @@
 import json
 import re
-from PySide2.QtGui import QColor
+from PyQt5.QtGui import QColor
 import CONSTANTS
 
 def text_to_rgb(color: str) -> QColor:

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import typing
 
-from PySide2 import QtGui, QtCore, QtWebEngineWidgets
+from PyQt5 import QtGui, QtCore, QtWebEngineWidgets
 import CONSTANTS
 from CONSTANTS import get_resource
 import pypandoc

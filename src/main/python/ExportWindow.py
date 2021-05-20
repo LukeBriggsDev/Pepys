@@ -3,7 +3,7 @@ from __future__ import annotations
 import typing
 from threading import Thread
 
-from PySide2 import QtWidgets, QtGui, QtCore
+from PyQt5 import QtWidgets, QtGui, QtCore
 
 from CONSTANTS import get_resource
 from ColorParser import *
@@ -39,7 +39,7 @@ class ExportWindow(QtWidgets.QWidget):
         self.main_window = main_window
         self.setMaximumSize(640, 240)
         self.setMinimumSize(640, 240)
-        self.setWindowFlag(QtGui.Qt.Dialog)
+        self.setWindowFlag(QtCore.Qt.WindowType.Dialog)
         formLayout = QtWidgets.QFormLayout()
 
         self.export_options = QtWidgets.QComboBox()
@@ -93,7 +93,7 @@ class ExportWindow(QtWidgets.QWidget):
 
     def closeEvent(self, event:QtGui.QCloseEvent) -> None:
         # Re-enable main window
-        self.main_window.setFocusPolicy(QtGui.Qt.StrongFocus)
+        self.main_window.setFocusPolicy(QtCore.Qt.StrongFocus)
         self.main_window.setDisabled(False)
 
     def format_option_change(self, new_text: str):
@@ -120,14 +120,16 @@ class ExportWindow(QtWidgets.QWidget):
 
         # Load dialog
         self.load_dialog = QtWidgets.QDialog(self)
-        self.load_dialog.setWindowModality(QtGui.Qt.WindowModal)
+        self.load_dialog.setWindowModality(QtCore.Qt.WindowModal)
         self.load_dialog.setMinimumSize(400, 100)
+        self.load_dialog.setMaximumSize(400, 100)
         self.load_dialog.setWindowTitle("Exporting...")
         progress_label = QtWidgets.QLabel()
-        progress_label.setAlignment(QtGui.Qt.AlignCenter)
+        progress_label.setAlignment(QtCore.Qt.AlignCenter)
         progress_bar = QtWidgets.QProgressBar()
+        progress_bar.setAlignment(QtCore.Qt.AlignCenter)
         self.load_dialog.setLayout(QtWidgets.QVBoxLayout())
-        self.load_dialog.layout().setAlignment(QtGui.Qt.AlignTop)
+        self.load_dialog.layout().setAlignment(QtCore.Qt.AlignTop)
         self.load_dialog.layout().addWidget(progress_label)
         self.load_dialog.layout().addWidget(progress_bar)
         self.load_dialog.show()
@@ -156,7 +158,7 @@ class ExportWindow(QtWidgets.QWidget):
 
         if format["type"] == "pdf":
             # Convert to html before pdf to apply css
-            pdoc_args.append("-thtml")
+            #pdoc_args.append("-thtml")
             pass
 
         if format["type"] == "html" or format["type"]=="pdf":
@@ -164,7 +166,7 @@ class ExportWindow(QtWidgets.QWidget):
                 f.write(parse_stylesheet(get_resource("ViewPaneStyle.css"), "light"))
             pdoc_args.append("--css="+get_resource("parsed_stylesheet.css"))
             pdoc_args.append("--self-contained")
-            pdoc_args.append("--pdf-engine-opt=--enable-local-file-access")
+            #pdoc_args.append("--pdf-engine-opt=--enable-local-file-access")
 
 
         progress_label.setText("Converting to " + str(format["type"]))
@@ -182,13 +184,27 @@ class ExportWindow(QtWidgets.QWidget):
                 except RuntimeError as err:
                     progress_label.setText("ERROR IN FILE " + entry.name)
                     QtWidgets.QApplication.processEvents()
+                    print(str(err))
+                    if str(err).startswith('Pandoc died with exitcode "47"'):
+                        print("HI")
+                        self.load_dialog.setMinimumSize(550, 150)
+                        self.load_dialog.setMaximumSize(550, 150)
+                        progress_bar.setVisible(False)
+                        exit_button = QtWidgets.QPushButton("Close")
+                        self.load_dialog.layout().addWidget(exit_button)
+                        exit_button.clicked.connect(self.load_dialog.close)
+                        progress_label.setText("No TeXLive installation found.\n"
+                                               "Please install TeXLive.\n\n"
+                                               "If you are using a Linux Flatpak, please install TeXLive by running\n"
+                                               "flatpak install flathub org.freedesktop.Sdk.Extension.texlive//20.08")
+                        return 1
                     print(err)
                 finished += 1
                 progress_label.setText(str(finished) + "/" + str(len(diary_entries)))
                 progress_bar.setValue(finished)
                 QtWidgets.QApplication.processEvents()
             else:
-                return 1
+                return 2
         progress_label.setText("Conversion finished")
         QtWidgets.QApplication.processEvents()
 
@@ -236,4 +252,3 @@ class ExportWindow(QtWidgets.QWidget):
 
 
         self.load_dialog.close()
-

@@ -1,5 +1,5 @@
 import regex
-from PySide2 import QtWidgets, QtGui
+from PyQt5 import QtWidgets, QtGui, QtCore
 import CONSTANTS
 from MarkdownRegex import regexPatterns
 import enchant
@@ -105,7 +105,7 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
                 brush = QtGui.QBrush()
                 color = CONSTANTS.colors
                 brush.setColor(text_to_rgb(CONSTANTS.colors[CONSTANTS.theme]["lowlight"]))
-                brush.setStyle(QtGui.Qt.SolidPattern)
+                brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
                 formatter.setForeground(brush)
                 self.setFormat(match.start(), len(match.group('level')), formatter)
 
@@ -140,7 +140,7 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
             formatter.setFontStrikeOut(False)
             brush = QtGui.QBrush()
             brush.setColor(text_to_rgb(CONSTANTS.colors[CONSTANTS.theme]["lowlight"]))
-            brush.setStyle(QtGui.Qt.SolidPattern)
+            brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
             formatter.setForeground(brush)
             formatter.setFontUnderline(QtGui.QTextCharFormat.NoUnderline)
             self.setFormat(match.start("url"), len(match.group("url")), formatter)
@@ -152,7 +152,7 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
             formatter.setFontStrikeOut(False)
             brush = QtGui.QBrush()
             brush.setColor(text_to_rgb(CONSTANTS.colors[CONSTANTS.theme]["lowlight"]))
-            brush.setStyle(QtGui.Qt.SolidPattern)
+            brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
             formatter.setForeground(brush)
             formatter.setFontUnderline(QtGui.QTextCharFormat.NoUnderline)
             self.setFormat(match.start("url"), len(match.group("url")), formatter)
@@ -165,7 +165,7 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
         formatter.setFontStrikeOut(False)
         brush = QtGui.QBrush()
         brush.setColor(text_to_rgb(CONSTANTS.colors[CONSTANTS.theme]["text_alt"]))
-        brush.setStyle(QtGui.Qt.SolidPattern)
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
         formatter.setForeground(brush)
 
         self.format_fence(text, self.metadata_fence_pattern, formatter, self.IN_METADATA_BLOCK, required_start_block_positon=0)
@@ -178,7 +178,7 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
             inline_formatter.setFontStrikeOut(False)
             brush = QtGui.QBrush()
             brush.setColor(text_to_rgb(CONSTANTS.colors[CONSTANTS.theme]["inline_code_bg"]))
-            brush.setStyle(QtGui.Qt.SolidPattern)
+            brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
             inline_formatter.setBackground(brush)
             inline_formatter.setUnderlineStyle(QtGui.QTextCharFormat.NoUnderline)
             self.setFormat(match.start(), len(match.group()), inline_formatter)
@@ -191,7 +191,7 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
         formatter.setFontStrikeOut(False)
         brush = QtGui.QBrush()
         brush.setColor(text_to_rgb(CONSTANTS.colors[CONSTANTS.theme]["code_block_text"]))
-        brush.setStyle(QtGui.Qt.SolidPattern)
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
         formatter.setForeground(brush)
         formatter.setFontUnderline(QtGui.QTextCharFormat.NoUnderline)
 
