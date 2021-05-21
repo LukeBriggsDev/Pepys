@@ -114,7 +114,7 @@ class CustomToolbar(QtWidgets.QToolBar):
             self.open_entry_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["open_entry"][CONSTANTS.theme])))
             self.refresh_favorite()
 
-            # Refresh previw icon
+            # Refresh preview icon
             if not self.web_view.isVisible():
                 self.preview_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["preview"][CONSTANTS.theme])))
             else:
@@ -214,12 +214,11 @@ class CustomToolbar(QtWidgets.QToolBar):
         if current_theme == "light":
             QtWidgets.QApplication.setPalette(CONSTANTS.Colors.getDarkpalette())
             CONSTANTS.theme = "dark"
-        else:
+        elif CONSTANTS.light_palette.color(QtGui.QPalette.Active, QtGui.QPalette.Base).lightness() > 122:
             QtWidgets.QApplication.setPalette(CONSTANTS.light_palette)
             CONSTANTS.theme = "light"
 
         self.refresh_stylesheet()
-
         main_window = self.parentWidget()
 
         # Refresh web_view

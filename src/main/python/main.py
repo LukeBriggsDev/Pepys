@@ -20,6 +20,7 @@ if __name__ == "__main__":
     app.setApplicationDisplayName("Pepys")
     app.setWindowIcon(QtGui.QIcon(get_resource("icons/appicons/icon.svg")))
     CONSTANTS.theme = "light" if QtWidgets.QApplication.palette().color(QtGui.QPalette.Active, QtGui.QPalette.Base).lightness() > 122 else "dark"
+    CONSTANTS.light_palette = QtWidgets.QApplication.palette()
     setproctitle.setproctitle("Pepys")
     #Initialise and set size of main_window
     main_window = MainWindow()
