@@ -253,7 +253,7 @@ class CustomToolbar(QtWidgets.QToolBar):
             border-radius: 4px;
         }
         QPushButton:hover{
-            background-color: palette(button);
+            background-color: palette(mid);
         }
         QPushButton:pressed{
             background-color: palette(dark);
