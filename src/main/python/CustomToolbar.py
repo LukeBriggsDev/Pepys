@@ -138,9 +138,7 @@ class CustomToolbar(QtWidgets.QToolBar):
     def open_entry_clicked(self):
         """Open calendar dialog and disable main window"""
         self.date_dialog = CalendarFileSelector(self.edit_pane, self.web_view)
-        self.window().setFocusProxy(self.date_dialog)
-        self.date_dialog.setFocusPolicy(QtCore.Qt.StrongFocus)
-
+        self.setEnabled(False)
         self.date_dialog.show()
 
     def favorite_clicked(self):

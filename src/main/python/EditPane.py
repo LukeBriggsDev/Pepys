@@ -122,7 +122,6 @@ class EditPane(QtWidgets.QTextEdit):
                              '---\n')
         self.save_current_file()
         self.file_changed.emit()
-        #self.parentWidget().tool_bar.favorite_button.refresh_icon()
         self.window().setWindowTitle(long_date)
         # Update view pane
 

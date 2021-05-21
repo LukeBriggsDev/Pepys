@@ -119,9 +119,7 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
                                                 self.selectedDate().day()))
         self.web_view.refresh_page()
 
-    def closeEvent(self, event:QtGui.QCloseEvent) -> None:
-        # Re-enable the window of the edit=pane
-        self.edit_pane.parentWidget().setFocusPolicy(QtCore.Qt.StrongFocus)
-        self.edit_pane.parentWidget().setDisabled(False)
+    def closeEvent(self, a0: QtGui.QCloseEvent) -> None:
+        self.edit_pane.parentWidget().tool_bar.setEnabled(True)
 
 
