@@ -44,6 +44,9 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
     link_pattern = regex.compile(regexPatterns['LINK'], regex.MULTILINE)
     angle_link_pattern = regex.compile(regexPatterns['ANGLE_LINK'], regex.MULTILINE)
 
+    #HTML tag regex
+    html_tag_pattern = regex.compile(regexPatterns["HTML_TAG"])
+
     # Code block regex
     code_block_fence_pattern = regex.compile(regexPatterns['CODE_BLOCK_FENCE'], regex.MULTILINE)
 
@@ -144,6 +147,16 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
             formatter.setForeground(brush)
             formatter.setFontUnderline(False)
             self.setFormat(match.start("url"), len(match.group("url")), formatter)
+
+            # HTML tag match and format
+        for match in regex.finditer(self.html_tag_pattern, text):
+            html_formatter = QtGui.QTextCharFormat()
+            html_formatter.setFontWeight(QtGui.QFont.Normal)
+            html_formatter.setFontItalic(False)
+            html_formatter.setFontStrikeOut(False)
+            html_formatter.setUnderlineStyle(QtGui.QTextCharFormat.NoUnderline)
+            self.setFormat(match.start(), len(match.group()), html_formatter)
+
 
         # Angle link match and format
         for match in regex.finditer(self.angle_link_pattern, text):
