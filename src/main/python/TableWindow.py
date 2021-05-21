@@ -16,10 +16,13 @@ class TableWindow(QtWidgets.QDialog):
             self.setStyleSheet(
                 """
                 QPushButton{
-                    color: palette(base)
+                    color: palette(base);
                 }
                 QComboBox{
-                    color: palette(base)
+                    color: palette(base);
+                }
+                QComboBox QAbstractItemView{
+                    background-color: palette(text);
                 }
                 """
             )
