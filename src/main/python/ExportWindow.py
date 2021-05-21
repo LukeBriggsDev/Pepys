@@ -45,14 +45,17 @@ class ExportWindow(QtWidgets.QWidget):
         self.export_options = QtWidgets.QComboBox()
 
         # Workaround for button elements not changing BG on MacOS
-        if QtWidgets.QApplication.palette().color(QtGui.QPalette.Active, QtGui.QPalette.Base).lightness() < 122 and sys.platform == "darwin":
+        if QtWidgets.QApplication.palette().color(QtGui.QPalette.Active, QtGui.QPalette.Base).lightness() < 122: #and sys.platform == "darwin":
             self.setStyleSheet(
                 """
                 QPushButton{
-                    color: palette(base)
+                    color: palette(base);
                 }
                 QComboBox{
-                    color: palette(base)
+                    color: palette(base);
+                }
+                QComboBox QAbstractItemView{
+                    background-color: palette(text);
                 }
                 """
             )

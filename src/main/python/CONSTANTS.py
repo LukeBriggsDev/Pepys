@@ -124,11 +124,7 @@ class Colors:
         alt_palette.setColor(QtGui.QPalette.All, QtGui.QPalette.ToolTipText, osd_text_color)
         alt_palette.setColor(QtGui.QPalette.All, QtGui.QPalette.Text, fg_color)
         alt_palette.setColor(QtGui.QPalette.All, QtGui.QPalette.Button, button_base_color)
-        if sys.platform == "darwin":
-            alt_palette.setColor(QtGui.QPalette.All, QtGui.QPalette.ButtonText, bg_color)
-
-        else:
-            alt_palette.setColor(QtGui.QPalette.All, QtGui.QPalette.ButtonText, fg_color)
+        alt_palette.setColor(QtGui.QPalette.All, QtGui.QPalette.ButtonText, fg_color)
         alt_palette.setColor(QtGui.QPalette.All, QtGui.QPalette.BrightText, text_color)
 
         alt_palette.setColor(QtGui.QPalette.All, QtGui.QPalette.Light, Colors.lighten(button_base_color))
