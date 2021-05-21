@@ -30,9 +30,11 @@ class TableWindow(QtWidgets.QDialog):
 
         self.table_option_layout = QtWidgets.QFormLayout()
         self.row_spinbox = QtWidgets.QSpinBox()
+        self.row_spinbox.setMinimum(1)
         self.row_spinbox.setMinimumWidth(100)
         self.row_spinbox.valueChanged.connect(self.update_table)
         self.column_spinbox = QtWidgets.QSpinBox()
+        self.column_spinbox.setMinimum(1)
         self.column_spinbox.setMinimumWidth(100)
         self.table_type = QtWidgets.QComboBox()
         self.table_type.addItem("Booktabs")
