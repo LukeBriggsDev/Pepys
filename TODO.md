@@ -4,6 +4,3 @@
 - Better calendar
 - Add space to bottom of page
 - Add file chooser when exporting files
-
-## Bug Fixes
-- Disable spell check in html tags
