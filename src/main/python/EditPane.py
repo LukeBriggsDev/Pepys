@@ -171,7 +171,7 @@ class EditPane(QtWidgets.QTextEdit):
         """
         grid_table = 1
         simple_table = 0
-        table_str = ""
+        table_str = "\n"
         vertex_char = "+" if type == grid_table else " "
         divider_char = "|" if type == grid_table else " "
 
