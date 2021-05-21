@@ -130,7 +130,6 @@ class CustomToolbar(QtWidgets.QToolBar):
 
         # Disable main window
         self.window().setFocusProxy(self.about_window)
-        self.window().setDisabled(True)
         self.about_window.setFocusPolicy(QtCore.Qt.StrongFocus)
 
         self.about_window.show()
@@ -234,7 +233,6 @@ class CustomToolbar(QtWidgets.QToolBar):
         self.export_window = ExportWindow(self.window())
         # Disable current window
         self.window().setFocusProxy(self.export_window)
-        self.window().setDisabled(True)
         self.export_window.setFocusPolicy(QtCore.Qt.StrongFocus)
 
         self.export_window.show()
