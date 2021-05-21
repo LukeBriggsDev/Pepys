@@ -177,10 +177,10 @@ class ExportWindow(QtWidgets.QWidget):
             pdoc_args.append("-thtml")
             pass
 
-        if format["type"] == "html" or format["type"]=="pdf":
+        if format["type"] == "html" or format["type"] == "pdf":
             with open(get_resource("parsed_stylesheet.css"), "w+") as f:
                 f.write(parse_stylesheet(get_resource("ViewPaneStyle.css"), "light"))
-            pdoc_args.append("--css="+get_resource("parsed_stylesheet.css"))
+            pdoc_args.append("--css="+get_resource("HTMLExport.css"))
             pdoc_args.append("--self-contained")
             pdoc_args.append("--pdf-engine-opt=--enable-local-file-access")
 

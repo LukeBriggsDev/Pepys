@@ -129,7 +129,6 @@ pre, code, kbd, samp {
     font-family: monospace;
     _font-family: monospace;
     font-size: 0.98em;
-    padding-bottom: 3em;
 }
 
 .sourceCode {
@@ -137,10 +136,11 @@ pre, code, kbd, samp {
 }
 
 pre {
-    white-space: pre;
     white-space: pre-wrap;
     word-wrap: break-word;
     padding-left: 1em;
+    padding-top: 1em;
+    padding-bottom: 1em;
 }
 
 b, strong {

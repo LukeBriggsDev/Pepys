@@ -4,28 +4,28 @@ html {
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
     min-height: 100%;
-    background: rgb(41, 41, 41);
+    background: #ffffff;
 }
 
 body {
-    color: rgb(255, 255, 255);
+    color: #2e3436;
     font-family: sans-serif;
     font-size: 16pt;
     line-height: 1.7;
     padding: 1em;
     margin: auto;
     max-width: 60em;
-    background: rgb(41, 41, 41);
+    background: #ffffff;
     min-height: 100%;
 }
 
 a {
-    color: rgb(0,151,255);
+    color: #1b6acb;
     text-decoration: none;
 }
 
 a:visited {
-    color: rgb(186,222,255);
+    color: #15539e;
 }
 
 a:hover {
@@ -72,7 +72,7 @@ img {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    color: rgb(255, 255, 255);
+    color: #2e3436;
     line-height: 125%;
     margin-top: 1.25em;
     margin-bottom: 0.5em;
@@ -108,7 +108,7 @@ h6 {
 }
 
 blockquote {
-    color: rgb(150, 150, 150);
+    color: #f6f5f4;
     margin: 0;
     padding-left: 3em;
     border-left: 0.5em #EEE solid;
@@ -125,21 +125,22 @@ hr {
 }
 
 pre, code, kbd, samp {
-    color: rgb(255, 255, 255);
+    color: #2e3436;
     font-family: monospace;
     _font-family: monospace;
     font-size: 0.98em;
 }
 
 .sourceCode {
-    background-color: rgb(36, 36, 36);
+    background-color: #f6f5f4;
 }
 
 pre {
-    white-space: pre;
     white-space: pre-wrap;
     word-wrap: break-word;
     padding-left: 1em;
+    padding-top: 1em;
+    padding-bottom: 1em;
 }
 
 b, strong {
@@ -236,23 +237,23 @@ figcaption {
 
 table {
     margin-bottom: 2em;
-    border-bottom: 2px solid rgb(70, 70, 70);
-    border-right: 2px solid rgb(70, 70, 70);
+    border-bottom: 2px solid #d6d1cd;
+    border-right: 2px solid #d6d1cd;
     border-spacing: 0;
     border-collapse: collapse;
 }
 
 table th {
     padding: .2em 1em;
-    background-color: rgb(70, 70, 70);
-    border-top: 2px solid rgb(70, 70, 70);
-    border-left: 2px solid rgb(70, 70, 70);
+    background-color: #d6d1cd;
+    border-top: 2px solid #d6d1cd;
+    border-left: 2px solid #d6d1cd;
 }
 
 table td {
     padding: .2em 1em;
-    border-top: 2px solid rgb(70, 70, 70);
-    border-left: 2px solid rgb(70, 70, 70);
+    border-top: 2px solid #d6d1cd;
+    border-left: 2px solid #d6d1cd;
     vertical-align: top;
 }
 
