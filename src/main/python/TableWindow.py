@@ -3,18 +3,34 @@ import CONSTANTS
 from CONSTANTS import get_resource
 from ColorParser import parse_stylesheet
 from ColorParser import text_to_rgb
+import sys
 
 class TableWindow(QtWidgets.QDialog):
     def __init__(self):
         super().__init__()
         self.table_cells = []
         self.setMinimumSize(800, 600)
+
+        # Workaround for button elements not changing BG on MacOS
+        if QtWidgets.QApplication.palette().color(QtGui.QPalette.Active, QtGui.QPalette.Base).lightness() < 122 and sys.platform == "darwin":
+            self.setStyleSheet(
+                """
+                QPushButton{
+                    color: palette(base)
+                }
+                QComboBox{
+                    color: palette(base)
+                }
+                """
+            )
+
+
         self.table_option_layout = QtWidgets.QFormLayout()
         self.row_spinbox = QtWidgets.QSpinBox()
-        self.row_spinbox.setMinimum(1)
+        self.row_spinbox.setMinimumWidth(100)
         self.row_spinbox.valueChanged.connect(self.update_table)
         self.column_spinbox = QtWidgets.QSpinBox()
-        self.column_spinbox.setMinimum(1)
+        self.column_spinbox.setMinimumWidth(100)
         self.table_type = QtWidgets.QComboBox()
         self.table_type.addItem("Booktabs")
         self.table_type.addItem("Grid")

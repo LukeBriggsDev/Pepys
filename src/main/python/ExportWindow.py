@@ -11,6 +11,7 @@ import pypandoc
 from pathlib import Path
 import PyPDF4
 import os
+import sys
 import CONSTANTS
 import shutil
 
@@ -42,6 +43,19 @@ class ExportWindow(QtWidgets.QWidget):
         self.setWindowFlag(QtCore.Qt.Dialog)
         formLayout = QtWidgets.QFormLayout()
         self.export_options = QtWidgets.QComboBox()
+
+        # Workaround for button elements not changing BG on MacOS
+        if QtWidgets.QApplication.palette().color(QtGui.QPalette.Active, QtGui.QPalette.Base).lightness() < 122 and sys.platform == "darwin":
+            self.setStyleSheet(
+                """
+                QPushButton{
+                    color: palette(base)
+                }
+                QComboBox{
+                    color: palette(base)
+                }
+                """
+            )
 
 
         for output_format in sorted(self.output_formats.keys(), key=str.lower):
