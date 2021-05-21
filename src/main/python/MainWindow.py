@@ -99,10 +99,8 @@ class MainWindow(QtWidgets.QWidget):
 
         :param event: QResizeEvent that caused invocation
         """
-        print("WA")
         # Increase width of scroll bar left border to create a margin 25% width of the main window.
         margin_size = max(0, int((self.width() - 1000) * 0.5))
-        print(margin_size)
         scroll_bar_width = 6
         self.edit_pane.verticalScrollBar().setStyleSheet(
             "QScrollBar:vertical {"

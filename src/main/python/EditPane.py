@@ -48,7 +48,6 @@ class EditPane(QtWidgets.QTextEdit):
             font = QtGui.QFont("Consolas")
         font.setStyleHint(QtGui.QFont.Monospace)
         self.setFont(font)
-        print(self.font().family())
         # Set tab width
         metrics = QtGui.QFontMetrics(QtGui.QFontDatabase.systemFont(QtGui.QFontDatabase.FixedFont))
 

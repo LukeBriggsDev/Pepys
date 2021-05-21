@@ -85,14 +85,14 @@ class CustomToolbar(QtWidgets.QToolBar):
         self.insert_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["plus"][CONSTANTS.theme])))
         self.insert_button.setToolTip("Insert")
         self.insert_button.clicked.connect(self.insert_clicked)
-        #
-        # # Theme switch button
-        # self.theme_switch_button = QtWidgets.QPushButton()
-        # self.theme_switch_button.setMinimumSize(32, 32)
-        # self.theme_switch_button.setMaximumSize(32, 32)
-        # self.theme_switch_button.setToolTip("Change theme")
-        # self.theme_switch_button.clicked.connect(self.theme_switch)
-        # Read current theme
+
+        # Theme switch button
+        self.theme_switch_button = QtWidgets.QPushButton()
+        self.theme_switch_button.setMinimumSize(32, 32)
+        self.theme_switch_button.setMaximumSize(32, 32)
+        self.theme_switch_button.setToolTip("Change theme")
+        self.theme_switch_button.clicked.connect(self.theme_switch)
+        #Read current theme
 
         # Add buttons to layout
         self.addWidget(self.open_entry_button)
@@ -102,32 +102,15 @@ class CustomToolbar(QtWidgets.QToolBar):
         spacer.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
         spacer.setStyleSheet("background-color: rgba(0,0,0,0)")
         self.addWidget(spacer)
+        self.addWidget(self.theme_switch_button)
         self.addWidget(self.insert_button)
         self.addWidget(self.preview_button)
         self.addWidget(self.about_button)
-        self.setStyleSheet("""
-        CustomToolbar{
-            background-color: palette(window);
-            border: 1px solid palette(dark);
-        }
-        QPushButton{
-            background-color: window;
-            border: 0px;
-            border-radius: 4px;
-        }
-        QPushButton:hover{
-            background-color: palette(midlight);
-        }
-        QPushButton:pressed{
-            background-color: palette(dark);
-        }
-        
-""")
-
+        self.refresh_stylesheet()
 
     def changeEvent(self, event:QtCore.QEvent) -> None:
         # Change button icons to match theme
-        if event.type() == QtCore.QEvent.StyleChange:
+        if event.type() == QtCore.QEvent.PaletteChange:
             self.open_entry_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["open_entry"][CONSTANTS.theme])))
             self.refresh_favorite()
 
@@ -138,6 +121,7 @@ class CustomToolbar(QtWidgets.QToolBar):
                 self.preview_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["preview_stop"][CONSTANTS.theme])))
             self.about_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["about"][CONSTANTS.theme])))
             self.insert_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["plus"][CONSTANTS.theme])))
+            self.theme_switch_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["theme_switch"][CONSTANTS.theme])))
             self.export_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["export"][CONSTANTS.theme])))
 
     def about_clicked(self):
@@ -227,24 +211,17 @@ class CustomToolbar(QtWidgets.QToolBar):
 
     def theme_switch(self):
 
-        # Read current icon
-        with open(get_resource("config.json"), "r") as config:
-            current_config = json.loads(config.read())
 
-        current_theme = current_config["theme"]
+        current_theme = CONSTANTS.theme
 
-        # Toggle theme
         if current_theme == "light":
+            QtWidgets.QApplication.setPalette(CONSTANTS.Colors.getDarkpalette())
             CONSTANTS.theme = "dark"
         else:
+            QtWidgets.QApplication.setPalette(CONSTANTS.light_palette)
             CONSTANTS.theme = "light"
 
-        self.theme_switch_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["theme_switch"][CONSTANTS.theme])))
-
-        # Save change
-        with open(get_resource("config.json"), "w") as config:
-            current_config["theme"] = CONSTANTS.theme
-            config.write(json.dumps(current_config, sort_keys=True, indent=4))
+        self.refresh_stylesheet()
 
         main_window = self.parentWidget()
 
@@ -263,3 +240,23 @@ class CustomToolbar(QtWidgets.QToolBar):
         self.export_window.setFocusPolicy(QtCore.Qt.StrongFocus)
 
         self.export_window.show()
+
+    def refresh_stylesheet(self):
+        self.setStyleSheet("""
+        CustomToolbar{
+            background-color: palette(window);
+            border: 1px solid palette(dark);
+        }
+        QPushButton{
+            background-color: window;
+            border: 0px;
+            border-radius: 4px;
+        }
+        QPushButton:hover{
+            background-color: palette(button);
+        }
+        QPushButton:pressed{
+            background-color: palette(dark);
+        }
+        
+""")

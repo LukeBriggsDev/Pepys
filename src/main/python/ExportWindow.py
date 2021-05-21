@@ -185,7 +185,6 @@ class ExportWindow(QtWidgets.QWidget):
                     QtWidgets.QApplication.processEvents()
                     print(str(err))
                     if str(err).startswith('Pandoc died with exitcode "47"'):
-                        print("HI")
                         self.load_dialog.setMinimumSize(550, 150)
                         self.load_dialog.setMaximumSize(550, 150)
                         progress_bar.setVisible(False)
