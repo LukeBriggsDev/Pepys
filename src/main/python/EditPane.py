@@ -47,7 +47,7 @@ class EditPane(QtWidgets.QTextEdit):
         elif sys.platform.startswith("win"):
             font = QtGui.QFont("Consolas")
         font.setStyleHint(QtGui.QFont.Monospace)
-        self.setFont(font)
+        self.document().setDefaultFont(font)
         # Set tab width
         metrics = QtGui.QFontMetrics(QtGui.QFontDatabase.systemFont(QtGui.QFontDatabase.FixedFont))
 
@@ -299,3 +299,9 @@ class EditPane(QtWidgets.QTextEdit):
         """
 
         self.verticalScrollBar().setVisible(False)
+
+    def insertFromMimeData(self, source: QtCore.QMimeData) -> None:
+        if source.hasText():
+            self.insertPlainText(source.text())
+        else:
+            super().insertFromMimeData(source)
