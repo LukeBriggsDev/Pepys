@@ -40,7 +40,7 @@ class WebView(QtWebEngineWidgets.QWebEngineView):
 
     def changeEvent(self, event:QtCore.QEvent) -> None:
         # Change background colour when style changes to match themeZ
-        if event.type() is QtCore.QEvent.Type.StyleChange:
+        if event.type() == QtCore.QEvent.StyleChange:
             self.page().setBackgroundColor(QtWidgets.QApplication.palette().color(QtGui.QPalette.Base))
 
     def refresh_page(self):

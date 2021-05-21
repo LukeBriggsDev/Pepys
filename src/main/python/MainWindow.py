@@ -5,7 +5,7 @@ import sys
 import typing
 from datetime import date
 
-from PyQt5 import QtWidgets, QtGui
+from PyQt5 import QtWidgets, QtGui, QtCore
 
 from ColorParser import *
 from CustomToolbar import CustomToolbar
@@ -120,4 +120,3 @@ class MainWindow(QtWidgets.QWidget):
 
     def closeEvent(self, event:QtGui.QCloseEvent) -> None:
         sys.exit()
-

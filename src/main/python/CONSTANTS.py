@@ -63,13 +63,9 @@ class Colors:
     @staticmethod
     def lighten(color: QtGui.QColor, amount: float=0.1):
         h, s, l, a = color.getHslF()
-        if color.getRgb() == (40, 40, 40, 255):
-            print("HSLA: ", (h, s, l, a))
         lightness = amount + l
         if lightness > 1:
             lightness = 1
-
-        print ("lightness ", lightness)
 
         return QtGui.QColor.fromHslF(h, s, lightness, a)
 
@@ -102,7 +98,6 @@ class Colors:
 
 
         base_color = Colors.lighten(Colors.desaturate(QtGui.QColor("#241f31"), 1.0), 0.02)
-        print("BASE: ", Colors.lighten(Colors.desaturate(QtGui.QColor("#241f31"), 1.0), 0.02).getRgb())
         text_color = QtGui.QColor("white")
         bg_color = Colors.darken(Colors.desaturate(QtGui.QColor("#3d3846"), 1.0), 0.04)
         fg_color = QtGui.QColor("#eeeeec")
@@ -129,7 +124,11 @@ class Colors:
         alt_palette.setColor(QtGui.QPalette.All, QtGui.QPalette.ToolTipText, osd_text_color)
         alt_palette.setColor(QtGui.QPalette.All, QtGui.QPalette.Text, fg_color)
         alt_palette.setColor(QtGui.QPalette.All, QtGui.QPalette.Button, button_base_color)
-        alt_palette.setColor(QtGui.QPalette.All, QtGui.QPalette.ButtonText, fg_color)
+        if sys.platform == "darwin":
+            alt_palette.setColor(QtGui.QPalette.All, QtGui.QPalette.ButtonText, bg_color)
+
+        else:
+            alt_palette.setColor(QtGui.QPalette.All, QtGui.QPalette.ButtonText, fg_color)
         alt_palette.setColor(QtGui.QPalette.All, QtGui.QPalette.BrightText, text_color)
 
         alt_palette.setColor(QtGui.QPalette.All, QtGui.QPalette.Light, Colors.lighten(button_base_color))
