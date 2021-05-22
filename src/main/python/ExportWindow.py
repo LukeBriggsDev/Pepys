@@ -5,6 +5,8 @@ import typing
 from threading import Thread
 
 from PyQt5 import QtWidgets, QtGui, QtCore
+from EditPane import EditPane
+from datetime import date
 
 from CONSTANTS import get_resource
 from ColorParser import *
@@ -35,10 +37,11 @@ class ExportWindow(QtWidgets.QWidget):
         "reStructuredText": {"type": "rst", "ext": "rst"},
     }
 
-    def __init__(self, main_window):
+    def __init__(self, main_window, edit_pane: EditPane):
         super().__init__()
         # Window options
         self.main_window = main_window
+        self.edit_pane = edit_pane
         self.setMaximumSize(640, 480)
         self.setMinimumSize(640, 480)
         self.setWindowFlag(QtCore.Qt.Dialog)
@@ -147,6 +150,12 @@ class ExportWindow(QtWidgets.QWidget):
         if len(kwargs) == 0 or kwargs[0] != "Custom Range":
             self.start_date_widget.setEnabled(False)
             self.end_date_widget.setEnabled(False)
+            self.start_date_widget.setDate(date(int(self.edit_pane.current_file_date[:4]),
+                                                int(self.edit_pane.current_file_date[5:7]),
+                                                int(self.edit_pane.current_file_date[8:10])))
+            self.end_date_widget.setDate(date(int(self.edit_pane.current_file_date[:4]),
+                                              int(self.edit_pane.current_file_date[5:7]),
+                                              int(self.edit_pane.current_file_date[8:10])))
         else:
             self.start_date_widget.setEnabled(True)
             self.end_date_widget.setEnabled(True)
@@ -197,7 +206,7 @@ class ExportWindow(QtWidgets.QWidget):
 
         # Current Date
         if self.date_options.currentText() == "Current Entry":
-            diary_entries = list(Path(directory).rglob(f"{QtCore.QDate.currentDate().toString('yyyy-MM-dd')}.[mM][dD]"))
+            diary_entries = list(Path(directory).rglob(f"{self.edit_pane.current_file_date}.[mM][dD]"))
 
         format = self.output_formats[self.export_options.currentText()]
 

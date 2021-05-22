@@ -229,7 +229,7 @@ class CustomToolbar(QtWidgets.QToolBar):
         QtCore.QCoreApplication.postEvent(main_window, QtGui.QResizeEvent(main_window.size(), main_window.size()))
 
     def export_clicked(self):
-        self.export_window = ExportWindow(self.window())
+        self.export_window = ExportWindow(self.window(), self.edit_pane)
         # Disable current window
         self.window().setFocusProxy(self.export_window)
         self.export_window.setFocusPolicy(QtCore.Qt.StrongFocus)
