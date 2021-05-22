@@ -2,8 +2,23 @@ import json
 import os
 import sys
 import enchant
+import subprocess
 import pathlib
 from PyQt5 import QtGui, QtWidgets
+
+
+if sys.platform == 'darwin':
+    def openFolder(path):
+        subprocess.Popen(['open', path])
+elif sys.platform == 'linux':
+    def openFolder(path):
+        subprocess.Popen(['xdg-open', path])
+elif sys.platform == 'win32':
+    def openFolder(path):
+        subprocess.Popen(['explorer', path])
+
+
+
 
 def get_resource(filepath):
     """
@@ -43,7 +58,7 @@ theme = "light"
 with open(get_resource("colors.json")) as colors:
     colors = json.loads(colors.read())
 
-version = "0.2.2"
+version = "0.3.0"
 
 light_palette = QtWidgets.QApplication.palette()
 

@@ -27,6 +27,5 @@ if __name__ == "__main__":
     main_window.resize(800, 600)
     main_window.setMinimumSize(640, 480)
     main_window.show()
-    version = "0.3.0"
 
     sys.exit(app.exec_())

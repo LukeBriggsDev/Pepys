@@ -200,7 +200,7 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
         formatter.setFontWeight(QtGui.QFont.Normal)
         formatter.setFontItalic(False)
         formatter.setFontStrikeOut(False)
-        brush = QtWidgets.QApplication.palette().brush(QtGui.QPalette.Active, QtGui.QPalette.BrightText)
+        brush = QtWidgets.QApplication.palette().brush(QtGui.QPalette.Active, QtGui.QPalette.Link)
         formatter.setForeground(brush)
         formatter.setFontUnderline(False)
 

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import pathlib
 import typing
 from threading import Thread
 
@@ -38,9 +39,12 @@ class ExportWindow(QtWidgets.QWidget):
         super().__init__()
         # Window options
         self.main_window = main_window
-        self.setMaximumSize(640, 240)
-        self.setMinimumSize(640, 240)
+        self.setMaximumSize(640, 480)
+        self.setMinimumSize(640, 480)
         self.setWindowFlag(QtCore.Qt.Dialog)
+
+        self.dialog_layout = QtWidgets.QVBoxLayout()
+
         formLayout = QtWidgets.QFormLayout()
         self.export_options = QtWidgets.QComboBox()
 
@@ -63,7 +67,7 @@ class ExportWindow(QtWidgets.QWidget):
 
         for output_format in sorted(self.output_formats.keys(), key=str.lower):
             self.export_options.addItem(output_format)
-        formLayout.addRow("Export Format: ", self.export_options)
+        formLayout.addRow("Export Format:", self.export_options)
 
         # Selecting export date
         self.date_select_layout = QtWidgets.QGridLayout()
@@ -74,38 +78,58 @@ class ExportWindow(QtWidgets.QWidget):
         self.date_options.currentTextChanged.connect(self.disable_custom_date)
 
         self.custom_date_layout = QtWidgets.QFormLayout()
+
         self.start_date_widget = QtWidgets.QDateEdit()
         self.start_date_widget.setMinimumWidth(200)
         self.start_date_widget.setDisplayFormat("yyyy-MM-dd")
         self.start_date_widget.setDate(QtCore.QDate.currentDate())
+        self.custom_date_layout.addRow("Start Date:", self.start_date_widget)
+
         self.end_date_widget = QtWidgets.QDateEdit()
         self.end_date_widget.setMinimumWidth(200)
         self.end_date_widget.setDisplayFormat("yyyy-MM-dd")
         self.end_date_widget.setDate(QtCore.QDate.currentDate())
-        self.custom_date_layout.addRow("Start Date:", self.start_date_widget)
-        self.start_date_widget.dateChanged.connect(self.end_date_widget.setMinimumDate)
         self.custom_date_layout.addRow("End Date:", self.end_date_widget)
         self.end_date_widget.dateChanged.connect(self.start_date_widget.setMaximumDate)
+        self.start_date_widget.dateChanged.connect(self.end_date_widget.setMinimumDate)
+
         self.date_select_layout.addLayout(self.custom_date_layout, 2, 0, self.custom_date_layout.rowCount(), 2)
+        formLayout.addRow("Select Date:", self.date_select_layout)
 
+        # Export location
+        chosen_directory_layout = QtWidgets.QHBoxLayout()
+        self.chosen_directory = QtWidgets.QLabel()
+        browse_button = QtWidgets.QPushButton("Browse")
+        chosen_directory_layout.addWidget(browse_button)
+        chosen_directory_layout.addWidget(self.chosen_directory)
+        formLayout.addRow("Select Directory:", chosen_directory_layout)
+        browse_button.clicked.connect(self.browse_clicked)
 
-        formLayout.addRow("Select Date: ", self.date_select_layout)
 
         self.will_collate = QtWidgets.QCheckBox()
         self.will_collate.setFixedSize(38, 38)
         formLayout.addRow("Collate together:", self.will_collate)
 
-        self.setLayout(formLayout)
+        self.setLayout(self.dialog_layout)
+        self.dialog_layout.addLayout(formLayout)
+
 
         self.export_button = QtWidgets.QPushButton("Export")
         self.export_button.clicked.connect(self.export_clicked)
-        self.layout().addWidget(self.export_button)
+        self.dialog_layout.addWidget(self.export_button)
+
 
         self.setWindowTitle("Export")
 
         self.disable_custom_date()
         self.export_options.currentTextChanged.connect(self.format_option_change)
         self.format_option_change(None)
+
+    def browse_clicked(self):
+        self.file_dialog = QtWidgets.QFileDialog()
+        self.chosen_directory.setText(self.file_dialog.getExistingDirectory(self, "Open Directory",
+                                                                            pathlib.Path.home().as_posix(),
+                                                                            QtWidgets.QFileDialog.ShowDirsOnly))
 
     def closeEvent(self, event:QtGui.QCloseEvent) -> None:
         # Re-enable main window
@@ -155,6 +179,15 @@ class ExportWindow(QtWidgets.QWidget):
         with open(get_resource("config.json"), "r") as file:
             directory = json.loads(file.read())["diary_directory"]
 
+        if not os.path.exists(self.chosen_directory.text()):
+            try:
+                os.mkdir(os.path.join(Path(directory), "export"))
+            except FileExistsError:
+                shutil.rmtree(os.path.join(Path(directory), "export"), ignore_errors=True)
+                os.mkdir(os.path.join(Path(directory), "export"))
+
+            self.chosen_directory.setText(os.path.join(directory, "export"))
+
         diary_entries = list(Path(directory).rglob("*-*-*.[mM][dD]"))
 
         # Custom Range
@@ -195,7 +228,7 @@ class ExportWindow(QtWidgets.QWidget):
                 os.chdir(entry.parent.as_posix())
                 try:
                     pypandoc.convert_file(entry.as_posix(), format["type"],
-                                          outputfile=(entry.parent.as_posix() + "/" + entry.name[:-3] + "." + format["ext"]),
+                                          outputfile=(self.chosen_directory.text() + "/" + entry.name[:-3] + "." + format["ext"]),
                                           extra_args=pdoc_args)
                 except RuntimeError as err:
                     progress_label.setText("ERROR IN FILE " + entry.name)
@@ -229,31 +262,31 @@ class ExportWindow(QtWidgets.QWidget):
                 progress_label.setText("Starting pdf collation")
                 QtWidgets.QApplication.processEvents()
                 file_merger = PyPDF4.PdfFileMerger(strict=False)
-                pdf_list = sorted([Path(entry.as_posix()[:-3] + ".pdf") for entry in diary_entries], key=lambda x: x.name)
+                pdf_list = sorted([Path(os.path.join(self.chosen_directory.text(), entry.name[:-3] + ".pdf")) for entry in diary_entries], key=lambda x: x.name)
                 for pdf in pdf_list:
                     progress_label.setText(pdf.name)
                     QtWidgets.QApplication.processEvents()
                     file_merger.append(pdf.as_posix(), pdf.name[:-4], import_bookmarks=False)
-                file_merger.write(directory + "/diary.pdf")
+                file_merger.write(self.chosen_directory.text() + "/diary.pdf")
                 progress_label.setText("pdf collation finished")
                 QtWidgets.QApplication.processEvents()
 
             if format["type"] == "html":
                 progress_label.setText("Starting html collation")
                 QtWidgets.QApplication.processEvents()
-                html_list = sorted([Path(entry.as_posix()[:-3] + ".html") for entry in diary_entries], key=lambda x: x.name)
+                html_list = sorted([Path(os.path.join(self.chosen_directory.text(), entry.name[:-3] + ".html")) for entry in diary_entries], key=lambda x: x.name)
                 html = ""
                 try:
-                    os.mkdir(os.path.join(Path(directory), "html_export"))
+                    os.mkdir(os.path.join(Path(self.chosen_directory.text()), "html_export"))
                 except FileExistsError:
-                    shutil.rmtree(os.path.join(Path(directory), "html_export"), ignore_errors=True)
-                    os.mkdir(os.path.join(Path(directory), "html_export"))
+                    shutil.rmtree(os.path.join(Path(self.chosen_directory.text()), "html_export"), ignore_errors=True)
+                    os.mkdir(os.path.join(Path(self.chosen_directory.text()), "html_export"))
 
                 for document in html_list:
-                    shutil.move(document, os.path.join(Path(directory), "html_export", document.name))
+                    shutil.move(document, os.path.join(Path(self.chosen_directory.text()), "html_export", document.name))
 
-                with open(os.path.join(Path(directory), "html_export", "_index.html"), "w") as f:
-                    shutil.copyfile(get_resource("parsed_stylesheet.css"), os.path.join(Path(directory), "html_export", "styles.css"))
+                with open(os.path.join(Path(self.chosen_directory.text()), "html_export", "_index.html"), "w") as f:
+                    shutil.copyfile(get_resource("parsed_stylesheet.css"), os.path.join(Path(self.chosen_directory.text()), "html_export", "styles.css"))
                     f.write('<!DOCTYPE HTML>'
                             '<HTML>'
                             '<HEAD><LINK rel="stylesheet" href="styles.css" type="text/css">'
@@ -265,5 +298,5 @@ class ExportWindow(QtWidgets.QWidget):
                 progress_label.setText("HTML collation finished")
                 QtWidgets.QApplication.processEvents()
 
-
+        CONSTANTS.openFolder(self.chosen_directory.text())
         self.load_dialog.close()
