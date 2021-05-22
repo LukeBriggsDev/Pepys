@@ -267,6 +267,7 @@ class ExportWindow(QtWidgets.QWidget):
                     progress_label.setText(pdf.name)
                     QtWidgets.QApplication.processEvents()
                     file_merger.append(pdf.as_posix(), pdf.name[:-4], import_bookmarks=False)
+                    os.remove(pdf.as_posix())
                 file_merger.write(self.chosen_directory.text() + "/diary.pdf")
                 progress_label.setText("pdf collation finished")
                 QtWidgets.QApplication.processEvents()
