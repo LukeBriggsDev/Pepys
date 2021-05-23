@@ -1,9 +1,11 @@
 html {
     font-size: 16pt;
     overflow-y: scroll;
+    overflow-x: hidden;
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
     min-height: 100%;
+    max-width: 100%;
     background: %Base%;
 }
 
@@ -108,7 +110,7 @@ h6 {
 }
 
 blockquote {
-    color: %Midlight%;
+    color: rgba(122, 122, 122, 0.5);
     margin: 0;
     padding-left: 3em;
     border-left: 0.5em #EEE solid;

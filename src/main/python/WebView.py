@@ -21,9 +21,6 @@ class WebView(QtWebEngineWidgets.QWebEngineView):
         self.edit_pane = edit_pane
         self.setVisible(False)
         # Font settings
-        self.settings().setFontFamily(self.settings().SansSerifFont, QtGui.QFontDatabase.systemFont(QtGui.QFontDatabase.GeneralFont).family())
-        self.settings().setFontFamily(self.settings().FixedFont, QtGui.QFontDatabase.systemFont(QtGui.QFontDatabase.FixedFont).family())
-        self.settings().setFontSize(self.settings().MinimumFontSize, 18)
 
         self.bg_colors = {'light': QtGui.QColor(255, 255, 255), 'dark': QtGui.QColor(41, 41, 41)}
 
