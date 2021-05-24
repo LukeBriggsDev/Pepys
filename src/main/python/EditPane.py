@@ -7,6 +7,7 @@ import sys
 import typing
 from datetime import date
 import enchant
+import regex
 from enchant.tokenize import get_tokenizer
 import shutil
 import pathlib
@@ -145,6 +146,30 @@ class EditPane(QtWidgets.QTextEdit):
                 current_line.previous())
             self.markdownHighlighter.rehighlightBlock(
                 current_line.next())
+
+    def keyPressEvent(self, e: QtGui.QKeyEvent) -> None:
+        super(EditPane, self).keyPressEvent(e)
+        current_line = self.document().findBlock(self.textCursor().position())
+        # Auto add list
+        if e.key() == QtCore.Qt.Key_Enter or e.key() == QtCore.Qt.Key_Return:
+            # If the previous line started with a number list entry
+            match = regex.match(r"^(?P<number>[0-9]+)(?P<sep>[\.)]+ )", current_line.previous().text())
+            if match is not None:
+                self.insertPlainText(str(int(match.group("number")) + 1) + match.group("sep"))
+
+            # If the previous line started with a lettered list entry
+            match = regex.match(r"^(?P<letter>[A-Ya-y]{1})(?P<sep>[\.)]+ )", current_line.previous().text())
+            if match is not None:
+                self.insertPlainText(chr(ord(match.group("letter")) + 1) + match.group("sep"))
+
+            # If the previous line is a bullet
+            match = regex.match(r"^([*+\-]{1}|#\.) ", current_line.previous().text())
+            if match is not None:
+                self.insertPlainText(match.group())
+
+
+
+
         self.save_current_file()
 
     def contextMenuEvent(self, e:QtGui.QContextMenuEvent) -> None:
