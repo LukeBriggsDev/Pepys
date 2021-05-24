@@ -5,6 +5,7 @@ import typing
 from PyQt5 import QtWidgets, QtGui, QtCore
 
 from WebView import WebView
+from EntryExplorer import EntryExplorer
 import json
 import pathlib
 import shutil

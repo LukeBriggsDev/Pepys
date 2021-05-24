@@ -1,13 +1,19 @@
 from __future__ import annotations
 
+import random
 import typing
 from datetime import date
+import os
+import yaml
+import regex
+from random import randint
 
 from PyQt5 import QtWidgets, QtGui, QtCore
 
 from CONSTANTS import get_resource
 import CONSTANTS
 from ColorParser import *
+import datetime
 from EditPane import EditPane
 from WebView import WebView
 
@@ -25,7 +31,7 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
         super().__init__()
         self.edit_pane = edit_pane
         self.web_view = web_view
-        self.setWindowFlag(QtCore.Qt.WindowType.Dialog)
+        self.setWindowFlag(QtCore.Qt.Dialog)
 
         date = self.edit_pane.current_file_date.split("-")
         self.setSelectedDate(QtCore.QDate(
@@ -36,8 +42,8 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
 
         self.layout = QtWidgets.QVBoxLayout()
         self.setVerticalHeaderFormat(self.NoVerticalHeader)
-        self.setMinimumSize(480, 480)
-        self.setMaximumSize(480, 480)
+        self.setMinimumSize(640, 640)
+        self.setMaximumSize(640, 640)
         self.setWindowTitle("Calendar")
 
         self.setStyleSheet("""
@@ -48,11 +54,12 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
             background-color: palette(base);
         }
         QWidget{
-            background-color: palette(base)
+            background-color: palette(base);
         }
         QToolButton {
             icon-size: 24px, 24px;
             background-color: palette(base);
+            color: palette(text);
         }
         QAbstractItemView {
             selection-background-color: rgb(255, 174, 0);
@@ -69,7 +76,7 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
             left: 10px;
         }
         QListView {
-        background-color:white;
+            background-color:white;
         }
         QSpinBox {
             width:200px; 
@@ -90,6 +97,9 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
             width:6px; 
             height:6px;
         image: url(icons:arrow_down_n.png); 
+        }
+        QMenu::item:selected{
+            background-color: palette(highlight);
         }
 """)
 
@@ -119,7 +129,67 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
                                                 self.selectedDate().day()))
         self.web_view.refresh_page()
 
+
     def closeEvent(self, a0: QtGui.QCloseEvent) -> None:
         self.edit_pane.parentWidget().tool_bar.setEnabled(True)
 
+    def paintCell(self, painter: QtGui.QPainter, rect: QtCore.QRect, date: typing.Union[QtCore.QDate, datetime.date]) -> None:
+        painter.save()
+
+        if (date.month() != self.monthShown()):
+            painter.setPen(QtGui.QColor("#888888"))
+        elif date.dayOfWeek() == 6 or date.dayOfWeek() == 7:
+            painter.setPen(QtGui.QColor("red"))
+
+        tags = self.get_tags_from_date_file(date.toPyDate())
+        rect.adjust(0, 0, -1, -1)
+        pen = painter.pen()
+        pen.setColor(QtGui.QColor.fromHsl(pen.color().hue(), pen.color().saturation(), pen.color().lightness(), 150))
+        painter.setPen(pen)
+        painter.drawRect(rect)
+        pen.setColor(QtGui.QColor.fromHsl(pen.color().hue(), pen.color().saturation(), pen.color().lightness(), 255))
+        painter.setPen(pen)
+
+        painter.drawText(rect, QtCore.Qt.AlignTop, str(date.day()))
+        text = ""
+        try:
+            for tag in tags[:5]:
+                if len(tag) > 12:
+                    tag = str(tag[:12]) + "..."
+                text += f" {tag} \n"
+        except TypeError:
+            text = ""
+        font = QtGui.QFont()
+        font.setPixelSize(10)
+        painter.setFont(font)
+        brush = painter.background()
+        random.seed(date)
+        brush.setColor(QtGui.QColor().fromHsl(randint(0, 255), randint(0, 255), randint(200, 255)))
+        painter.setPen(QtGui.QColor("black"))
+        painter.setBackground(brush)
+        painter.setBackgroundMode(QtCore.Qt.OpaqueMode)
+        painter.drawText(rect, QtCore.Qt.AlignBottom | QtCore.Qt.AlignHCenter, text)
+        painter.restore()
+
+    def get_tags_from_date_file(self, date: datetime.date):
+        """Open or create a markdown file corresponding to today"""
+        formatted_date = date.strftime("%Y-%m-%d")
+
+        # Get folder for today's journal entry
+        config_file = get_resource("config.json")
+        with open(config_file, "r") as file:
+            file_directory = os.path.join(json.loads(file.read())["diary_directory"], str(date.year),
+                                          str(date.month), formatted_date)
+
+        try:
+            with open(os.path.join(file_directory, f"{formatted_date}.md"), "r") as file:
+                pattern = regex.compile(r"(?<=(^-{3,}\n)).+?(?=-{3,})", regex.DOTALL)
+                contents = file.read()
+                metadata = regex.search(pattern, contents)
+            if metadata is not None:
+                meta_dict = yaml.load(metadata.group())
+                if "tags" in meta_dict.keys():
+                    return meta_dict["tags"]
+        except Exception:
+            return {}
 

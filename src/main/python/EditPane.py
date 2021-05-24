@@ -63,6 +63,15 @@ class EditPane(QtWidgets.QTextEdit):
         self._current_file = ""
         self.markdownHighlighter = MarkdownSyntaxHighlighter(self)
 
+        self.setStyleSheet("""
+        QTextEdit:Focus{
+            border: 0px solid white;
+        }
+        QTextEdit{
+            border: 0px solid white;
+        }
+        """)
+
     @property
     def current_file(self):
         """Returns current file path"""

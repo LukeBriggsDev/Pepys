@@ -90,23 +90,14 @@ class MainWindow(QtWidgets.QWidget):
         """
         # Increase width of scroll bar left border to create a margin 25% width of the main window.
         margin_size = max(0, int((self.width() - 1000) * 0.5))
-        scroll_bar_width = 6
-        self.refresh_stylesheet()
-        self.edit_pane.verticalScrollBar().setStyleSheet(
-            "QScrollBar:vertical {"
-            f"width: {margin_size + scroll_bar_width};"
-            f"margin-left: {margin_size - scroll_bar_width}px;"
-            "}")
+        top_margin_size = max(0, int((self.width() - 1000) * 0.1))
 
-        # Increase left border of the QTextEdit pane to create a left margin 25% width of the main window
-        self.edit_pane.setStyleSheet(
-                           "QTextEdit { "
-                           f"margin-left: {margin_size} px;"
-                           f"border: 0px solid palette(base);"
-                           "}")
-
-
-
+        format = self.edit_pane.document().rootFrame().frameFormat()
+        format.setBottomMargin(100)
+        format.setTopMargin(top_margin_size)
+        format.setLeftMargin(margin_size)
+        format.setRightMargin(margin_size)
+        self.edit_pane.document().rootFrame().setFrameFormat(format)
 
     def closeEvent(self, event:QtGui.QCloseEvent) -> None:
         sys.exit()
