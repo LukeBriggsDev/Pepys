@@ -221,6 +221,7 @@ class CustomToolbar(QtWidgets.QToolBar):
 
         self.refresh_stylesheet()
         main_window = self.parentWidget()
+        main_window.refresh_stylesheet()
 
         # Refresh web_view
         self.web_view.refresh_page()

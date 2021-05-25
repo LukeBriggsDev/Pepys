@@ -133,7 +133,7 @@ class EditPane(QtWidgets.QTextEdit):
         self.save_current_file()
         self.file_changed.emit()
         self.window().setWindowTitle(long_date)
-        # Update view pane
+        self.set_margins()
 
 
     def save_current_file(self) -> None:
@@ -338,3 +338,15 @@ class EditPane(QtWidgets.QTextEdit):
             self.insertPlainText(source.text())
         else:
             super().insertFromMimeData(source)
+
+    def set_margins(self):
+        margin_size = max(0, int((self.window().width() - 1000) * 0.5))
+        top_margin_size = max(0, int((self.window().width() - 1000) * 0.1))
+
+        format = self.document().rootFrame().frameFormat()
+        format.setBottomMargin(100)
+        format.setTopMargin(top_margin_size)
+        format.setLeftMargin(margin_size)
+        format.setRightMargin(margin_size)
+        self.document().rootFrame().frameFormat().setRightMargin(margin_size)
+        self.document().rootFrame().setFrameFormat(format)

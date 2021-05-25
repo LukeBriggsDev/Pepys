@@ -63,7 +63,6 @@ class MainWindow(QtWidgets.QWidget):
 
         self.edit_pane.open_file_from_date(date.today())
 
-
     def select_diary_directory(self):
         """Request user to select a directory and set it to diary_directory in config
         """
@@ -89,15 +88,7 @@ class MainWindow(QtWidgets.QWidget):
         :param event: QResizeEvent that caused invocation
         """
         # Increase width of scroll bar left border to create a margin 25% width of the main window.
-        margin_size = max(0, int((self.width() - 1000) * 0.5))
-        top_margin_size = max(0, int((self.width() - 1000) * 0.1))
-
-        format = self.edit_pane.document().rootFrame().frameFormat()
-        format.setBottomMargin(100)
-        format.setTopMargin(top_margin_size)
-        format.setLeftMargin(margin_size)
-        format.setRightMargin(margin_size)
-        self.edit_pane.document().rootFrame().setFrameFormat(format)
+        self.edit_pane.set_margins()
 
     def closeEvent(self, event:QtGui.QCloseEvent) -> None:
         sys.exit()
