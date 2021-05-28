@@ -187,7 +187,7 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
                 contents = file.read()
                 metadata = regex.search(pattern, contents)
             if metadata is not None:
-                meta_dict = yaml.load(metadata.group())
+                meta_dict = yaml.safe_load(metadata.group())
                 if "tags" in meta_dict.keys():
                     return meta_dict["tags"]
         except Exception:

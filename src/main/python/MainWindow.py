@@ -34,12 +34,25 @@ class MainWindow(QtWidgets.QWidget):
         with open(config_file, "r") as file:
             config_dict = json.loads(file.read())
 
+        self.no_journal_dialog = QtWidgets.QMessageBox()
+        self.no_journal_dialog.setText("No journal directory configured")
+        self.no_journal_dialog.setStandardButtons(QtWidgets.QMessageBox.Close | QtWidgets.QMessageBox.Open)
+        self.no_journal_dialog.setDefaultButton(QtWidgets.QMessageBox.Open)
+
         # Folder is not an absolute folder
         try:
             if not (config_dict['diary_directory'][0] == '/' or config_dict['diary_directory'][1] == ':') or not os.path.exists(config_dict['diary_directory']):
-                self.select_diary_directory()
+                answer = self.no_journal_dialog.exec()
+                if answer == QtWidgets.QMessageBox.Open:
+                    self.select_diary_directory()
+                else:
+                    exit(0)
         except IndexError:
-            self.select_diary_directory()
+            answer = self.no_journal_dialog.exec()
+            if answer == QtWidgets.QMessageBox.Open:
+                self.select_diary_directory()
+            else:
+                exit(0)
 
         # Layout
         self.layout = QtWidgets.QVBoxLayout(self)
@@ -83,7 +96,10 @@ class MainWindow(QtWidgets.QWidget):
                 exit(0)
         with open(config_file, "w") as file:
             file.write(json.dumps(config_dict, sort_keys=True, indent=4))
-        self.edit_pane.open_file_from_date(date.fromisoformat(self.edit_pane.current_file_date))
+        try:
+            self.edit_pane.open_file_from_date(date.fromisoformat(self.edit_pane.current_file_date))
+        except AttributeError:
+            print("First time boot")
 
     def resizeEvent(self, event: QtGui.QResizeEvent) -> None:
         """Perform any changes necessitated by window resize
