@@ -276,7 +276,11 @@ class EditPane(QtWidgets.QTextEdit):
     def createCustomContextMenu(self, pos) -> QtWidgets.QMenu:
         menu = self.createStandardContextMenu()
         menu.addSeparator()
-        menu.addAction(QtGui.QIcon(get_resource(CONSTANTS.icons["plus"][CONSTANTS.theme])), "Insert Image", self.insert_image)
+        add_icon = QtGui.QIcon(get_resource(CONSTANTS.icons["plus"][CONSTANTS.theme]))
+        if sys.platform != "win32": # Don't add plus icon on windows (looks ugly)
+            menu.addAction(add_icon, "Insert Image", self.insert_image)
+        else:
+            menu.addAction("Insert Image", self.insert_image)
         menu.addSeparator()
         self.word_cursor = self.cursorForPosition(pos)
         self.word_cursor.select(QtGui.QTextCursor.WordUnderCursor)

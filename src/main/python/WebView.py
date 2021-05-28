@@ -8,6 +8,7 @@ from CONSTANTS import get_resource
 import pypandoc
 from EditPane import EditPane
 from ColorParser import parse_stylesheet
+import pathlib
 
 if typing.TYPE_CHECKING:
     from main import AppContext
@@ -56,8 +57,7 @@ class WebView(QtWebEngineWidgets.QWebEngineView):
             f"{get_resource('parsed_stylesheet.css')}",
             f"--katex={get_resource('katex/')}"
         ])
-
-        self.setHtml(html, QtCore.QUrl().fromLocalFile(self.edit_pane.current_file))
+        self.setHtml(html, QtCore.QUrl().fromLocalFile(self.edit_pane.current_file+".html")) # requires .html to prevent default app opening
 
 
 

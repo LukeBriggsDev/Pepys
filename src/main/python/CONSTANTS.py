@@ -15,7 +15,7 @@ elif sys.platform == 'linux':
         subprocess.Popen(['xdg-open', path])
 elif sys.platform == 'win32':
     def openFolder(path):
-        subprocess.Popen(['explorer', path])
+        subprocess.Popen(['explorer', pathlib.Path(path)])
 
 
 
@@ -58,9 +58,13 @@ theme = "light"
 with open(get_resource("colors.json")) as colors:
     colors = json.loads(colors.read())
 
-version = "0.3.0"
+version = "1.0.0"
 
 light_palette = QtWidgets.QApplication.palette()
+if not sys.platform.startswith("linux"):
+    light_palette.setColor(QtGui.QPalette.Mid, QtGui.QColor.fromRgbF(0.85, 0.85, 0.85))
+    light_palette.setColor(QtGui.QPalette.Dark, QtGui.QColor.fromRgbF(0.8, 0.8, 0.8))
+    QtWidgets.QApplication.setPalette(light_palette)
 
 class Colors:
     @staticmethod

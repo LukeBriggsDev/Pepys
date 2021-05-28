@@ -7,7 +7,6 @@ from threading import Thread
 from PyQt5 import QtWidgets, QtGui, QtCore
 from EditPane import EditPane
 from datetime import date
-from ebooklib import epub
 
 from CONSTANTS import get_resource
 from ColorParser import *
@@ -218,6 +217,8 @@ class ExportWindow(QtWidgets.QWidget):
         if format["type"] == "pdf":
             # Convert to html before pdf to apply css
             pdoc_args.append("-thtml")
+            if sys.platform.startswith("win32") and shutil.which("wkhtmltopdf") is None:
+                pdoc_args.append(f"--pdf-engine={get_resource('wkhtmltopdf.exe')}")
             pass
 
         if format["type"] == "html" or format["type"] == "pdf":
@@ -251,10 +252,8 @@ class ExportWindow(QtWidgets.QWidget):
                         exit_button = QtWidgets.QPushButton("Close")
                         self.load_dialog.layout().addWidget(exit_button)
                         exit_button.clicked.connect(self.load_dialog.close)
-                        progress_label.setText("No TeXLive installation found.\n"
-                                               "Please install TeXLive.\n\n"
-                                               "If you are using a Linux Flatpak, please install TeXLive by running\n"
-                                               "flatpak install flathub org.freedesktop.Sdk.Extension.texlive//20.08")
+                        progress_label.setText("No wkhtmltopdf installation found.\n"
+                                               "Please install wkhtmltopdf.\n\n")
                         return 1
                     print(err)
                 finished += 1
@@ -277,7 +276,10 @@ class ExportWindow(QtWidgets.QWidget):
                     progress_label.setText(pdf.name)
                     QtWidgets.QApplication.processEvents()
                     file_merger.append(pdf.as_posix(), pdf.name[:-4], import_bookmarks=False)
-                    os.remove(pdf.as_posix())
+                    try:
+                        os.remove(pdf.as_posix())
+                    except PermissionError:
+                        pass
                 file_merger.write(self.chosen_directory.text() + "/diary.pdf")
                 progress_label.setText("pdf collation finished")
                 QtWidgets.QApplication.processEvents()
@@ -310,6 +312,6 @@ class ExportWindow(QtWidgets.QWidget):
                 progress_label.setText("HTML collation finished")
                 QtWidgets.QApplication.processEvents()
 
-
+        print(self.chosen_directory.text())
         CONSTANTS.openFolder(self.chosen_directory.text())
         self.load_dialog.close()

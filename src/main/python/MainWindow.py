@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import pathlib
 import sys
 import typing
 from datetime import date
@@ -11,6 +12,8 @@ from ColorParser import *
 from CustomToolbar import CustomToolbar
 from EditPane import EditPane
 from WebView import WebView
+from shutil import which
+from pypandoc.pandoc_download import download_pandoc
 
 if typing.TYPE_CHECKING:
     pass
@@ -24,6 +27,8 @@ class MainWindow(QtWidgets.QWidget):
         """Initialise main window
         """
         super().__init__()
+        if which("pandoc") is None and sys.platform.startswith("win32"):
+            os.environ.setdefault("PYPANDOC_PANDOC", get_resource("pandoc-2.13/pandoc.exe"))
         self.date_opened = date.today()
         self.refresh_stylesheet()
 

@@ -5,6 +5,8 @@ import setproctitle
 from PyQt5 import QtWidgets, QtGui, QtCore
 from CONSTANTS import get_resource
 import CONSTANTS
+from pypandoc.pandoc_download import download_pandoc
+import pypandoc
 
 from MainWindow import MainWindow
 
@@ -12,6 +14,11 @@ if __name__ == "__main__":
     print("Starting Pepys")
     if sys.platform.lower().startswith("linux"):
         os.putenv("QT_QPA_PLATFORM", "xcb")
+    if sys.platform.startswith("win32"):
+        import ctypes
+        myappid = 'dev.lukebriggs.pepys.1.0.0' # arbitrary string
+        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
+
     if not os.path.isfile(pathlib.Path.home().as_posix()+"/.pepys/wordlist.txt"):
         with open(pathlib.Path.home().as_posix()+"/.pepys/wordlist.txt", "w+") as file:
             file.write("")
