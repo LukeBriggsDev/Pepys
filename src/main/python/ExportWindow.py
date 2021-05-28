@@ -7,6 +7,7 @@ from threading import Thread
 from PyQt5 import QtWidgets, QtGui, QtCore
 from EditPane import EditPane
 from datetime import date
+from ebooklib import epub
 
 from CONSTANTS import get_resource
 from ColorParser import *
@@ -111,7 +112,7 @@ class ExportWindow(QtWidgets.QWidget):
 
         self.will_collate = QtWidgets.QCheckBox()
         self.will_collate.setFixedSize(38, 38)
-        formLayout.addRow("Collate together:", self.will_collate)
+        formLayout.addRow("Collate together (PDF, HTML only):", self.will_collate)
 
         self.setLayout(self.dialog_layout)
         self.dialog_layout.addLayout(formLayout)
@@ -140,7 +141,7 @@ class ExportWindow(QtWidgets.QWidget):
         self.main_window.setDisabled(False)
 
     def format_option_change(self, new_text: str):
-        if new_text == "HTML" or new_text == "PDF":
+        if new_text == "HTML" or new_text == "PDF" or new_text == "EBook":
             self.will_collate.setEnabled(True)
         else:
             self.will_collate.setEnabled(False)
@@ -281,6 +282,7 @@ class ExportWindow(QtWidgets.QWidget):
                 progress_label.setText("pdf collation finished")
                 QtWidgets.QApplication.processEvents()
 
+            # Collate html together into one pdf
             if format["type"] == "html":
                 progress_label.setText("Starting html collation")
                 QtWidgets.QApplication.processEvents()
@@ -307,6 +309,7 @@ class ExportWindow(QtWidgets.QWidget):
 
                 progress_label.setText("HTML collation finished")
                 QtWidgets.QApplication.processEvents()
+
 
         CONSTANTS.openFolder(self.chosen_directory.text())
         self.load_dialog.close()
