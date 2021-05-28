@@ -2,12 +2,6 @@ app-id: dev.lukebriggs.pepys
 runtime: org.kde.Platform
 runtime-version: '5.15'
 sdk: org.kde.Sdk
-add-extensions:
-  org.freedesktop.Sdk.Extension.texlive:
-    directory: texlive
-    subdirectories: true
-    autodelete: true
-    version: '20.08'
 command: runner.sh
 finish-args:
   - --share=ipc
