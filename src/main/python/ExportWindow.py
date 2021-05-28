@@ -141,7 +141,7 @@ class ExportWindow(QtWidgets.QWidget):
         self.main_window.setDisabled(False)
 
     def format_option_change(self, new_text: str):
-        if new_text == "HTML" or new_text == "PDF" or new_text == "EBook":
+        if new_text == "HTML" or new_text == "PDF":
             self.will_collate.setEnabled(True)
         else:
             self.will_collate.setEnabled(False)
