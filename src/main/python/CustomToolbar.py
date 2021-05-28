@@ -25,7 +25,7 @@ import CONSTANTS
 
 class CustomToolbar(QtWidgets.QToolBar):
     """Menu bar to appear with MainWindow"""
-    def __init__(self, edit_pane: EditPane, web_view: WebView) -> None:
+    def __init__(self, parent, edit_pane: EditPane, web_view: WebView) -> None:
         """Constructor
         :param edit_pane: EditPane holding currently editing document
         :param web_view: WebView to hold the output of the edit pane
@@ -54,6 +54,13 @@ class CustomToolbar(QtWidgets.QToolBar):
         self.refresh_favorite()
         self.setToolTip("Favourite")
         self.favorite_button.clicked.connect(self.favorite_clicked)
+
+        self.changedir_button = QtWidgets.QPushButton()
+        self.changedir_button.setMinimumSize(32, 32)
+        self.changedir_button.setMaximumSize(32, 32)
+        self.changedir_button.setIcon(QtGui.QIcon(get_resource("icons/folder.svg")))
+        self.changedir_button.setToolTip("Change Directory")
+        self.changedir_button.clicked.connect(parent.select_diary_directory)
 
         # Preview button
         self.preview_button = QtWidgets.QPushButton()
@@ -98,6 +105,7 @@ class CustomToolbar(QtWidgets.QToolBar):
         # Add buttons to layout
         self.addWidget(self.open_entry_button)
         self.addWidget(self.favorite_button)
+        self.addWidget(self.changedir_button)
         self.addWidget(self.export_button)
         spacer = QtWidgets.QWidget()
         spacer.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
@@ -124,6 +132,7 @@ class CustomToolbar(QtWidgets.QToolBar):
             self.insert_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["plus"][CONSTANTS.theme])))
             self.theme_switch_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["theme_switch"][CONSTANTS.theme])))
             self.export_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["export"][CONSTANTS.theme])))
+            self.changedir_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["folder"][CONSTANTS.theme])))
 
     def about_clicked(self):
         # Create about dialog

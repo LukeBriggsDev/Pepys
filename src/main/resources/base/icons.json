@@ -42,6 +42,10 @@
   "plus": {
     "light": "icons/plus.svg",
     "dark": "icons/plus-white.svg"
+  },
+  "folder": {
+    "light": "icons/folder.svg",
+    "dark": "icons/folder-white.svg"
   }
 
 }

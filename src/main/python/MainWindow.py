@@ -49,12 +49,10 @@ class MainWindow(QtWidgets.QWidget):
         # Edit pane
         self.edit_pane = EditPane()
 
-
-
         self.web_view = WebView(self.edit_pane)
 
         # Menu bar and adding panes underneath
-        self.tool_bar = CustomToolbar(self.edit_pane, self.web_view)
+        self.tool_bar = CustomToolbar(self, self.edit_pane, self.web_view)
 
         self.layout.addWidget(self.tool_bar)
         self.layout.addWidget(self.edit_pane)
@@ -71,16 +69,21 @@ class MainWindow(QtWidgets.QWidget):
         with open(config_file, "r") as file:
             config_dict = json.loads(file.read())
             file_dialog = QtWidgets.QFileDialog()
+            old_dir = config_dict["diary_directory"]
 
             config_dict["diary_directory"] = file_dialog.getExistingDirectory(self,
                                                     "Please select a directory to store your journal files",
                                                     "")
 
+        # Cancel has been clicked
         if config_dict["diary_directory"] == "":
-            exit(0)
-        else:
-            with open(config_file, "w") as file:
-                file.write(json.dumps(config_dict, sort_keys=True, indent=4))
+            if os.path.exists(old_dir):
+                config_dict["diary_directory"] = old_dir
+            else:
+                exit(0)
+        with open(config_file, "w") as file:
+            file.write(json.dumps(config_dict, sort_keys=True, indent=4))
+        self.edit_pane.open_file_from_date(date.fromisoformat(self.edit_pane.current_file_date))
 
     def resizeEvent(self, event: QtGui.QResizeEvent) -> None:
         """Perform any changes necessitated by window resize
