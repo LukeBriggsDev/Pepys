@@ -135,7 +135,9 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
 
     def paintCell(self, painter: QtGui.QPainter, rect: QtCore.QRect, date: typing.Union[QtCore.QDate, datetime.date]) -> None:
         painter.save()
-
+        with open(get_resource("config.json")) as file:
+            if date.toPyDate().strftime("%Y-%m-%d") in json.loads(file.read())["favorites"]:
+                painter.fillRect(rect, QtGui.QColor.fromRgb(255, 255, 0))
         if (date.month() != self.monthShown()):
             painter.setPen(QtGui.QColor("#888888"))
         elif date.dayOfWeek() == 6 or date.dayOfWeek() == 7:
