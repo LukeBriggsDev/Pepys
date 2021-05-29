@@ -233,6 +233,7 @@ class ExportWindow(QtWidgets.QWidget):
         progress_bar.setMaximum(len(diary_entries))
         QtWidgets.QApplication.processEvents()
         finished = 0
+        errors = []
         # Conversion
         for entry in diary_entries:
             if self.load_dialog.isVisible():
@@ -245,6 +246,7 @@ class ExportWindow(QtWidgets.QWidget):
                     progress_label.setText("ERROR IN FILE " + entry.name)
                     QtWidgets.QApplication.processEvents()
                     print(str(err))
+                    errors.append(entry)
                     if str(err).startswith('Pandoc died with exitcode "47"'):
                         self.load_dialog.setMinimumSize(550, 150)
                         self.load_dialog.setMaximumSize(550, 150)
@@ -271,7 +273,10 @@ class ExportWindow(QtWidgets.QWidget):
                 progress_label.setText("Starting pdf collation")
                 QtWidgets.QApplication.processEvents()
                 file_merger = PyPDF4.PdfFileMerger(strict=False)
-                pdf_list = sorted([Path(os.path.join(self.chosen_directory.text(), entry.name[:-3] + ".pdf")) for entry in diary_entries], key=lambda x: x.name)
+                pdf_list = sorted([Path(os.path.join(self.chosen_directory.text(), entry.name[:-3] + ".pdf"))
+                                   for entry in diary_entries
+                                   if os.path.isfile(os.path.join(self.chosen_directory.text(), entry.name[:-3] + ".pdf"))],
+                                   key=lambda x: x.name)
                 for pdf in pdf_list:
                     progress_label.setText(pdf.name)
                     QtWidgets.QApplication.processEvents()
@@ -288,7 +293,10 @@ class ExportWindow(QtWidgets.QWidget):
             if format["type"] == "html":
                 progress_label.setText("Starting html collation")
                 QtWidgets.QApplication.processEvents()
-                html_list = sorted([Path(os.path.join(self.chosen_directory.text(), entry.name[:-3] + ".html")) for entry in diary_entries], key=lambda x: x.name)
+                html_list = sorted([Path(os.path.join(self.chosen_directory.text(), entry.name[:-3] + ".html"))
+                                    for entry in diary_entries
+                                    if os.path.isfile(os.path.join(self.chosen_directory.text(), entry.name[:-3] + ".html"))],
+                                    key=lambda x: x.name)
                 html = ""
                 try:
                     os.mkdir(os.path.join(Path(self.chosen_directory.text()), "html_export"))
@@ -313,5 +321,9 @@ class ExportWindow(QtWidgets.QWidget):
                 QtWidgets.QApplication.processEvents()
 
         print(self.chosen_directory.text())
+        self.error_dialog = QtWidgets.QMessageBox()
+        self.error_dialog.setText("Errors occured in the following entries and they were not converted.\n\nPerhaps they link to files that do not exist")
+        self.error_dialog.setInformativeText("\n".join([str(error) for error in errors]))
+        self.error_dialog.show()
         CONSTANTS.openFolder(self.chosen_directory.text())
         self.load_dialog.close()
