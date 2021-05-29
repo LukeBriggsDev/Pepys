@@ -9,7 +9,7 @@ finish-args:
   - --socket=wayland
   - --socket=pulseaudio
   - --device=dri
-  - --filesystem=home
+  - --filesystem=host
   - --share=network
 modules:
   - name: src
@@ -17,10 +17,10 @@ modules:
     build-commands:
       - ls
       - mkdir -p /app/src
-      - cp  -r ./src/main /app/src
+      - cp  -r ./main /app/src
     sources:
-      - type: git
-        url: https://github.com/LukeBriggsDev/Pepys.git
+      - type: archive
+        path: /home/luke/Documents/Projects/Pepys/.flatpak_sources/src.tar.gz
 
   - python3-requirements.json
 
@@ -63,9 +63,11 @@ modules:
         sha256: 7404aa88a6eb9fbb99d9803b80170a3a546f51959230cc529c66a2ce6b950d4c
 
   - name: kerberos
+    subdir: src
     sources:
     - type: archive
-      path: /home/luke/Documents/Projects/Pepys/.flatpak_sources/kerb.tar.xz
+      url: https://web.mit.edu/kerberos/dist/krb5/1.19/krb5-1.19.1.tar.gz
+      sha256: fa16f87eb7e3ec3586143c800d7eaff98b5e0dcdf0772af7d98612e49dbeb20b
 
   - name: wkhtmltopdf
     buildsystem: simple

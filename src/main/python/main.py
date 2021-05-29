@@ -16,11 +16,11 @@ if __name__ == "__main__":
         os.putenv("QT_QPA_PLATFORM", "xcb")
     if sys.platform.startswith("win32"):
         import ctypes
-        myappid = 'dev.lukebriggs.pepys.1.0.0' # arbitrary string
+        myappid = 'dev.lukebriggs.pepys' # arbitrary string
         ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 
-    if not os.path.isfile(pathlib.Path.home().as_posix()+"/.pepys/wordlist.txt"):
-        with open(pathlib.Path.home().as_posix()+"/.pepys/wordlist.txt", "w+") as file:
+    if not os.path.isfile(get_resource("wordlist.txt")):
+        with open(get_resource("wordlist.txt"), "w+") as file:
             file.write("")
     app = QtWidgets.QApplication(sys.argv)
     app.setApplicationName("Pepys")

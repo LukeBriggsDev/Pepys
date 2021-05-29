@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import sys
 import typing
 
 from PyQt5 import QtGui, QtCore, QtWebEngineWidgets, QtWidgets
@@ -9,13 +10,14 @@ import pypandoc
 from EditPane import EditPane
 from ColorParser import parse_stylesheet
 import pathlib
+import os
 
 if typing.TYPE_CHECKING:
     from main import AppContext
 
 class WebView(QtWebEngineWidgets.QWebEngineView):
     """WebEngineView for showing rendered markdown"""
-    def __init__(self, edit_pane:EditPane):
+    def __init__(self, edit_pane: EditPane):
         """Constructor
         """
         super().__init__()
@@ -26,12 +28,13 @@ class WebView(QtWebEngineWidgets.QWebEngineView):
         self.bg_colors = {'light': QtGui.QColor(255, 255, 255), 'dark': QtGui.QColor(41, 41, 41)}
 
         self.urlChanged.connect(self.open_in_browser)
+        self.setContextMenuPolicy(QtCore.Qt.NoContextMenu)
 
     def open_in_browser(self, url:QtCore.QUrl) -> None:
         """Open links in browser
         :param url: Url of file
         """
-        if not url.path()==self.edit_pane.current_file:
+        if url.path()[-3:] != ".md":
 
             self.back()
             QtGui.QDesktopServices.openUrl(url)
@@ -57,7 +60,7 @@ class WebView(QtWebEngineWidgets.QWebEngineView):
             f"{get_resource('parsed_stylesheet.css')}",
             f"--katex={get_resource('katex/')}"
         ])
-        self.setHtml(html, QtCore.QUrl().fromLocalFile(self.edit_pane.current_file+".html")) # requires .html to prevent default app opening
+        self.setHtml(html, QtCore.QUrl().fromLocalFile(self.edit_pane.current_file))
 
 
 

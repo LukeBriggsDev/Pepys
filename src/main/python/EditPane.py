@@ -105,17 +105,9 @@ class EditPane(QtWidgets.QTextEdit):
                                           str(file_date.month), formatted_date)
 
         # Make folder for today's entry if not already exist
+        print(get_resource("config.json"))
         if not os.path.exists(file_directory):
-            try:
-                os.mkdir(file_directory)
-            except FileNotFoundError:
-                try:
-                    os.mkdir(os.path.dirname(file_directory))
-                    os.mkdir(file_directory)
-                except FileNotFoundError:
-                    os.mkdir(os.path.dirname(os.path.dirname(file_directory)))
-                    os.mkdir(os.path.dirname(file_directory))
-                    os.mkdir(file_directory)
+            pathlib.Path(file_directory).mkdir(parents=True, exist_ok=True)
 
         # Open markdown in r+ mode if it exists, else open in w+ mode
         try:

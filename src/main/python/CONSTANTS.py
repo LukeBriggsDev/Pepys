@@ -29,7 +29,7 @@ def get_resource(filepath):
     if not os.path.exists(config_dir):
         os.mkdir(config_dir)
     if not os.path.isfile(os.path.join(config_dir,"config.json")):
-        with open(os.path.join(config_dir,"config.json"), "w+") as file:
+        with open(os.path.join(config_dir, "config.json"), "w+") as file:
             file.write('''{\n
             "diary_directory": "",\n
             "favorites": [],\n

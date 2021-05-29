@@ -89,9 +89,16 @@ class MainWindow(QtWidgets.QWidget):
             file_dialog = QtWidgets.QFileDialog()
             old_dir = config_dict["diary_directory"]
 
-            config_dict["diary_directory"] = file_dialog.getExistingDirectory(self,
-                                                    "Please select a directory to store your journal files",
-                                                    "")
+            # Need non-native file in flatpak to get correct directory
+            if sys.platform.startswith("linux"):
+                config_dict["diary_directory"] = file_dialog.getExistingDirectory(self,
+                                                        "Please select a directory to store your journal files",
+                                                        "", QtWidgets.QFileDialog.ShowDirsOnly | QtWidgets.QFileDialog.DontUseNativeDialog)
+            else:
+                config_dict["diary_directory"] = file_dialog.getExistingDirectory(self,
+                                                                                  "Please select a directory to store your journal files",
+                                                                                  "")
+            print(config_dict["diary_directory"])
 
         # Cancel has been clicked
         if config_dict["diary_directory"] == "":
