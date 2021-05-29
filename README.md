@@ -1,6 +1,6 @@
 # Introducing Pepys: A straightforward markdown journal
 
-<img alt="pepys" src="/static/pepys/icon.svg" style="display: block; margin-left: auto; margin-right: auto; width: 50%">
+<img alt="pepys" src="https://lukebriggs.dev/static/pepys/icon.svg" style="display: block; margin-left: auto; margin-right: auto; width: 50%">
 
 Pepys is a journaling application that utilises markdown for writing and storing the journal entries
 
