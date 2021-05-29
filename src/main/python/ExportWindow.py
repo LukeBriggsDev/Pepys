@@ -277,6 +277,7 @@ class ExportWindow(QtWidgets.QWidget):
                                    for entry in diary_entries
                                    if os.path.isfile(os.path.join(self.chosen_directory.text(), entry.name[:-3] + ".pdf"))],
                                    key=lambda x: x.name)
+
                 for pdf in pdf_list:
                     progress_label.setText(pdf.name)
                     QtWidgets.QApplication.processEvents()
@@ -321,9 +322,10 @@ class ExportWindow(QtWidgets.QWidget):
                 QtWidgets.QApplication.processEvents()
 
         print(self.chosen_directory.text())
-        self.error_dialog = QtWidgets.QMessageBox()
-        self.error_dialog.setText("Errors occured in the following entries and they were not converted.\n\nPerhaps they link to files that do not exist")
-        self.error_dialog.setInformativeText("\n".join([str(error) for error in errors]))
-        self.error_dialog.show()
+        if len(errors) > 0:
+            self.error_dialog = QtWidgets.QMessageBox()
+            self.error_dialog.setText("Errors occured in the following entries and they were not converted.\n\nPerhaps they link to files that do not exist")
+            self.error_dialog.setInformativeText("\n".join([str(error) for error in errors]))
+            self.error_dialog.show()
         CONSTANTS.openFolder(self.chosen_directory.text())
         self.load_dialog.close()
