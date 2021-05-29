@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright [2021] [Luke Briggs] -->
+<component type="desktop-application">
+    <name>Pepys</name>
+    <summary>A straightforward markdown journal</summary>
+    <url type="homepage">https://www.lukebriggs.dev/pepys</url>
+    <url type="bugtracker">https://github.com/LukeBriggsDev/Pepys</url>
+    <id>dev.lukebriggs.pepys</id>
+    <launchable type="desktop-id">dev.lukebriggs.pepys.desktop</launchable>
+    <content_rating type="oars-1.0" />
+    <kudos>
+        <kudo>ModernToolkit</kudo>
+        <kudo>HiDpiIcon</kudo>
+    </kudos>
+    <screenshots>
+        <screenshot type="default">
+            <caption>Pepys edit window</caption>
+            <image type="source" width="1910" height="1043">https://www.lukebriggs.dev/static/pepys/pepys_editpane.png</image>
+        </screenshot>
+        <screenshot>
+            <caption>Pepys preview window</caption>
+            <image type="source" width="1910" height="1043">https://www.lukebriggs.dev/static/pepys/pepys_webview.png</image>
+        </screenshot>
+        <screenshot>
+            <caption>Pepys table creation</caption>
+            <image type="source" width="820" height="655">https://www.lukebriggs.dev/static/pepys/pepys_tablecreation.png</image>
+        </screenshot>
+        <screenshot>
+            <caption>Pepys calendar window</caption>
+            <image type="source" width="642" height="679">https://www.lukebriggs.dev/static/pepys/pepys_calendar.png</image>
+        </screenshot>
+        <screenshot>
+            <caption>Pepys dark theme</caption>
+            <image type="source" width="1910" height="1043">https://www.lukebriggs.dev/static/pepys/pepys_darkmode.png</image>
+        </screenshot>
+    </screenshots>
+    <description>
+        <p>
+            Pepys is a journaling application that utilises markdown for writing and storing the journal entries. It supports a variety of export formats
+        </p>
+        <p>
+            Pepys stores all your entries as plain text files in a YYYY/MM folder structure with a YYYY-MM-DD.md name format. This means that all your entries themselves will be viewable forever in any text editor that will come along.
+
+            Pepys also uses pandoc syntax, with support for pandoc conversions to other formats. This means that all your entries can be converted completely to HTML, PDF, LaTeX, Microsoft Word, EPUB, and more!
+        </p>
+    </description>
+    <releases>
+        <release version = "1.0.0" date="2021-05-30">
+            <description>
+                <ul>
+                    <li>Initial Release</li>
+                </ul>
+            </description>
+        </release>
+    </releases>
+    <project_license>GPL-3.0</project_license>
+    <metadata_license>CC0-1.0</metadata_license>
+</component>
