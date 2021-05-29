@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Name=Pepys
+Categories=Office;
+X-GNOME-FullName=Pepys
+Comment=A straightforward markdown journal
+Icon=dev.lukebriggs.pepys
+NoDisplay=false
+Exec=/usr/bin/flatpak run dev.lukebriggs.pepys
+Path=
+Terminal=false
+X-GNOME-UsesNotifications=false
+StartupWMClass=Pepys
