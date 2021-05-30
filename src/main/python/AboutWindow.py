@@ -34,12 +34,14 @@ class AboutWindow(QtWidgets.QWidget):
         self.about_label.setAlignment(QtCore.Qt.AlignCenter)
         self.about_label.setWordWrap(True)
         self.about_label.setText(
-            f'<img src="{get_resource("icons/appicons/hires/128.png")}"/>'
+            f'<img src="{get_resource("icons/appicons/hires/128x128/apps/dev.lukebriggs.pepys.png")}"/>'
             '<p style="font-size: 11pt">'
             '<b>Pepys:</b><br>'
-            'A Straightforward Markdown Journal<br>'
+            'A Straightforward Markdown Journal<br><br>'
             '<a style="text-decoration: none; color: rgb(0,125,225);" '
-            '   href="https://lukebriggs.dev">©Luke Briggs</a><br><br><br>'
+            'href="https://pandoc.org/MANUAL.html#pandocs-markdown">Syntax Documentation</a><br><br>'
+            '<a style="text-decoration: none; color: rgb(0,125,225);" '
+            '   href="https://lukebriggs.dev">©Luke Briggs</a><br>'
             '</p>'
             f'version {CONSTANTS.version}'
             '</p>'

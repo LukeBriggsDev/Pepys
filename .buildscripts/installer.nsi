@@ -21,6 +21,6 @@ SectionEnd
 
 Section "Uninstall"
     RMDir /r "$INSTDIR"
-    RMDir /r "$PROFILE\.pepys"
+    RMDir /r "$LocalAppdata\Pepys"
     Delete "$SMPROGRAMS\Pepys.lnk"
 SectionEnd
