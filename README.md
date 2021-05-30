@@ -52,7 +52,7 @@ Pepys also uses pandoc syntax, with support for pandoc conversions to other form
 
 Linux - TBD
 
-Windows - TBD
+[Windows](https://github.com/LukeBriggsDev/Pepys/releases/download/v1.0.1/pepys_install.exe)
 
 # Source Code
 The source code is available on [Github](https://github.com/LukeBriggsDev/Pepys)
