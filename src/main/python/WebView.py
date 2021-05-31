@@ -1,19 +1,17 @@
 from __future__ import annotations
 
-import sys
 import typing
 
-from PyQt5 import QtGui, QtCore, QtWebEngineWidgets, QtWidgets
+import pypandoc
+from PySide2 import QtGui, QtCore, QtWebEngineWidgets, QtWidgets
+
 import CONSTANTS
 from CONSTANTS import get_resource
-import pypandoc
-from EditPane import EditPane
 from ColorParser import parse_stylesheet
-import pathlib
-import os
+from EditPane import EditPane
 
 if typing.TYPE_CHECKING:
-    from main import AppContext
+    pass
 
 class WebView(QtWebEngineWidgets.QWebEngineView):
     """WebEngineView for showing rendered markdown"""

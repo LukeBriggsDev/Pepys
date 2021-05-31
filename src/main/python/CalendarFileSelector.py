@@ -8,7 +8,7 @@ import yaml
 import regex
 from random import randint
 
-from PyQt5 import QtWidgets, QtGui, QtCore
+from PySide2 import QtWidgets, QtGui, QtCore
 
 from CONSTANTS import get_resource
 import CONSTANTS
@@ -136,14 +136,14 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
     def paintCell(self, painter: QtGui.QPainter, rect: QtCore.QRect, date: typing.Union[QtCore.QDate, datetime.date]) -> None:
         painter.save()
         with open(get_resource("config.json")) as file:
-            if date.toPyDate().strftime("%Y-%m-%d") in json.loads(file.read())["favorites"]:
+            if date.toPython().strftime("%Y-%m-%d") in json.loads(file.read())["favorites"]:
                 painter.fillRect(rect, QtGui.QColor.fromRgb(255, 255, 0))
         if (date.month() != self.monthShown()):
             painter.setPen(QtGui.QColor("#888888"))
         elif date.dayOfWeek() == 6 or date.dayOfWeek() == 7:
             painter.setPen(QtGui.QColor("red"))
 
-        tags = self.get_tags_from_date_file(date.toPyDate())
+        tags = self.get_tags_from_date_file(date.toPython())
         rect.adjust(0, 0, -1, -1)
         pen = painter.pen()
         pen.setColor(QtGui.QColor.fromHsl(pen.color().hue(), pen.color().saturation(), pen.color().lightness(), 150))

@@ -1,4 +1,4 @@
-from PyQt5 import QtWidgets, QtGui, QtCore
+from PySide2 import QtWidgets, QtGui, QtCore
 import CONSTANTS
 from CONSTANTS import get_resource
 from ColorParser import parse_stylesheet

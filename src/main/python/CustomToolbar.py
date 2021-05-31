@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import typing
 
-from PyQt5 import QtWidgets, QtGui, QtCore
+from PySide2 import QtWidgets, QtGui, QtCore
 
 from WebView import WebView
 from EntryExplorer import EntryExplorer

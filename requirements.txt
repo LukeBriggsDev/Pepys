@@ -5,6 +5,5 @@ pypandoc
 pyenchant
 PyPDF4
 setproctitle
-PyQt5
-PyQtWebEngine
+PySide2
 pyYAML

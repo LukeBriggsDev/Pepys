@@ -1,13 +1,13 @@
-import regex
-from PyQt5 import QtWidgets, QtGui, QtCore
-import CONSTANTS
-from MarkdownRegex import regexPatterns
 import enchant
-from enchant.tokenize import get_tokenizer
+import regex
+from PySide2 import QtWidgets, QtGui, QtCore
 from enchant.tokenize import EmailFilter, URLFilter
-from CONSTANTS import spell_dict, spell_lang
+from enchant.tokenize import get_tokenizer
+
 import CONSTANTS
-from ColorParser import text_to_rgb
+from CONSTANTS import spell_dict, spell_lang
+from MarkdownRegex import regexPatterns
+
 
 class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
     """Syntax highlighter for markdown file"""

@@ -1,11 +1,11 @@
 import json
 import os
-import sys
-import enchant
-import subprocess
 import pathlib
-from PyQt5 import QtGui, QtWidgets, QtCore
+import subprocess
+import sys
 
+import enchant
+from PySide2 import QtGui, QtWidgets, QtCore
 
 if sys.platform == 'darwin':
     def openFolder(path):
