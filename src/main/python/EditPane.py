@@ -3,25 +3,25 @@ from __future__ import annotations
 import json
 import locale
 import os
-import pathlib
-import shutil
 import sys
 import typing
 from datetime import date
-
 import enchant
 import regex
-from PySide2 import QtWidgets, QtGui, QtCore
 from enchant.tokenize import get_tokenizer
+import shutil
+import pathlib
+import CONSTANTS
+
+from PyQt5 import QtWidgets, QtGui, QtCore
 from num2words import num2words
 
-import CONSTANTS
-from ActionHandler import ActionHandler
 from CONSTANTS import get_resource, spell_lang, spell_dict
 from MarkdownSyntaxHighlighter import MarkdownSyntaxHighlighter
+from ActionHandler import ActionHandler
 
 if typing.TYPE_CHECKING:
-    pass
+    from main import AppContext
 
 
 class EditPane(QtWidgets.QTextEdit):
@@ -34,7 +34,7 @@ class EditPane(QtWidgets.QTextEdit):
         spell_tknzr = get_tokenizer()
 
     spell_suggestion_handlers = []
-    file_changed = QtCore.Signal()
+    file_changed = QtCore.pyqtSignal()
 
     def __init__(self) -> None:
         super().__init__()

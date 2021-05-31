@@ -1,11 +1,13 @@
-import os
 import sys
-
+import os
+import pathlib
 import setproctitle
-from PySide2 import QtWidgets, QtGui
-
-import CONSTANTS
+from PyQt5 import QtWidgets, QtGui, QtCore
 from CONSTANTS import get_resource
+import CONSTANTS
+from pypandoc.pandoc_download import download_pandoc
+import pypandoc
+
 from MainWindow import MainWindow
 
 if __name__ == "__main__":

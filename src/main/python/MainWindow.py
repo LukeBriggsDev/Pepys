@@ -6,7 +6,7 @@ import sys
 import typing
 from datetime import date
 
-from PySide2 import QtWidgets, QtGui, QtCore
+from PyQt5 import QtWidgets, QtGui, QtCore
 
 from ColorParser import *
 from CustomToolbar import CustomToolbar

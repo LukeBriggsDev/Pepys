@@ -1,4 +1,4 @@
-from PySide2 import QtGui, QtWidgets, QtCore
+from PyQt5 import QtGui, QtWidgets, QtCore
 from EditPane import EditPane
 from WebView import WebView
 import datetime

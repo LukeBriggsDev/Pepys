@@ -4,7 +4,7 @@ import pathlib
 import typing
 from threading import Thread
 
-from PySide2 import QtWidgets, QtGui, QtCore
+from PyQt5 import QtWidgets, QtGui, QtCore
 from EditPane import EditPane
 from datetime import date
 
@@ -51,9 +51,8 @@ class ExportWindow(QtWidgets.QWidget):
         formLayout = QtWidgets.QFormLayout()
         self.export_options = QtWidgets.QComboBox()
 
-        # Workaround for button elements not changing BG on MacOS on Windows
-        if QtWidgets.QApplication.palette().color(QtGui.QPalette.Active, QtGui.QPalette.Base).lightness() < 122 \
-                and (sys.platform == "darwin" or sys.platform == "win32"):
+        # Workaround for button elements not changing BG on MacOS
+        if QtWidgets.QApplication.palette().color(QtGui.QPalette.Active, QtGui.QPalette.Base).lightness() < 122 and sys.platform == "darwin":
             self.setStyleSheet(
                 """
                 QPushButton{
@@ -111,6 +110,7 @@ class ExportWindow(QtWidgets.QWidget):
 
 
         self.will_collate = QtWidgets.QCheckBox()
+        self.will_collate.setFixedSize(38, 38)
         formLayout.addRow("Collate together (PDF, HTML only):", self.will_collate)
 
         self.setLayout(self.dialog_layout)
