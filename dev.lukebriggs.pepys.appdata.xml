@@ -45,7 +45,7 @@
         </p>
     </description>
     <releases>
-        <release version = "1.0.1" date="2021-05-31">
+        <release version = "1.0.2" date="2021-05-31">
             <description>
                 <ul>
                     <li>Fix crash when pressing cancel when inserting image</li>
