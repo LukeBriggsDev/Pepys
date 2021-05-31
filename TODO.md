@@ -3,7 +3,6 @@
 - Add more export options
 - Add 'ignore' option to spell checker
 
-## Deployment
-- Create .desktop for flatpak
-- Make flathub compliant
-- Add AppData file (see <https://docs.flatpak.org/en/latest/conventions.html>)
+## Bug Fixes
+### Windows
+- Remove border of qmenu on insert button in dark mode

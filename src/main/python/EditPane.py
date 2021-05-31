@@ -181,10 +181,11 @@ class EditPane(QtWidgets.QTextEdit):
         image_dialog = QtWidgets.QFileDialog(caption="Insert Image", directory=pathlib.Path.home().as_posix(),
                                              filter="Image Files(*.apng *.avif *.gif *.jpg *.jpeg *.jfif *.pjpeg, *.pjp *.png *.svg *.webp)")
         image_dialog.exec_()
-        image = image_dialog.selectedFiles()[0]
-        shutil.copy(image, pathlib.Path(self.current_file).parent)
-        self.insertPlainText(f"![]({pathlib.Path(image).name})")
-        self.save_current_file()
+        if len(image_dialog.selectedFiles()) > 0:
+            image = image_dialog.selectedFiles()[0]
+            shutil.copy(image, pathlib.Path(self.current_file).parent)
+            self.insertPlainText(f"![]({pathlib.Path(image).name})")
+            self.save_current_file()
 
     def insert_table(self, table: list[list[str]], type: int, include_headers: bool):
         """Insert a table based off a given list of lists of text edits [row][col] and the type of table
