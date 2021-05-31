@@ -50,9 +50,9 @@ Pepys also uses pandoc syntax, with support for pandoc conversions to other form
 
 # Downloads
 
-Linux - TBD
+[Linux](https://flathub.org/apps/details/dev.lukebriggs.pepys)
 
-[Windows](https://github.com/LukeBriggsDev/Pepys/releases/download/v1.0.1/pepys_install.exe)
+[Windows](https://github.com/LukeBriggsDev/Pepys/releases)
 
 # Source Code
 The source code is available on [Github](https://github.com/LukeBriggsDev/Pepys)
