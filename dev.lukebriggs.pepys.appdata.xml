@@ -45,6 +45,14 @@
         </p>
     </description>
     <releases>
+        <release version = "1.0.1" date="2021-05-31">
+            <description>
+                <ul>
+                    <li>Fix crash when pressing cancel when inserting image</li>
+                    <li>Fix white background on insert menu in dark mode (Windows)</li>
+                </ul>
+            </description>
+        </release>
         <release version = "1.0.0" date="2021-05-30">
             <description>
                 <ul>
