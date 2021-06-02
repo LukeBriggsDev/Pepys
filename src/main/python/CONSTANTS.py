@@ -36,7 +36,10 @@ def get_resource(filepath):
             "theme": "dark"\n
             }''')
     user_files = ["config.json", "wordlist.txt", "parsed_stylesheet.css"]
-    base_path = os.path.dirname(os.path.dirname(__file__)) + "/resources/base/"
+    if sys.platform == "linux":
+        base_path = os.path.join(os.path.dirname(os.path.dirname(__file__)),"resources", "base")
+    else:
+        base_path = os.path.join(os.path.dirname(__file__),"resources", "base")
 
     if filepath in user_files:
         base_path = config_dir
