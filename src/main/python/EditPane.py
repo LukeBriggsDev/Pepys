@@ -52,6 +52,7 @@ class EditPane(QtWidgets.QTextEdit):
         # Set tab width
         metrics = QtGui.QFontMetrics(QtGui.QFontDatabase.systemFont(QtGui.QFontDatabase.FixedFont))
 
+
         self.setTabStopDistance(metrics.width(" " * tab_stop))
         # Set to prevent formatting being pasted from clipboard
         self.setAcceptRichText(False)
@@ -175,6 +176,10 @@ class EditPane(QtWidgets.QTextEdit):
 
     def contextMenuEvent(self, e:QtGui.QContextMenuEvent) -> None:
         context_menu = self.createCustomContextMenu(e.pos())
+        # Fix white border in context menu in Windows dark mode
+        context_menu.setStyleSheet(""
+                            "QMenu{background-color: palette(window);}"
+                            "QMenu::item:selected{background-color: palette(highlight);}")
         context_menu.exec_(e.globalPos())
 
     def insert_image(self):
