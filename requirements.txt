@@ -8,3 +8,4 @@ setproctitle
 PyQt5
 PyQtWebEngine
 pyYAML
+setproctitle
