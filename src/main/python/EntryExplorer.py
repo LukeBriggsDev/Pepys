@@ -1,3 +1,19 @@
+"""
+    Copyright (C) 2021  Luke Briggs <lukebriggs02@gmail.com>
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+"""
 from PyQt5 import QtGui, QtWidgets, QtCore
 from EditPane import EditPane
 from WebView import WebView
@@ -22,7 +38,6 @@ class EntryExplorer(QtWidgets.QWidget):
             int(date[0]), int(date[1]), int(date[2])
         ))
 
-        #self.selectionChanged.connect(self.selection_changed_handler)
 
         self.setMinimumSize(480, 480)
         self.setMaximumSize(480, 480)

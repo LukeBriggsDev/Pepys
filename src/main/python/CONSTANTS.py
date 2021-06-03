@@ -1,3 +1,19 @@
+"""
+    Copyright (C) 2021  Luke Briggs <lukebriggs02@gmail.com>
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+"""
 import json
 import os
 import sys
@@ -36,6 +52,7 @@ def get_resource(filepath):
             "theme": "dark"\n
             }''')
     user_files = ["config.json", "wordlist.txt", "parsed_stylesheet.css"]
+
     # Change resource directory depending on if it is running from source or running compiled
     if sys.platform == "linux" or os.path.basename(__file__) == "CONSTANTS.py":
         base_path = os.path.join(os.path.dirname(os.path.dirname(__file__)),"resources", "base")
@@ -69,7 +86,30 @@ if not sys.platform.startswith("linux"):
     light_palette.setColor(QtGui.QPalette.Dark, QtGui.QColor.fromRgbF(0.8, 0.8, 0.8))
     QtWidgets.QApplication.setPalette(light_palette)
 
+
 class Colors:
+    """
+    The following code is derived from CPP code from the adwaita-qt project
+    <https://github.com/FedoraQt/adwaita-qt/blob/2ea48c88286a9c3a944d12ead288e37a490f71af/src/lib/adwaita.cpp>
+    /*************************************************************************
+     * Copyright (C) 2020 Jan Grulich <jgrulich@redhat.com>                  *
+     *               2021 Luke Briggs <lukebriggs02@gmail.com>               *
+     * This program is free software; you can redistribute it and/or modify  *
+     * it under the terms of the GNU General Public License as published by  *
+     * the Free Software Foundation; either version 2 of the License, or     *
+     * (at your option) any later version.                                   *
+     *                                                                       *
+     * This program is distributed in the hope that it will be useful,       *
+     * but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+     * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+     * GNU General Public License for more details.                          *
+     *                                                                       *
+     * You should have received a copy of the GNU General Public License     *
+     * along with this program; if not, write to the                         *
+     * Free Software Foundation, Inc.,                                       *
+     * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA .        *
+     *************************************************************************/
+    """
     @staticmethod
     def darken(color: QtGui.QColor, amount: float=0.1):
         h, s, l, a = color.getHslF()
