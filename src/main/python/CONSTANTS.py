@@ -78,7 +78,7 @@ theme = "light"
 with open(get_resource("colors.json")) as colors:
     colors = json.loads(colors.read())
 
-version = "1.0.2"
+version = "1.0.8"
 
 light_palette = QtWidgets.QApplication.palette()
 if not sys.platform.startswith("linux"):
