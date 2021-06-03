@@ -11,7 +11,6 @@ import pypandoc
 from MainWindow import MainWindow
 
 if __name__ == "__main__":
-    print("Starting Pepys")
     if sys.platform.lower().startswith("linux"):
         os.putenv("QT_QPA_PLATFORM", "xcb")
     if sys.platform.startswith("win32"):

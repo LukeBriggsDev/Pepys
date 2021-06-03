@@ -36,7 +36,8 @@ def get_resource(filepath):
             "theme": "dark"\n
             }''')
     user_files = ["config.json", "wordlist.txt", "parsed_stylesheet.css"]
-    if sys.platform == "linux":
+    # Change resource directory depending on if it is running from source or running compiled
+    if sys.platform == "linux" or os.path.basename(__file__) == "CONSTANTS.py":
         base_path = os.path.join(os.path.dirname(os.path.dirname(__file__)),"resources", "base")
     else:
         base_path = os.path.join(os.path.dirname(__file__),"resources", "base")
