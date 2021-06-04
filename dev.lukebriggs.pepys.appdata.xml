@@ -46,6 +46,13 @@
         </p>
     </description>
     <releases>
+        <release version = "1.0.8" date="2021-06-04">
+            <description>
+                <ul>
+                    <li>Fix crash on Ubuntu 21.04 wayland session</li>
+                </ul>
+            </description>
+        </release>
         <release version = "1.0.7" date="2021-06-03">
             <description>
                 <ul>
