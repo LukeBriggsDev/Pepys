@@ -1,6 +1,6 @@
 # Introducing Pepys: A straightforward markdown journal
 
-![Pepys](/static/postimages/inspection-and-dissection-pepys/BookLogoLargeWhite.svg)
+![Pepys](https://lukebriggs.dev/static/postimages/inspection-and-dissection-pepys/BookLogoLargeWhite.svg)
 
 > "It is rightly made for those who love to document their daily life events"
 ><br> [- FOSSBytes](https://fossbytes.com/document-activity-pepys-journal-app-linux)
