@@ -1,0 +1,37 @@
+{
+  "name": "python3-PyQt-builder",
+  "buildsystem": "simple",
+  "build-commands": [
+    "pip3 install --verbose --exists-action=i --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} \"PyQt-builder\" --no-build-isolation"
+  ],
+  "cleanup": [
+    "/lib/python3.8/site-packages/pyqtbuild/bundle/dlls"
+  ],
+  "sources": [
+    {
+      "type": "file",
+      "url": "https://files.pythonhosted.org/packages/be/ba/1f744cdc819428fc6b5084ec34d9b30660f6f9daaf70eead706e3203ec3c/toml-0.10.2.tar.gz",
+      "sha256": "b3bda1d108d5dd99f4a20d24d9c348e91c4db7ab1b749200bded2f839ccbe68f"
+    },
+    {
+      "type": "file",
+      "url": "https://files.pythonhosted.org/packages/12/29/af52add4755b7dbce928fe3df1b86a48d5c8bcd06e3333bf8f69ad19c1a5/PyQt-builder-1.10.0.tar.gz",
+      "sha256": "86bd19fde83d92beaefacdeac1e26c6e1918c300ff78d7ec2a19973bf2cf21b5"
+    },
+    {
+      "type": "file",
+      "url": "https://files.pythonhosted.org/packages/33/e9/27730ac17713c0a80d81d8f3bb56213f1549d96f9dc183fd16a7eec6287c/sip-5.5.0.tar.gz",
+      "sha256": "5d024c419b30fea8a6de8c71a560c7ab0bc3c221fbfb14d55a5b865bd58eaac5"
+    },
+    {
+      "type": "file",
+      "url": "https://files.pythonhosted.org/packages/86/3c/bcd09ec5df7123abcf695009221a52f90438d877a2f1499453c6938f5728/packaging-20.9.tar.gz",
+      "sha256": "5b327ac1320dc863dca72f4514ecc086f31186744b84a230374cc1fd776feae5"
+    },
+    {
+      "type": "file",
+      "url": "https://files.pythonhosted.org/packages/c1/47/dfc9c342c9842bbe0036c7f763d2d6686bcf5eb1808ba3e170afdb282210/pyparsing-2.4.7.tar.gz",
+      "sha256": "c203ec8783bf771a155b207279b9bccb8dea02d8f0c9e5f8ead507bc3246ecc1"
+    }
+  ]
+}

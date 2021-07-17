@@ -2,6 +2,8 @@ app-id: dev.lukebriggs.pepys
 runtime: org.kde.Platform
 runtime-version: '5.15'
 sdk: org.kde.Sdk
+base: io.qt.qtwebengine.BaseApp
+base-version: '5.15'
 command: runner.sh
 finish-args:
   - --share=ipc
@@ -12,6 +14,9 @@ finish-args:
   - --filesystem=home
   # To access online content from journals
   - --share=network
+  - --env=QTWEBENGINEPROCESS_PATH=/app/bin/QtWebEngineProcess
+cleanup-commands:
+  - /app/cleanup-BaseApp.sh
 modules:
   - name: pepys
     buildsystem: simple
@@ -28,39 +33,97 @@ modules:
       - cp ./dev.lukebriggs.pepys.svg /app/share/icons/hicolor/scalable/apps/
     sources:
       - type: git
-        commit: 7e845a5098829db3d4bb064cb957d83b6d832d3c
-        tag: v1.0.7
+        commit: 48ac726be8282d11eb3dae4779f016df7fd9c11b
+        tag: v1.0.8
         url: https://github.com/LukeBriggsDev/Pepys
 
   - python3-requirements.json
 
-  - name: pyqt-x86_64
+  - name: pyqt-deps
     buildsystem: simple
-    sources:
-      - type: file
-        url: https://files.pythonhosted.org/packages/ed/62/cd9f10702c75b242f82da858668fba0cda04cda92133244d3d1555e530b4/PyQt5-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014_x86_64.whl
-        sha256: 883a549382fc22d29a0568f3ef20b38c8e7ab633a59498ac4eb63a3bf36d3fd3
-      - type: file
-        url: https://files.pythonhosted.org/packages/44/48/325c677a5dd5ba2fb2fc90027f79fc851a77b11aec5b64338a9027994e83/PyQt5_sip-12.9.0-cp38-cp38-manylinux1_x86_64.whl
-        sha256: fc43f2d7c438517ee33e929e8ae77132749c15909afab6aeece5fcf4147ffdb5
-      - type: file
-        url: https://files.pythonhosted.org/packages/83/d4/241a6a518d0bcf0a9fcdcbad5edfed18d43e884317eab8d5230a2b27e206/PyQt5_Qt5-5.15.2-py3-none-manylinux2014_x86_64.whl
-        sha256: 1988f364ec8caf87a6ee5d5a3a5210d57539988bf8e84714c7d60972692e2f4a
-      - type: file
-        url: https://files.pythonhosted.org/packages/8a/4a/570f9544d872c27d4c71f72c81af6890337a952a1b2923828c8f9dd56244/PyQtWebEngine-5.15.4-cp36.cp37.cp38.cp39-abi3-manylinux2014_x86_64.whl
-        sha256: db13f0db983ee2118a3976f646af94417d1279c6b6c0372147c4a3d56c68e58b
-      - type: file
-        url: https://files.pythonhosted.org/packages/48/62/117c9c96837287b181fce6da481065ddda68b3a8c0fa5f00ea62cc08b877/PyQtWebEngine_Qt5-5.15.2-py3-none-manylinux2014_x86_64.whl
-        sha256: ec2acb1780c0124ef060c310e00ca701f388d8b6c35bba9127f7a6f0dc536f77
     build-commands:
-      - pip3 install PyQt*.whl --target=/app/lib/python3.8/site-packages
+      - python3 setup.py install --prefix=/app --root=/
+    modules:
+      - python3-PyQt-builder.json
+    sources:
+      - type: archive
+        url: https://files.pythonhosted.org/packages/b1/40/dd8f081f04a12912b65417979bf2097def0af0f20c89083ada3670562ac5/PyQt5_sip-12.9.0.tar.gz
+        sha256: d3e4489d7c2b0ece9d203ae66e573939f7f60d4d29e089c9f11daa17cfeaae32
+
+  - name: pyqt5
+    build-options:
+      env:
+        - QMAKEPATH=/app/lib
+      arch:
+        aarch64:
+          config-opts:
+            - --disable-feature=PyQt_Desktop_OpenGL
+    cleanup:
+      - /share/sip
+    config-opts:
+      - --confirm-license
+      - --no-designer-plugin
+      - --no-qml-plugin
+      - --no-python-dbus
+      - --no-tools
+      - --enable=QtCore
+      - --enable=QtGui
+      - --enable=QtNetwork
+      - --enable=QtWidgets
+      - --enable=QtWebChannel
+      - --enable=QtPrintSupport
+      - --bindir=/app/bin
+      - --destdir=/app/lib/python3.8/site-packages
+      - --sipdir=/app/share/sip/PyQt5
+      - --stubsdir=/app/lib/python3.8/site-packages/PyQt5
+      - QMAKE_CFLAGS_RELEASE='-I/usr/include/python3.8/'
+      - QMAKE_CXXFLAGS_RELEASE='-I/usr/include/python3.8/'
+    sources:
+      - type: archive
+        url: https://files.pythonhosted.org/packages/8e/a4/d5e4bf99dd50134c88b95e926d7b81aad2473b47fde5e3e4eac2c69a8942/PyQt5-5.15.4.tar.gz
+        sha256: 2a69597e0dd11caabe75fae133feca66387819fc9bc050f547e5551bce97e5be
+      - type: script
+        commands:
+          - processed=`sed -e 's|prefix|sysroot|' <<< $@`
+          - python3 configure.py $processed
+        dest-filename: configure
+
+
+  - name: pyqt-webengine
+    build-options:
+      cppflags: "-I/app/include/QtWebEngine -I/app/include/QtWebEngineCore -I/app/include/QtWebEngineWidgets -I/usr/include/python3.8"
+      env:
+        - QMAKEPATH=/app/lib
+    config-opts:
+      - --concatenate
+      - --no-qsci-api
+      - --no-dist-info
+      - --no-sip-files
+      - --destdir=/app/lib/python3.8/site-packages/PyQt5
+      - --stubsdir=/app/lib/python3.8/site-packages/PyQt5
+      - QMAKE_CFLAGS_RELEASE='-I/usr/include/python3.8/'
+      - QMAKE_CXXFLAGS_RELEASE='-I/usr/include/python3.8/'
+      - QMAKE_INCDIR+=/app/include/QtWebEngine
+      - QMAKE_INCDIR+=/app/include/QtWebEngineCore
+      - QMAKE_INCDIR+=/app/include/QtWebEngineWidgets
+    sources:
+      - type: archive
+        url: https://files.pythonhosted.org/packages/fb/5d/4c5bb7adca4f2436545a391fe311dcb4ccc711f1ce2ab7adb87475ec566e/PyQtWebEngine-5.15.4.tar.gz
+        sha256: cedc28f54165f4b8067652145aec7f732a17eadf6736835852868cf76119cc19
+      - type: script
+        dest-filename: configure
+        commands:
+          - processed=`sed -e 's|prefix|sysroot|' <<< $@`
+          - python3 configure.py $processed
 
   - name: enchant
+    cleanup:
+      - '*.la'
+      - '*.a'
     sources:
       - type: archive
         url: https://github.com/AbiWord/enchant/releases/download/v2.2.15/enchant-2.2.15.tar.gz
         sha256: 3b0f2215578115f28e2a6aa549b35128600394304bd79d6f28b0d3b3d6f46c03
-
 
   - name: pandoc
     buildsystem: simple
@@ -68,8 +131,15 @@ modules:
       - install -D bin/pandoc /app/bin/pandoc
     sources:
       - type: archive
+        only-arches:
+          - x86_64
         url: https://github.com/jgm/pandoc/releases/download/2.13/pandoc-2.13-linux-amd64.tar.gz
         sha256: 7404aa88a6eb9fbb99d9803b80170a3a546f51959230cc529c66a2ce6b950d4c
+      - type: archive
+        only-arches:
+          - aarch64
+        url: https://github.com/jgm/pandoc/releases/download/2.13/pandoc-2.13-linux-arm64.tar.gz
+        sha256: 4f87bfe8a0a626ad0e17d26d42e99a1c0ed7d369cca00366c1b3d97525f57db5
 
   - name: kerberos
     subdir: src
@@ -81,13 +151,23 @@ modules:
   - name: wkhtmltopdf
     buildsystem: simple
     build-commands:
-      - ar x wkhtmltox_0.12.6-1.buster_amd64.deb
+      - ar x wkhtmltox_*.deb
       - tar -xf data.tar.xz
       - cp -r ./usr/local/* /app/
+    cleanup:
+      - /lib/libwkhtmltox.*
+      - /bin/wkhtmltoimage
     sources:
       - type: file
+        only-arches:
+          - x86_64
         url: https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.buster_amd64.deb
         sha256: 3e7a93a2ae4a2dd5cccb1b7bcce0eb462c75f05efa314a29499dadfdc5ebc59e
+      - type: file
+        only-arches:
+          - aarch64
+        url: https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.buster_arm64.deb
+        sha256: d2929792fdc95fa66d637ecbf9cd0dce874f53d783d5ddcf947a86c007c81c95
 
   - name: runner
     buildsystem: simple
