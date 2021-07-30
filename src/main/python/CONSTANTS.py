@@ -47,7 +47,7 @@ def get_resource(filepath):
     """
     config_dir = QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.AppConfigLocation)
     if not os.path.exists(config_dir):
-        os.mkdir(config_dir)
+        pathlib.Path(config_dir).mkdir(parents=True)
     if not os.path.isfile(os.path.join(config_dir,"config.json")):
         with open(os.path.join(config_dir, "config.json"), "w+") as file:
             file.write('''{\n
