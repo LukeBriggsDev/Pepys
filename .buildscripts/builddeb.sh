@@ -21,5 +21,21 @@ Description: A straightforward markdown journal
 echo "#!/usr/bin/env sh
 python3 /usr/share/pepys/src/main/python/main.py" > $SCRIPT_DIR/../deb_build/$PACKAGE_NAME/usr/bin/pepys
 
+# desktop file
+mkdir -p $SCRIPT_DIR/../deb_build/$PACKAGE_NAME/usr/local/share/applications
+echo "[Desktop Entry]
+Type=Application
+Name=Pepys
+Categories=Office;
+X-GNOME-FullName=Pepys
+Comment=A straightforward markdown journal
+Icon=dev.lukebriggs.pepys
+NoDisplay=false
+Exec=runner.sh
+Path=
+Terminal=false
+X-GNOME-UsesNotifications=false
+StartupWMClass=Pepys" > $SCRIPT_DIR/../deb_build/$PACKAGE_NAME/usr/local/share/applications/pepys.desktop
+
 dpkg-deb --build $SCRIPT_DIR/../deb_build/$PACKAGE_NAME
 
