@@ -72,7 +72,7 @@
             ]
         },
         {
-            "name": "python3-PyPDF4",
+            "name": "python3-PyPDF2",
             "buildsystem": "simple",
             "build-commands": [
                 "pip3 install --verbose --exists-action=i --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} \"PyPDF4\" --no-build-isolation"
@@ -80,8 +80,8 @@
             "sources": [
                 {
                     "type": "file",
-                    "url": "https://files.pythonhosted.org/packages/4f/1f/509b44850c475c101aa5b5c9b81755cedd363389d6fbb5c53be6fa915a61/PyPDF4-1.27.0.tar.gz",
-                    "sha256": "7c932441146d205572f96254d53c79ea2c30c9e11df55a5cf87e056c7b3d7f89"
+                    "url": "https://files.pythonhosted.org/packages/b4/01/68fcc0d43daf4c6bdbc6b33cc3f77bda531c86b174cac56ef0ffdb96faab/PyPDF2-1.26.0.tar.gz",
+                    "sha256": "e28f902f2f0a1603ea95ebe21dff311ef09be3d0f0ef29a3e44a932729564385"
                 }
             ]
         },

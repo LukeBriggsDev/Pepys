@@ -28,7 +28,7 @@ from CONSTANTS import get_resource
 from ColorParser import *
 import pypandoc
 from pathlib import Path
-import PyPDF4
+import PyPDF2
 import os
 import sys
 import CONSTANTS
@@ -288,7 +288,7 @@ class ExportWindow(QtWidgets.QWidget):
             if format["type"] == "pdf":
                 progress_label.setText("Starting pdf collation")
                 QtWidgets.QApplication.processEvents()
-                file_merger = PyPDF4.PdfFileMerger(strict=False)
+                file_merger = PyPDF2.PdfFileMerger(strict=False)
                 pdf_list = sorted([Path(os.path.join(self.chosen_directory.text(), entry.name[:-3] + ".pdf"))
                                    for entry in diary_entries
                                    if os.path.isfile(os.path.join(self.chosen_directory.text(), entry.name[:-3] + ".pdf"))],
