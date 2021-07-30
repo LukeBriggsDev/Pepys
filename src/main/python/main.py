@@ -20,6 +20,8 @@ import pathlib
 import setproctitle
 from PyQt5 import QtWidgets, QtGui, QtCore, QtWebEngineWidgets
 app = QtWidgets.QApplication(sys.argv)
+app.setApplicationName("Pepys")
+app.setApplicationDisplayName("Pepys")
 from CONSTANTS import get_resource
 import CONSTANTS
 from pypandoc.pandoc_download import download_pandoc
@@ -38,8 +40,6 @@ if __name__ == "__main__":
     if not os.path.isfile(get_resource("wordlist.txt")):
         with open(get_resource("wordlist.txt"), "w+") as file:
             file.write("")
-    app.setApplicationName("Pepys")
-    app.setApplicationDisplayName("Pepys")
     app.setWindowIcon(QtGui.QIcon(get_resource("icons/appicons/icon.svg")))
     CONSTANTS.theme = "light" if QtWidgets.QApplication.palette().color(QtGui.QPalette.Active, QtGui.QPalette.Base).lightness() > 122 else "dark"
     CONSTANTS.light_palette = QtWidgets.QApplication.palette()
