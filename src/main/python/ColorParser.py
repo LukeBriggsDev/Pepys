@@ -54,7 +54,6 @@ def parse_stylesheet(stylesheet_file_path: str, theme: str) -> str:
         "NoRole": palette.ColorRole.NoRole,
         "ToolTipBase": palette.ColorRole.ToolTipBase,
         "ToolTipText": palette.ColorRole.ToolTipText,
-        "PlaceholderText": palette.ColorRole.PlaceholderText
     }
     with open(stylesheet_file_path, "r") as pane_style:
         stylesheet = pane_style.read()
