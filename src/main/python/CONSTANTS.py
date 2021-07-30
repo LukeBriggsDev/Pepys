@@ -28,7 +28,11 @@ if sys.platform == 'darwin':
         subprocess.Popen(['open', path])
 elif sys.platform == 'linux':
     def openFolder(path):
-        subprocess.Popen(['xdg-open', path])
+        try:
+            subprocess.Popen(['xdg-open', path])
+        except FileNotFoundError:
+            # When no gui file manager is installed
+            pass
 elif sys.platform == 'win32':
     def openFolder(path):
         subprocess.Popen(['explorer', pathlib.Path(path)])
