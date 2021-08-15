@@ -6,6 +6,7 @@
     <summary>A straightforward markdown journal</summary>
     <url type="homepage">https://www.lukebriggs.dev/pepys</url>
     <url type="bugtracker">https://github.com/LukeBriggsDev/Pepys</url>
+    <url type="donation">https://www.buymeacoffee.com/lukebriggs</url>
     <id>dev.lukebriggs.pepys</id>
     <launchable type="desktop-id">dev.lukebriggs.pepys.desktop</launchable>
     <content_rating type="oars-1.0" />
