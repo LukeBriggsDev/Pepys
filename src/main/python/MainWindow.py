@@ -92,7 +92,6 @@ class MainWindow(QtWidgets.QWidget):
         self.layout.addWidget(self.edit_pane)
         self.layout.addWidget(self.web_view)
 
-
         self.edit_pane.open_file_from_date(date.today())
 
     def select_diary_directory(self):

@@ -94,6 +94,15 @@ class CustomToolbar(QtWidgets.QToolBar):
         self.about_button.setToolTip("About")
         self.about_button.clicked.connect(self.about_clicked)
 
+        # Font Size
+        self.font_spinbox = QtWidgets.QSpinBox()
+        self.font_spinbox.setMaximumSize(64, 24)
+        self.font_spinbox.setMinimumSize(64, 24)
+        self.font_spinbox.setToolTip("Font size")
+        self.font_spinbox.setMaximum(120)
+        self.font_spinbox.setMinimum(1)
+        self.font_spinbox.valueChanged.connect(self.font_change)
+
         # Export Button
         self.export_button = QtWidgets.QPushButton()
         self.export_button.setMinimumSize(32, 32)
@@ -123,6 +132,8 @@ class CustomToolbar(QtWidgets.QToolBar):
         self.addWidget(self.favorite_button)
         self.addWidget(self.changedir_button)
         self.addWidget(self.export_button)
+        self.addWidget(QtWidgets.QLabel("Font size: "))
+        self.addWidget(self.font_spinbox)
         spacer = QtWidgets.QWidget()
         spacer.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
         spacer.setStyleSheet("background-color: rgba(0,0,0,0)")
@@ -159,6 +170,25 @@ class CustomToolbar(QtWidgets.QToolBar):
         self.about_window.setFocusPolicy(QtCore.Qt.StrongFocus)
 
         self.about_window.show()
+
+    def font_change(self, i):
+        # Change font
+        self.edit_pane.selectAll()
+        self.edit_pane.setFontPointSize(i)
+        self.edit_pane.setFocus()
+        self.edit_pane.moveCursor(QtGui.QTextCursor.MoveOperation.End)
+        self.edit_pane.clearFocus()
+        self.font_spinbox.setFocus()
+
+        # Set size in config file
+        with open(get_resource("config.json"), "r+") as file:
+            config_dict = json.loads(file.read())
+            config_dict["font_size"] = i
+
+            # Write changes and refresh icon
+            file.seek(0)
+            file.write(json.dumps(config_dict, sort_keys=True, indent=4))
+            file.truncate()
 
     def open_entry_clicked(self):
         """Open calendar dialog and disable main window"""
@@ -282,6 +312,18 @@ class CustomToolbar(QtWidgets.QToolBar):
         }
         QPushButton:pressed{
             background-color: palette(dark);
+        }
+        QLabel{
+            padding-left: 4px;
+        }
+        QSpinBox{
+            background-color: palette(base);
+        }
+        QSpinBox::up-button{
+            
+        }
+        QSpinBox::down-button{
+            
         }
         
 """)

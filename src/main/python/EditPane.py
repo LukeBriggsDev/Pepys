@@ -143,6 +143,14 @@ class EditPane(QtWidgets.QTextEdit):
         self.file_changed.emit()
         self.window().setWindowTitle(long_date)
         self.set_margins()
+        # Set font size
+        with open(get_resource("config.json"), "r+") as file:
+            config_dict = json.loads(file.read())
+            try:
+                self.parent().tool_bar.font_spinbox.setValue(config_dict["font_size"])
+            except KeyError:
+                # Font size not in config
+                self.parent().tool_bar.font_spinbox.setValue(int(self.edit_pane.fontPointSize()))
 
 
     def save_current_file(self) -> None:
