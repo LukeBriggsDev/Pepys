@@ -88,8 +88,8 @@ class CustomToolbar(QtWidgets.QToolBar):
 
         # Font Size
         self.font_spinbox = QtWidgets.QSpinBox()
-        self.font_spinbox.setMaximumSize(64, 24)
-        self.font_spinbox.setMinimumSize(64, 24)
+        self.font_spinbox.setMaximumSize(64, 28)
+        self.font_spinbox.setMinimumSize(64, 28)
         self.font_spinbox.setToolTip("Font size")
         self.font_spinbox.setMaximum(120)
         self.font_spinbox.setMinimum(1)
@@ -315,15 +315,6 @@ class CustomToolbar(QtWidgets.QToolBar):
         }
         QLabel{
             padding-left: 4px;
-        }
-        QSpinBox{
-            background-color: palette(base);
-        }
-        QSpinBox::up-button{
-            
-        }
-        QSpinBox::down-button{
-            
         }
         
 """)
