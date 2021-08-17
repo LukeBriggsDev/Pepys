@@ -1,5 +1,5 @@
 Name:           Pepys
-Version:        1.0.9
+Version:        1.1.0
 Release:        1%{?dist}
 Summary:        A straightforward markdown journal
 

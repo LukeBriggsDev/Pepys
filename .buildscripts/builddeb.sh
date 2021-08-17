@@ -1,6 +1,6 @@
 #!/bin/bash
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
-PACKAGE_NAME="pepys_1.0.9-1"
+PACKAGE_NAME="pepys_1.1.0-1"
 mkdir -p $SCRIPT_DIR/../deb_build/$PACKAGE_NAME/usr/share/pepys/
 mkdir -p $SCRIPT_DIR/../deb_build/$PACKAGE_NAME/usr/bin
 mkdir -p $SCRIPT_DIR/../deb_build/$PACKAGE_NAME/DEBIAN
@@ -8,7 +8,7 @@ rm -r $SCRIPT_DIR/../deb_build/$PACKAGE_NAME/usr/share/pepys/*
 cp -r $SCRIPT_DIR/../src $SCRIPT_DIR/../deb_build/$PACKAGE_NAME/usr/share/pepys
 # control script
 echo "Package: pepys
-Version: 1.0.9-1
+Version: 1.1.0-1
 Section: base
 Priority: optional
 Architecture: all
