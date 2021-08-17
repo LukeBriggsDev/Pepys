@@ -46,6 +46,10 @@
   "folder": {
     "light": "icons/folder.svg",
     "dark": "icons/folder-white.svg"
+  },
+  "settings": {
+    "light": "icons/gear.svg",
+    "dark": "icons/gear-white"
   }
 
 }

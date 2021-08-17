@@ -32,9 +32,9 @@ if typing.TYPE_CHECKING:
     pass
 
 from EditPane import EditPane
-from AboutWindow import AboutWindow
 from ExportWindow import ExportWindow
 from TableWindow import TableWindow
+from SettingsWindow import SettingsWindow
 from CONSTANTS import get_resource
 from CalendarFileSelector import CalendarFileSelector
 import CONSTANTS
@@ -86,14 +86,6 @@ class CustomToolbar(QtWidgets.QToolBar):
         self.preview_button.setToolTip("Preview")
         self.preview_button.clicked.connect(self.preview_clicked)
 
-        # About button
-        self.about_button = QtWidgets.QPushButton()
-        self.about_button.setMinimumSize(32, 32)
-        self.about_button.setMaximumSize(32, 32)
-        self.about_button.setIcon(QtGui.QIcon(get_resource("icons/question.svg")))
-        self.about_button.setToolTip("About")
-        self.about_button.clicked.connect(self.about_clicked)
-
         # Font Size
         self.font_spinbox = QtWidgets.QSpinBox()
         self.font_spinbox.setMaximumSize(64, 24)
@@ -119,6 +111,15 @@ class CustomToolbar(QtWidgets.QToolBar):
         self.insert_button.setToolTip("Insert")
         self.insert_button.clicked.connect(self.insert_clicked)
 
+        # Settings button
+        self.settings_button = QtWidgets.QPushButton()
+        self.settings_button.setMaximumSize(32, 32)
+        self.settings_button.setMinimumSize(32, 32)
+        self.settings_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["settings"][CONSTANTS.theme])))
+        self.settings_button.setToolTip("Settings")
+        self.settings_button.clicked.connect(self.settings_clicked)
+
+
         # Theme switch button
         self.theme_switch_button = QtWidgets.QPushButton()
         self.theme_switch_button.setMinimumSize(32, 32)
@@ -143,7 +144,7 @@ class CustomToolbar(QtWidgets.QToolBar):
         self.addWidget(self.theme_switch_button)
         self.addWidget(self.insert_button)
         self.addWidget(self.preview_button)
-        self.addWidget(self.about_button)
+        self.addWidget(self.settings_button)
         self.refresh_stylesheet()
 
     def changeEvent(self, event:QtCore.QEvent) -> None:
@@ -157,21 +158,10 @@ class CustomToolbar(QtWidgets.QToolBar):
                 self.preview_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["preview"][CONSTANTS.theme])))
             else:
                 self.preview_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["preview_stop"][CONSTANTS.theme])))
-            self.about_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["about"][CONSTANTS.theme])))
             self.insert_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["plus"][CONSTANTS.theme])))
             self.theme_switch_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["theme_switch"][CONSTANTS.theme])))
             self.export_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["export"][CONSTANTS.theme])))
             self.changedir_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["folder"][CONSTANTS.theme])))
-
-    def about_clicked(self):
-        # Create about dialog
-        self.about_window = AboutWindow(self.window())
-
-        # Disable main window
-        self.window().setFocusProxy(self.about_window)
-        self.about_window.setFocusPolicy(QtCore.Qt.StrongFocus)
-
-        self.about_window.show()
 
     def font_change(self, i):
         # Change font
@@ -297,6 +287,14 @@ class CustomToolbar(QtWidgets.QToolBar):
         self.export_window.setFocusPolicy(QtCore.Qt.StrongFocus)
 
         self.export_window.show()
+
+    def settings_clicked(self):
+        self.settings_window = SettingsWindow(self.window(), self.edit_pane)
+        # Disable current window
+        self.window().setFocusProxy(self.settings_window)
+        self.settings_window.setFocusPolicy(QtCore.Qt.StrongFocus)
+
+        self.settings_window.show()
 
     def refresh_stylesheet(self):
         self.setStyleSheet("""

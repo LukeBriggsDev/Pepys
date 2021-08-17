@@ -22,22 +22,23 @@ from PyQt5 import QtWidgets, QtGui, QtCore
 
 from ColorParser import *
 
+from EditPane import EditPane
+
 if typing.TYPE_CHECKING:
     pass
 import CONSTANTS
 from CONSTANTS import get_resource
 
 
-class AboutWindow(QtWidgets.QWidget):
+class SettingsWindow(QtWidgets.QWidget):
     """Window showing basic info, licenses, and version"""
-    def __init__(self, main_window):
+    def __init__(self, main_window, edit_pane: EditPane):
         """Constructor
         :param main_window:
         """
         super().__init__()
+        self.edit_pane = edit_pane
         self.main_window = main_window
-        self.setMaximumSize(360, 360)
-        self.setMinimumSize(360, 360)
         self.setWindowFlag(QtCore.Qt.Dialog)
         self.about_label = QtWidgets.QLabel()
 
@@ -63,12 +64,28 @@ class AboutWindow(QtWidgets.QWidget):
             '</p>'
 
         )
-        self.setLayout(QtWidgets.QVBoxLayout())
-        self.layout().addWidget(self.about_label)
+        formLayout = QtWidgets.QFormLayout()
+
+        formLayout.addRow(self.about_label)
 
         self.license_button = QtWidgets.QPushButton("Licenses")
+        self.license_button.setStyleSheet("margin-bottom: 16px; height: 24px")
         self.license_button.clicked.connect(self.license_clicked)
-        self.layout().addWidget(self.license_button)
+        formLayout.addRow(self.license_button)
+
+        self.spell_checkbox = QtWidgets.QCheckBox()
+        with open(get_resource("config.json"), "r") as file:
+            config_dict = json.loads(file.read())
+            self.spell_checkbox.setCheckState(0) if not config_dict["enable_dict"] else self.spell_checkbox.setCheckState(2)
+
+        self.spell_checkbox.stateChanged.connect(self.change_spellcheck)
+        settings_label = QtWidgets.QLabel("Settings")
+        settings_label.setStyleSheet("font-size: 16px; font-weight: bold;")
+        formLayout.addRow(settings_label)
+        formLayout.addRow(QtWidgets.QLabel("Enable spell checker: "), self.spell_checkbox)
+
+        self.setLayout(formLayout)
+
 
         self.setStyleSheet("""    
         text-align: center;
@@ -78,9 +95,22 @@ class AboutWindow(QtWidgets.QWidget):
         self.setWindowTitle("About")
 
 
+    def change_spellcheck(self, state):
+        CHECKED = 2
+        # save state
+        with open(get_resource("config.json"), "r+") as file:
+            config_dict = json.loads(file.read())
+            config_dict["enable_dict"] = True if state == CHECKED else False
+
+            # Write changes and refresh icon
+            file.seek(0)
+            file.write(json.dumps(config_dict, sort_keys=True, indent=4))
+            file.truncate()
+
     def closeEvent(self, event:QtGui.QCloseEvent) -> None:
         self.main_window.setFocusPolicy(QtCore.Qt.StrongFocus)
         self.main_window.setDisabled(False)
+        self.edit_pane.markdownHighlighter.rehighlight()
 
     def license_clicked(self):
         self.license_window = QtWidgets.QTextBrowser()

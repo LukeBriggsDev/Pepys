@@ -53,8 +53,18 @@ def get_resource(filepath):
             file.write('''{\n
             "diary_directory": "",\n
             "favorites": [],\n
-            "theme": "dark"\n
+            "theme": "dark",\n
+            "enable_dict": true\n
             }''')
+    else:
+        with open(os.path.join(config_dir, "config.json"), "r+") as file:
+            config_dict = json.loads(file.read())
+            if "enable_dict" not in config_dict.keys():
+                config_dict["enable_dict"] = True
+                file.seek(0)
+                file.write(json.dumps(config_dict, sort_keys=True, indent=4))
+                file.truncate()
+
     user_files = ["config.json", "wordlist.txt", "parsed_stylesheet.css"]
 
     # Change resource directory depending on if it is running from source or running compiled

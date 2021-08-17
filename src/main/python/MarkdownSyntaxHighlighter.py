@@ -23,6 +23,7 @@ from enchant.tokenize import get_tokenizer
 from enchant.tokenize import EmailFilter, URLFilter
 from CONSTANTS import spell_dict, spell_lang
 import CONSTANTS
+import json
 from ColorParser import text_to_rgb
 
 class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
@@ -90,18 +91,23 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
 
         # Spell Checking
         # A word is underlined red
-        misspelled = [token[0] for token in self.spell_tknzr(text)
-                      if token[0][0].islower() and # doesn't start with a capital letter
-                      not spell_dict.check(token[0])] # isn't in the dictionary
-        for word in misspelled:
-            for match in regex.finditer(r"\b" + regex.escape(word) + r"(?=\W)", text):
-                formatter.setUnderlineColor(QtGui.QColor(200, 0, 0))
-                formatter.setUnderlineStyle(QtGui.QTextCharFormat.SpellCheckUnderline)
-                formatter.setFontUnderline(True)
-                self.setFormat(match.start(), len(match.group()), formatter)
-                formatter.setFontUnderline(False)
+        enable_dict = False
+        with open(CONSTANTS.get_resource("config.json"), "r") as file:
+            config_dict = json.loads(file.read())
+            enable_dict = config_dict["enable_dict"]
+        if enable_dict:
+            misspelled = [token[0] for token in self.spell_tknzr(text)
+                          if token[0][0].islower() and # doesn't start with a capital letter
+                          not spell_dict.check(token[0])] # isn't in the dictionary
+            for word in misspelled:
+                for match in regex.finditer(r"\b" + regex.escape(word) + r"(?=\W)", text):
+                    formatter.setUnderlineColor(QtGui.QColor(200, 0, 0))
+                    formatter.setUnderlineStyle(QtGui.QTextCharFormat.SpellCheckUnderline)
+                    formatter.setFontUnderline(True)
+                    self.setFormat(match.start(), len(match.group()), formatter)
+                    formatter.setFontUnderline(False)
 
-                self.setFormat(match.end(), 1, formatter)
+                    self.setFormat(match.end(), 1, formatter)
 
         # Setext header match and format. Only if there is a newline before hand
         if (self.currentBlock().previous().text() == "" ):

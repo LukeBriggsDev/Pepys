@@ -150,7 +150,7 @@ class EditPane(QtWidgets.QTextEdit):
                 self.parent().tool_bar.font_spinbox.setValue(config_dict["font_size"])
             except KeyError:
                 # Font size not in config
-                self.parent().tool_bar.font_spinbox.setValue(int(self.edit_pane.fontPointSize()))
+                self.parent().tool_bar.font_spinbox.setValue(int(self.fontPointSize()))
 
 
     def save_current_file(self) -> None:
@@ -306,31 +306,36 @@ class EditPane(QtWidgets.QTextEdit):
         menu.addSeparator()
         self.word_cursor = self.cursorForPosition(pos)
         self.word_cursor.select(QtGui.QTextCursor.WordUnderCursor)
-        # Find misspelled word in highlighted text
-        misspelled = [token[0] for token in self.spell_tknzr(self.word_cursor.selectedText()) if token[0][0].islower() and not spell_dict.check(token[0])]
+        enable_dict = False
+        with open(CONSTANTS.get_resource("config.json"), "r") as file:
+            config_dict = json.loads(file.read())
+            enable_dict = config_dict["enable_dict"]
+        if enable_dict:
+            # Find misspelled word in highlighted text
+            misspelled = [token[0] for token in self.spell_tknzr(self.word_cursor.selectedText()) if token[0][0].islower() and not spell_dict.check(token[0])]
 
-        # If there is a misspelled word and the word matches the whole of the highlighted text
-        if len(misspelled) > 0 and misspelled[0] == self.word_cursor.selectedText():
-            # Add 'Add to Dictionary option'
-            self.add_to_dict_action_handler = ActionHandler(menu.addAction("Add to dictionary"), self.add_to_word_list)
-            menu.addSeparator()
+            # If there is a misspelled word and the word matches the whole of the highlighted text
+            if len(misspelled) > 0 and misspelled[0] == self.word_cursor.selectedText():
+                # Add 'Add to Dictionary option'
+                self.add_to_dict_action_handler = ActionHandler(menu.addAction("Add to dictionary"), self.add_to_word_list)
+                menu.addSeparator()
 
-            spell_suggestion_handlers = []
-            # Get spelling suggestions
-            spell_suggestions = spell_dict.suggest(misspelled[0])
-            # Add suggestions to menu until there is no more left or a maximum of 10
-            while len(spell_suggestion_handlers) < 10 and len(spell_suggestion_handlers) < len(spell_suggestions):
-                for suggestion in spell_suggestions:
-                    new_action = menu.addAction(suggestion)
-                    spell_suggestion_handlers.append(ActionHandler(new_action, self.replace_selection))
+                spell_suggestion_handlers = []
+                # Get spelling suggestions
+                spell_suggestions = spell_dict.suggest(misspelled[0])
+                # Add suggestions to menu until there is no more left or a maximum of 10
+                while len(spell_suggestion_handlers) < 10 and len(spell_suggestion_handlers) < len(spell_suggestions):
+                    for suggestion in spell_suggestions:
+                        new_action = menu.addAction(suggestion)
+                        spell_suggestion_handlers.append(ActionHandler(new_action, self.replace_selection))
 
-            # Save suggestion handlers to object so they persist
-            self.spell_suggestion_handlers = spell_suggestion_handlers
+                # Save suggestion handlers to object so they persist
+                self.spell_suggestion_handlers = spell_suggestion_handlers
 
 
-            if len(self.spell_suggestion_handlers) == 0:
-                no_suggestions = menu.addAction("No Suggestions")
-                no_suggestions.setEnabled(False)
+                if len(self.spell_suggestion_handlers) == 0:
+                    no_suggestions = menu.addAction("No Suggestions")
+                    no_suggestions.setEnabled(False)
 
 
         return menu
