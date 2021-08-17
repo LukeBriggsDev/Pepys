@@ -47,6 +47,13 @@
         </p>
     </description>
     <releases>
+        <release version="1.1.1" date="2021-08-17">
+            <description>
+                <ul>
+                    <li>Fix missing arrow icons on Linux</li>
+                </ul>
+            </description>
+        </release>
         <release version="1.1.0" date="2021-08-17">
             <description>
                 <ul>

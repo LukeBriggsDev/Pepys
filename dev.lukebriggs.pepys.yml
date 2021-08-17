@@ -33,8 +33,8 @@ modules:
       - cp ./dev.lukebriggs.pepys.svg /app/share/icons/hicolor/scalable/apps/
     sources:
       - type: git
-        commit: 6da62fd2db4ce1a99905de436099920420dea13d
-        tag: v1.1.0
+        commit: 20b07a631f0b15f84cf731a18bf47697599595b8
+        tag: v1.1.1
         url: https://github.com/LukeBriggsDev/Pepys
 
   - python3-requirements.json
