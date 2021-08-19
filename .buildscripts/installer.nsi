@@ -13,6 +13,13 @@ Section "Install"
     CreateShortCut "$SMPROGRAMS\Pepys.lnk" "$INSTDIR\Pepys.exe"
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Pepys" "DisplayName" "Pepys"
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Pepys" "UninstallString" "$\"$INSTDIR\uninstaller.exe$\""
+    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Pepys" "DisplayIcon" "$INSTDIR\Pepys.exe,0"
+    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Pepys" "Publisher" "Luke Briggs"
+    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Pepys" "Publisher" "Luke Briggs"
+    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Pepys" "Version" 0x010100
+    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Pepys" "DisplayVersion" 1.1.0
+    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Pepys" "UrlInfoAbout" "https://www.lukebriggs.dev/pepys"
+
 SectionEnd
 
 Section "Uninstall"
