@@ -162,6 +162,7 @@ class CustomToolbar(QtWidgets.QToolBar):
             self.theme_switch_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["theme_switch"][CONSTANTS.theme])))
             self.export_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["export"][CONSTANTS.theme])))
             self.changedir_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["folder"][CONSTANTS.theme])))
+            self.settings_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["settings"][CONSTANTS.theme])))
 
     def font_change(self, i):
         # Change font
