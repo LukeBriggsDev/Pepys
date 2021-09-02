@@ -5,7 +5,7 @@
 > "It is rightly made for those who love to document their daily life events"
 ><br> [- FOSSBytes](https://fossbytes.com/document-activity-pepys-journal-app-linux)
 
-Pepys is a journaling application that utilises markdown for writing and storing the journal entries
+Pepys is a journalling application that utilises markdown for writing and storing the journal entries
 
 - [Introducing Pepys: A straightforward markdown journal](#introducing-pepys-a-straightforward-markdown-journal)
 - [Features](#features)
