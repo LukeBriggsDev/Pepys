@@ -97,3 +97,7 @@ The source code is available on [Github](https://github.com/LukeBriggsDev/Pepys)
 FossBytes - <https://fossbytes.com/document-activity-pepys-journal-app-linux/>
 
 ConnectWWW.com - <https://connectwww.com/pepys-markdown-journal-application/62941/>
+
+# Contributors
+
+[Hubert Figuière](https://github.com/hfiguiere)
