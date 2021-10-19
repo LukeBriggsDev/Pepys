@@ -16,6 +16,7 @@
 """
 from __future__ import annotations
 
+import sys
 import typing
 
 from PyQt5 import QtWidgets, QtGui, QtCore
@@ -163,6 +164,8 @@ class CustomToolbar(QtWidgets.QToolBar):
             self.export_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["export"][CONSTANTS.theme])))
             self.changedir_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["folder"][CONSTANTS.theme])))
             self.settings_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["settings"][CONSTANTS.theme])))
+            if sys.platform == "win32":
+                self.font_spinbox.setStyleSheet("color: black;")
 
     def font_change(self, i):
         # Change font
