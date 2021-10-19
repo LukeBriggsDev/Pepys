@@ -110,7 +110,7 @@ class EditPane(QtWidgets.QTextEdit):
         # Add ordinal to end of number if it exists
         try:
             day_of_month = num2words(file_date.day, to="ordinal_num", lang=locale.getlocale()[0])
-        except NotImplementedError:
+        except (NotImplementedError, TypeError):
             day_of_month = file_date.day
 
         long_date = file_date.strftime(f"%A {day_of_month} %B %Y")
@@ -118,12 +118,19 @@ class EditPane(QtWidgets.QTextEdit):
         # Get folder for today's journal entry
         config_file = get_resource("config.json")
         with open(config_file, "r") as file:
-            file_directory = os.path.join(json.loads(file.read())["diary_directory"], str(file_date.year),
-                                          str(file_date.month), formatted_date)
+            diary_directory = json.loads(file.read())["diary_directory"]
+            month_directory = os.path.join(diary_directory, str(file_date.year), f"{file_date.month:02}")
+            # directory without zero filled months (as it was v1.1.1 and before)
+            back_compat_directory = os.path.join(diary_directory, str(file_date.year), str(file_date.month))
 
+        file_directory = os.path.join(month_directory, formatted_date)
+        print(file_directory)
         # Make folder for today's entry if not already exist
         print(get_resource("config.json"))
         if not os.path.exists(file_directory):
+            if os.path.exists(back_compat_directory):
+                file_directory = os.path.join(back_compat_directory, formatted_date)
+
             pathlib.Path(file_directory).mkdir(parents=True, exist_ok=True)
 
         # Open markdown in r+ mode if it exists, else open in w+ mode
@@ -132,6 +139,7 @@ class EditPane(QtWidgets.QTextEdit):
                 self.set_current_file(file)
 
         except FileNotFoundError:
+            print(os.path.join(file_directory, f"{formatted_date}.md"))
             with open(os.path.join(file_directory, f"{formatted_date}.md"), "w+") as file:
                 self.set_current_file(file)
                 self.setText('---\n'
