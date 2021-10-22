@@ -4,6 +4,7 @@ num2words
 pypandoc
 pyenchant
 PyPDF4
+PyPDF2
 setproctitle
 PyQt5
 PyQtWebEngine
