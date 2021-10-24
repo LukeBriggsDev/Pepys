@@ -101,3 +101,4 @@ ConnectWWW.com - <https://connectwww.com/pepys-markdown-journal-application/6294
 # Contributors
 
 [Hubert Figuière](https://github.com/hfiguiere)
+[Evie Jackson](Sh4d0w-47)
