@@ -20,7 +20,7 @@ import sys
 import enchant
 import subprocess
 import pathlib
-from PyQt5 import QtGui, QtWidgets, QtCore
+from PyQt6 import QtGui, QtWidgets, QtCore
 
 
 if sys.platform == 'darwin':
@@ -45,7 +45,7 @@ def get_resource(filepath):
     Return absolute file path when given a path relative to base resources
     :param filepath relative to /resources/base
     """
-    config_dir = QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.AppConfigLocation)
+    config_dir = QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.AppConfigLocation)
     if not os.path.exists(config_dir):
         pathlib.Path(config_dir).mkdir(parents=True)
     if not os.path.isfile(os.path.join(config_dir,"config.json")):
@@ -96,8 +96,8 @@ version = "1.1.1"
 
 light_palette = QtWidgets.QApplication.palette()
 if not sys.platform.startswith("linux"):
-    light_palette.setColor(QtGui.QPalette.Mid, QtGui.QColor.fromRgbF(0.85, 0.85, 0.85))
-    light_palette.setColor(QtGui.QPalette.Dark, QtGui.QColor.fromRgbF(0.8, 0.8, 0.8))
+    light_palette.setColor(QtGui.QPalette.ColorRole.Mid, QtGui.QColor.fromRgbF(0.85, 0.85, 0.85))
+    light_palette.setColor(QtGui.QPalette.ColorRole.Dark, QtGui.QColor.fromRgbF(0.8, 0.8, 0.8))
     QtWidgets.QApplication.setPalette(light_palette)
 
 
@@ -192,75 +192,75 @@ class Colors:
         link_color = Colors.lighten(selected_bg_color, 0.2)
         link_visited_color = Colors.lighten(selected_bg_color, 0.1)
 
-        alt_palette.setColor(QtGui.QPalette.All, QtGui.QPalette.Window, bg_color)
-        alt_palette.setColor(QtGui.QPalette.All, QtGui.QPalette.WindowText, fg_color)
-        alt_palette.setColor(QtGui.QPalette.All, QtGui.QPalette.Base, base_color)
-        alt_palette.setColor(QtGui.QPalette.All, QtGui.QPalette.AlternateBase, base_color)
-        alt_palette.setColor(QtGui.QPalette.All, QtGui.QPalette.ToolTipBase, osd_bg_color)
-        alt_palette.setColor(QtGui.QPalette.All, QtGui.QPalette.ToolTipText, osd_text_color)
-        alt_palette.setColor(QtGui.QPalette.All, QtGui.QPalette.Text, fg_color)
-        alt_palette.setColor(QtGui.QPalette.All, QtGui.QPalette.Button, button_base_color)
-        alt_palette.setColor(QtGui.QPalette.All, QtGui.QPalette.ButtonText, fg_color)
-        alt_palette.setColor(QtGui.QPalette.All, QtGui.QPalette.BrightText, text_color)
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.All, QtGui.QPalette.ColorRole.Window, bg_color)
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.All, QtGui.QPalette.ColorRole.WindowText, fg_color)
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.All, QtGui.QPalette.ColorRole.Base, base_color)
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.All, QtGui.QPalette.ColorRole.AlternateBase, base_color)
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.All, QtGui.QPalette.ColorRole.ToolTipBase, osd_bg_color)
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.All, QtGui.QPalette.ColorRole.ToolTipText, osd_text_color)
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.All, QtGui.QPalette.ColorRole.Text, fg_color)
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.All, QtGui.QPalette.ColorRole.Button, button_base_color)
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.All, QtGui.QPalette.ColorRole.ButtonText, fg_color)
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.All, QtGui.QPalette.ColorRole.BrightText, text_color)
 
-        alt_palette.setColor(QtGui.QPalette.All, QtGui.QPalette.Light, Colors.lighten(button_base_color))
-        alt_palette.setColor(QtGui.QPalette.All, QtGui.QPalette.Midlight, Colors.mix(Colors.lighten(button_base_color), button_base_color))
-        alt_palette.setColor(QtGui.QPalette.All, QtGui.QPalette.Mid, Colors.mix(Colors.darken(button_base_color), button_base_color))
-        alt_palette.setColor(QtGui.QPalette.All, QtGui.QPalette.Dark, Colors.darken(button_base_color))
-        alt_palette.setColor(QtGui.QPalette.All, QtGui.QPalette.Shadow, shadow)
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.All, QtGui.QPalette.ColorRole.Light, Colors.lighten(button_base_color))
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.All, QtGui.QPalette.ColorRole.Midlight, Colors.mix(Colors.lighten(button_base_color), button_base_color))
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.All, QtGui.QPalette.ColorRole.Mid, Colors.mix(Colors.darken(button_base_color), button_base_color))
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.All, QtGui.QPalette.ColorRole.Dark, Colors.darken(button_base_color))
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.All, QtGui.QPalette.ColorRole.Shadow, shadow)
 
-        alt_palette.setColor(QtGui.QPalette.All, QtGui.QPalette.Highlight, selected_bg_color)
-        alt_palette.setColor(QtGui.QPalette.All, QtGui.QPalette.HighlightedText, selected_fg_color)
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.All, QtGui.QPalette.ColorRole.Highlight, selected_bg_color)
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.All, QtGui.QPalette.ColorRole.HighlightedText, selected_fg_color)
 
-        alt_palette.setColor(QtGui.QPalette.All, QtGui.QPalette.Link, link_color)
-        alt_palette.setColor(QtGui.QPalette.All, QtGui.QPalette.LinkVisited, link_visited_color)
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.All, QtGui.QPalette.ColorRole.Link, link_color)
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.All, QtGui.QPalette.ColorRole.LinkVisited, link_visited_color)
 
 
         insensitive_fg_color = Colors.mix(fg_color, bg_color)
         insensitive_bg_color = Colors.mix(bg_color, base_color, 0.4)
 
-        alt_palette.setColor(QtGui.QPalette.Disabled, QtGui.QPalette.Window, insensitive_bg_color)
-        alt_palette.setColor(QtGui.QPalette.Disabled, QtGui.QPalette.WindowText, insensitive_fg_color)
-        alt_palette.setColor(QtGui.QPalette.Disabled, QtGui.QPalette.Base, base_color)
-        alt_palette.setColor(QtGui.QPalette.Disabled, QtGui.QPalette.AlternateBase, base_color)
-        alt_palette.setColor(QtGui.QPalette.Disabled, QtGui.QPalette.Text, insensitive_fg_color)
-        alt_palette.setColor(QtGui.QPalette.Disabled, QtGui.QPalette.Button, insensitive_bg_color)
-        alt_palette.setColor(QtGui.QPalette.Disabled, QtGui.QPalette.ButtonText, insensitive_fg_color)
-        alt_palette.setColor(QtGui.QPalette.Disabled, QtGui.QPalette.BrightText, text_color)
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Window, insensitive_bg_color)
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.WindowText, insensitive_fg_color)
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Base, base_color)
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.AlternateBase, base_color)
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Text, insensitive_fg_color)
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Button, insensitive_bg_color)
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.ButtonText, insensitive_fg_color)
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.BrightText, text_color)
 
-        alt_palette.setColor(QtGui.QPalette.Disabled, QtGui.QPalette.Light, Colors.lighten(insensitive_bg_color))
-        alt_palette.setColor(QtGui.QPalette.Disabled, QtGui.QPalette.Midlight, Colors.mix(Colors.lighten(insensitive_bg_color), insensitive_bg_color))
-        alt_palette.setColor(QtGui.QPalette.Disabled, QtGui.QPalette.Mid, Colors.mix(Colors.darken(insensitive_bg_color), insensitive_bg_color))
-        alt_palette.setColor(QtGui.QPalette.Disabled, QtGui.QPalette.Dark, Colors.darken(insensitive_bg_color))
-        alt_palette.setColor(QtGui.QPalette.Disabled, QtGui.QPalette.Shadow, shadow)
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Light, Colors.lighten(insensitive_bg_color))
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Midlight, Colors.mix(Colors.lighten(insensitive_bg_color), insensitive_bg_color))
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Mid, Colors.mix(Colors.darken(insensitive_bg_color), insensitive_bg_color))
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Dark, Colors.darken(insensitive_bg_color))
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Shadow, shadow)
 
-        alt_palette.setColor(QtGui.QPalette.Disabled, QtGui.QPalette.Highlight, selected_bg_color)
-        alt_palette.setColor(QtGui.QPalette.Disabled, QtGui.QPalette.HighlightedText, selected_fg_color)
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Highlight, selected_bg_color)
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.HighlightedText, selected_fg_color)
 
-        alt_palette.setColor(QtGui.QPalette.Disabled, QtGui.QPalette.Link, link_color)
-        alt_palette.setColor(QtGui.QPalette.Disabled, QtGui.QPalette.LinkVisited, link_visited_color)
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Link, link_color)
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.LinkVisited, link_visited_color)
 
 
-        alt_palette.setColor(QtGui.QPalette.Inactive, QtGui.QPalette.Window, bg_color)
-        alt_palette.setColor(QtGui.QPalette.Inactive, QtGui.QPalette.WindowText, backdrop_fg_color)
-        alt_palette.setColor(QtGui.QPalette.Inactive, QtGui.QPalette.Base, backdrop_base_color)
-        alt_palette.setColor(QtGui.QPalette.Inactive, QtGui.QPalette.AlternateBase, backdrop_base_color)
-        alt_palette.setColor(QtGui.QPalette.Inactive, QtGui.QPalette.Text, backdrop_fg_color)
-        alt_palette.setColor(QtGui.QPalette.Inactive, QtGui.QPalette.Button, button_base_color)
-        alt_palette.setColor(QtGui.QPalette.Inactive, QtGui.QPalette.ButtonText, backdrop_fg_color)
-        alt_palette.setColor(QtGui.QPalette.Inactive, QtGui.QPalette.BrightText, text_color)
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.Window, bg_color)
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.WindowText, backdrop_fg_color)
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.Base, backdrop_base_color)
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.AlternateBase, backdrop_base_color)
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.Text, backdrop_fg_color)
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.Button, button_base_color)
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.ButtonText, backdrop_fg_color)
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.BrightText, text_color)
 
-        alt_palette.setColor(QtGui.QPalette.Inactive, QtGui.QPalette.Light, Colors.lighten(insensitive_bg_color))
-        alt_palette.setColor(QtGui.QPalette.Inactive, QtGui.QPalette.Midlight, Colors.mix(Colors.lighten(insensitive_bg_color), insensitive_bg_color))
-        alt_palette.setColor(QtGui.QPalette.Inactive, QtGui.QPalette.Mid, Colors.mix(Colors.darken(insensitive_bg_color), insensitive_bg_color))
-        alt_palette.setColor(QtGui.QPalette.Inactive, QtGui.QPalette.Dark, Colors.darken(insensitive_bg_color))
-        alt_palette.setColor(QtGui.QPalette.Inactive, QtGui.QPalette.Shadow, shadow)
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.Light, Colors.lighten(insensitive_bg_color))
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.Midlight, Colors.mix(Colors.lighten(insensitive_bg_color), insensitive_bg_color))
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.Mid, Colors.mix(Colors.darken(insensitive_bg_color), insensitive_bg_color))
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.Dark, Colors.darken(insensitive_bg_color))
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.Shadow, shadow)
 
-        alt_palette.setColor(QtGui.QPalette.Inactive, QtGui.QPalette.Highlight, selected_bg_color)
-        alt_palette.setColor(QtGui.QPalette.Inactive, QtGui.QPalette.HighlightedText, backdrop_selected_fg_color)
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.Highlight, selected_bg_color)
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.HighlightedText, backdrop_selected_fg_color)
 
-        alt_palette.setColor(QtGui.QPalette.Inactive, QtGui.QPalette.Link, link_color)
-        alt_palette.setColor(QtGui.QPalette.Inactive, QtGui.QPalette.LinkVisited, link_visited_color)
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.Link, link_color)
+        alt_palette.setColor(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.LinkVisited, link_visited_color)
 
         return alt_palette
 

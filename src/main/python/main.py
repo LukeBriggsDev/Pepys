@@ -14,11 +14,17 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
+# Set enchant env variable
+import re
+import subprocess
 import sys
 import os
+if sys.platform.lower().startswith("darwin"):
+    os.environ["PYENCHANT_LIBRARY_PATH"] = subprocess.run(["command", "-v", "enchant-2"], capture_output=True).stdout.decode("utf-8").strip("\n")
 import pathlib
+import enchant
 import setproctitle
-from PyQt5 import QtWidgets, QtGui, QtCore, QtWebEngineWidgets
+from PyQt6 import QtWidgets, QtGui, QtCore, QtWebEngineWidgets
 app = QtWidgets.QApplication(sys.argv)
 app.setApplicationName("Pepys")
 app.setApplicationDisplayName("Pepys")
@@ -37,11 +43,14 @@ if __name__ == "__main__":
         myappid = 'dev.lukebriggs.pepys' # arbitrary string
         ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 
+    if sys.platform.lower().startswith("darwin"):
+        os.putenv("QTWEBENGINE_CHROMIUM_FLAGS", "--single-process")
+
     if not os.path.isfile(get_resource("wordlist.txt")):
         with open(get_resource("wordlist.txt"), "w+") as file:
             file.write("")
     app.setWindowIcon(QtGui.QIcon(get_resource("icons/appicons/icon.svg")))
-    CONSTANTS.theme = "light" if QtWidgets.QApplication.palette().color(QtGui.QPalette.Active, QtGui.QPalette.Base).lightness() > 122 else "dark"
+    CONSTANTS.theme = "light" if QtWidgets.QApplication.palette().color(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Base).lightness() > 122 else "dark"
     CONSTANTS.light_palette = QtWidgets.QApplication.palette()
     setproctitle.setproctitle("Pepys")
     #Initialise and set size of main_window
@@ -50,4 +59,4 @@ if __name__ == "__main__":
     main_window.setMinimumSize(640, 480)
     main_window.show()
 
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

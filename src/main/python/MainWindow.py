@@ -22,7 +22,7 @@ import sys
 import typing
 from datetime import date
 
-from PyQt5 import QtWidgets, QtGui, QtCore
+from PyQt6 import QtWidgets, QtGui, QtCore
 
 from ColorParser import *
 from CustomToolbar import CustomToolbar
@@ -57,20 +57,21 @@ class MainWindow(QtWidgets.QWidget):
 
         self.no_journal_dialog = QtWidgets.QMessageBox()
         self.no_journal_dialog.setText("No journal directory configured")
-        self.no_journal_dialog.setStandardButtons(QtWidgets.QMessageBox.Close | QtWidgets.QMessageBox.Open)
-        self.no_journal_dialog.setDefaultButton(QtWidgets.QMessageBox.Open)
+        self.no_journal_dialog.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Close |
+                                                  QtWidgets.QMessageBox.StandardButton.Open)
+        self.no_journal_dialog.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Open)
 
         # Folder is not an absolute folder
         try:
             if not (config_dict['diary_directory'][0] == '/' or config_dict['diary_directory'][1] == ':') or not os.path.exists(config_dict['diary_directory']):
                 answer = self.no_journal_dialog.exec()
-                if answer == QtWidgets.QMessageBox.Open:
+                if answer == QtWidgets.QMessageBox.StandardButton.Open:
                     self.select_diary_directory()
                 else:
                     exit(0)
         except IndexError:
             answer = self.no_journal_dialog.exec()
-            if answer == QtWidgets.QMessageBox.Open:
+            if answer == QtWidgets.QMessageBox.StandardButton.Open:
                 self.select_diary_directory()
             else:
                 exit(0)

@@ -20,7 +20,7 @@ import pathlib
 import typing
 from threading import Thread
 
-from PyQt5 import QtWidgets, QtGui, QtCore
+from PyQt6 import QtWidgets, QtGui, QtCore
 from EditPane import EditPane
 from datetime import date
 
@@ -60,7 +60,7 @@ class ExportWindow(QtWidgets.QWidget):
         self.edit_pane = edit_pane
         self.setMaximumSize(640, 480)
         self.setMinimumSize(640, 480)
-        self.setWindowFlag(QtCore.Qt.Dialog)
+        self.setWindowFlag(QtCore.Qt.WindowType.Dialog)
 
         self.dialog_layout = QtWidgets.QVBoxLayout()
 
@@ -68,7 +68,7 @@ class ExportWindow(QtWidgets.QWidget):
         self.export_options = QtWidgets.QComboBox()
 
         # Workaround for button elements not changing BG on MacOS
-        if QtWidgets.QApplication.palette().color(QtGui.QPalette.Active, QtGui.QPalette.Base).lightness() < 122\
+        if QtWidgets.QApplication.palette().color(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Base).lightness() < 122\
             and (sys.platform == "darwin" or sys.platform == "win32"):
             self.setStyleSheet(
                 """
@@ -148,11 +148,11 @@ class ExportWindow(QtWidgets.QWidget):
         self.file_dialog = QtWidgets.QFileDialog()
         self.chosen_directory.setText(self.file_dialog.getExistingDirectory(self, "Open Directory",
                                                                             pathlib.Path.home().as_posix(),
-                                                                            QtWidgets.QFileDialog.ShowDirsOnly))
+                                                                            QtWidgets.QFileDialog.Option.ShowDirsOnly))
 
     def closeEvent(self, event:QtGui.QCloseEvent) -> None:
         # Re-enable main window
-        self.main_window.setFocusPolicy(QtCore.Qt.StrongFocus)
+        self.main_window.setFocusPolicy(QtCore.Qt.FocusPolicy.StrongFocus)
         self.main_window.setDisabled(False)
 
     def format_option_change(self, new_text: str):
@@ -185,16 +185,16 @@ class ExportWindow(QtWidgets.QWidget):
 
         # Load dialog
         self.load_dialog = QtWidgets.QDialog(self)
-        self.load_dialog.setWindowModality(QtCore.Qt.WindowModal)
+        self.load_dialog.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
         self.load_dialog.setMinimumSize(400, 100)
         self.load_dialog.setMaximumSize(400, 100)
         self.load_dialog.setWindowTitle("Exporting...")
         progress_label = QtWidgets.QLabel()
-        progress_label.setAlignment(QtCore.Qt.AlignCenter)
+        progress_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         progress_bar = QtWidgets.QProgressBar()
-        progress_bar.setAlignment(QtCore.Qt.AlignCenter)
+        progress_bar.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.load_dialog.setLayout(QtWidgets.QVBoxLayout())
-        self.load_dialog.layout().setAlignment(QtCore.Qt.AlignTop)
+        self.load_dialog.layout().setAlignment(QtCore.Qt.AlignmentFlag.AlignTop)
         self.load_dialog.layout().addWidget(progress_label)
         self.load_dialog.layout().addWidget(progress_bar)
         self.load_dialog.show()
@@ -261,8 +261,8 @@ class ExportWindow(QtWidgets.QWidget):
                 except RuntimeError as err:
                     progress_label.setText("ERROR IN FILE " + entry.name)
                     QtWidgets.QApplication.processEvents()
-                    print(str(err))
                     errors.append(entry)
+                    print(str(err))
                     if str(err).startswith('Pandoc died with exitcode "47"'):
                         self.load_dialog.setMinimumSize(550, 150)
                         self.load_dialog.setMaximumSize(550, 150)
@@ -273,7 +273,6 @@ class ExportWindow(QtWidgets.QWidget):
                         progress_label.setText("No wkhtmltopdf installation found.\n"
                                                "Please install wkhtmltopdf.\n\n")
                         return 1
-                    print(err)
                 finished += 1
                 progress_label.setText(str(finished) + "/" + str(len(diary_entries)))
                 progress_bar.setValue(finished)
@@ -341,7 +340,10 @@ class ExportWindow(QtWidgets.QWidget):
         if len(errors) > 0:
             self.error_dialog = QtWidgets.QMessageBox()
             self.error_dialog.setText("Errors occured in the following entries and they were not converted.\n\nPerhaps they link to files that do not exist")
-            self.error_dialog.setInformativeText("\n".join([str(error) for error in errors]))
+            if len(errors) > 10:
+                self.error_dialog.setInformativeText("\n".join([str(error) for error in errors[:10]]) + "...")
+            else:
+                self.error_dialog.setInformativeText("\n".join([str(error) for error in errors]))
             self.error_dialog.show()
         CONSTANTS.openFolder(self.chosen_directory.text())
         self.load_dialog.close()
