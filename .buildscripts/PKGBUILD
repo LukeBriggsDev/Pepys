@@ -23,7 +23,7 @@ install=
 changelog=
 source=("$pkgname.tar.gz" "https://files.pythonhosted.org/packages/33/db/76f1151a1b0cfad532d41021b77cd231495bf72c47618166f92dcdff2ebe/num2words-0.5.10.tar.gz" "https://files.pythonhosted.org/packages/b4/01/68fcc0d43daf4c6bdbc6b33cc3f77bda531c86b174cac56ef0ffdb96faab/PyPDF2-1.26.0.tar.gz")
 noextract=()
-md5sums=('be8d70e87d06237bf5b82b8f002b7ef1' '1d0c24b6b789ad6bf91952d92cb6285f' '2301acc0ecbab0633d4c9b883d50ee5e')
+md5sums=('b2acbfab54310e3b811edb844ea8d2fa' '1d0c24b6b789ad6bf91952d92cb6285f' '2301acc0ecbab0633d4c9b883d50ee5e')
 validpgpkeys=()
 
 
