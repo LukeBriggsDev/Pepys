@@ -14,13 +14,26 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
-# Set enchant env variable
 import re
 import subprocess
 import sys
 import os
 if sys.platform.lower().startswith("darwin"):
     os.environ["PYENCHANT_LIBRARY_PATH"] = subprocess.run(["command", "-v", "enchant-2"], capture_output=True).stdout.decode("utf-8").strip("\n")
+if sys.platform.startswith('darwin'):
+    # Set app name, if PyObjC is installed
+    # Python 2 has PyObjC preinstalled
+    # Python 3: pip3 install pyobjc-framework-Cocoa
+    try:
+        from Foundation import NSBundle
+        bundle = NSBundle.mainBundle()
+        if bundle:
+            app_name = "Pepys"
+            app_info = bundle.localizedInfoDictionary() or bundle.infoDictionary()
+            if app_info:
+                app_info['CFBundleName'] = app_name
+    except ImportError:
+        pass
 import pathlib
 import enchant
 import setproctitle
