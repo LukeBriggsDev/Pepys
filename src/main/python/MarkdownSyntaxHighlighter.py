@@ -15,7 +15,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 import regex
-from PyQt5 import QtWidgets, QtGui, QtCore
+from PyQt6 import QtWidgets, QtGui, QtCore
 import CONSTANTS
 from MarkdownRegex import regexPatterns
 import enchant
@@ -84,7 +84,7 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
         """Overrides QSyntaxHighlighter method to provide custom formatting"""
 
         formatter = QtGui.QTextCharFormat()
-        brush = QtWidgets.QApplication.palette().brush(QtGui.QPalette.Active, QtGui.QPalette.Text)
+        brush = QtWidgets.QApplication.palette().brush(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Text)
         formatter.setForeground(brush)
 
         self.setCurrentBlockState(0)
@@ -102,7 +102,7 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
             for word in misspelled:
                 for match in regex.finditer(r"\b" + regex.escape(word) + r"(?=\W)", text):
                     formatter.setUnderlineColor(QtGui.QColor(200, 0, 0))
-                    formatter.setUnderlineStyle(QtGui.QTextCharFormat.SpellCheckUnderline)
+                    formatter.setUnderlineStyle(QtGui.QTextCharFormat.UnderlineStyle.SpellCheckUnderline)
                     formatter.setFontUnderline(True)
                     self.setFormat(match.start(), len(match.group()), formatter)
                     formatter.setFontUnderline(False)
@@ -112,12 +112,12 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
         # Setext header match and format. Only if there is a newline before hand
         if (self.currentBlock().previous().text() == "" ):
                 for match in regex.finditer(self.setext_header_pattern, text + "\n" + self.currentBlock().next().text()):
-                    formatter.setFontWeight(QtGui.QFont.Bold)
+                    formatter.setFontWeight(QtGui.QFont.Weight.Bold)
                     self.setFormat(match.start(), len(match.group()), formatter)
 
         # Setext underline match and format
         for match in regex.finditer(self.setext_underline_pattern, text):
-            formatter.setFontWeight(QtGui.QFont.Bold)
+            formatter.setFontWeight(QtGui.QFont.Weight.Bold)
             self.setFormat(match.start(), len(match.group()), formatter)
 
         # Atx header match and format. Only if there is a newline or separator beforehand,
@@ -126,12 +126,12 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
                 and not regex.search(self.setext_underline_pattern, self.currentBlock().next().text()):
 
             for match in regex.finditer(self.atx_header_pattern, text):
-                formatter.setFontWeight(QtGui.QFont.Bold)
+                formatter.setFontWeight(QtGui.QFont.Weight.Bold)
                 self.setFormat(match.start(), len(match.group()), formatter)
                 # Grey out hashes
 
-                brush = QtWidgets.QApplication.palette().brush(QtGui.QPalette.Active,
-                                                               QtGui.QPalette.Dark if CONSTANTS.theme == "light" else QtGui.QPalette.Light)
+                brush = QtWidgets.QApplication.palette().brush(QtGui.QPalette.ColorGroup.Active,
+                                                               QtGui.QPalette.ColorRole.Dark if CONSTANTS.theme == "light" else QtGui.QPalette.ColorRole.Light)
                 formatter.setForeground(brush)
                 self.setFormat(match.start(), len(match.group('level')), formatter)
 
@@ -139,19 +139,19 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
         # Emphasis match and format
         for match in regex.finditer(self.emphasis_pattern, text):
             formatter.setFontItalic(True)
-            formatter.setFontWeight(QtGui.QFont.Normal)
+            formatter.setFontWeight(QtGui.QFont.Weight.Normal)
             self.setFormat(match.start(), len(match.group()), formatter)
 
         # Strong emphasis match and format
         for match in regex.finditer(self.strong_emphasis_pattern, text):
-            formatter.setFontWeight(QtGui.QFont.Bold)
+            formatter.setFontWeight(QtGui.QFont.Weight.Bold)
             formatter.setFontItalic(False)
             self.setFormat(match.start(), len(match.group()), formatter)
 
         # Very strong emphasis match and format
         for match in regex.finditer(self.very_strong_emphasis_pattern, text):
             formatter.setFontItalic(True)
-            formatter.setFontWeight(QtGui.QFont.Bold)
+            formatter.setFontWeight(QtGui.QFont.Weight.Bold)
             self.setFormat(match.start(), len(match.group()), formatter)
 
         # Strikethrough match and format
@@ -161,11 +161,11 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
 
         # Link match and format
         for match in regex.finditer(self.link_pattern, text):
-            formatter.setFontWeight(QtGui.QFont.Bold)
+            formatter.setFontWeight(QtGui.QFont.Weight.Bold)
             formatter.setFontItalic(False)
             formatter.setFontStrikeOut(False)
-            brush = brush = QtWidgets.QApplication.palette().brush(QtGui.QPalette.Active,
-                                                                   QtGui.QPalette.Dark if CONSTANTS.theme == "light" else QtGui.QPalette.Light)
+            brush = brush = QtWidgets.QApplication.palette().brush(QtGui.QPalette.ColorGroup.Active,
+                                                                   QtGui.QPalette.ColorRole.Dark if CONSTANTS.theme == "light" else QtGui.QPalette.ColorRole.Light)
             formatter.setForeground(brush)
             formatter.setFontUnderline(False)
             self.setFormat(match.start("url"), len(match.group("url")), formatter)
@@ -173,20 +173,20 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
             # HTML tag match and format
         for match in regex.finditer(self.html_tag_pattern, text):
             html_formatter = QtGui.QTextCharFormat()
-            html_formatter.setFontWeight(QtGui.QFont.Normal)
+            html_formatter.setFontWeight(QtGui.QFont.Weight.Normal)
             html_formatter.setFontItalic(False)
             html_formatter.setFontStrikeOut(False)
-            html_formatter.setUnderlineStyle(QtGui.QTextCharFormat.NoUnderline)
+            html_formatter.setUnderlineStyle(QtGui.QTextCharFormat.UnderlineStyle.NoUnderline)
             self.setFormat(match.start(), len(match.group()), html_formatter)
 
 
         # Angle link match and format
         for match in regex.finditer(self.angle_link_pattern, text):
-            formatter.setFontWeight(QtGui.QFont.Bold)
+            formatter.setFontWeight(QtGui.QFont.Weight.Bold)
             formatter.setFontItalic(False)
             formatter.setFontStrikeOut(False)
-            brush = QtWidgets.QApplication.palette().brush(QtGui.QPalette.Active,
-                                                           QtGui.QPalette.Dark if CONSTANTS.theme == "light" else QtGui.QPalette.Light)
+            brush = QtWidgets.QApplication.palette().brush(QtGui.QPalette.ColorGroup.Active,
+                                                           QtGui.QPalette.ColorRole.Dark if CONSTANTS.theme == "light" else QtGui.QPalette.ColorRole.Light)
             formatter.setForeground(brush)
             formatter.setFontUnderline(False)
             self.setFormat(match.start("url"), len(match.group("url")), formatter)
@@ -194,11 +194,11 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
         # Metadata block match and format
         metadata_start_index = 0
         # Change Formatter
-        formatter.setFontWeight(QtGui.QFont.Bold)
+        formatter.setFontWeight(QtGui.QFont.Weight.Bold)
         formatter.setFontItalic(False)
         formatter.setFontStrikeOut(False)
         brush = QtGui.QBrush()
-        brush.setStyle(QtCore.Qt.SolidPattern)
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
         brush.setColor(QtGui.QColor.fromRgba(0x88888888))
         formatter.setForeground(brush)
 
@@ -207,22 +207,22 @@ class MarkdownSyntaxHighlighter(QtGui.QSyntaxHighlighter):
         # Inline code block match and format
         for match in regex.finditer(self.code_inline_pattern, text):
             inline_formatter = QtGui.QTextCharFormat()
-            inline_formatter.setFontWeight(QtGui.QFont.Normal)
+            inline_formatter.setFontWeight(QtGui.QFont.Weight.Normal)
             inline_formatter.setFontItalic(False)
             inline_formatter.setFontStrikeOut(False)
-            brush = QtWidgets.QApplication.palette().brush(QtGui.QPalette.Active,
-                                                           QtGui.QPalette.Dark if CONSTANTS.theme == "light" else QtGui.QPalette.Light)
+            brush = QtWidgets.QApplication.palette().brush(QtGui.QPalette.ColorGroup.Active,
+                                                           QtGui.QPalette.ColorRole.Dark if CONSTANTS.theme == "light" else QtGui.QPalette.ColorRole.Light)
             inline_formatter.setBackground(brush)
-            inline_formatter.setUnderlineStyle(QtGui.QTextCharFormat.NoUnderline)
+            inline_formatter.setUnderlineStyle(QtGui.QTextCharFormat.UnderlineStyle.NoUnderline)
             self.setFormat(match.start(), len(match.group()), inline_formatter)
 
         # Code block match and format
         # Change Formatter
         formatter = QtGui.QTextCharFormat()
-        formatter.setFontWeight(QtGui.QFont.Normal)
+        formatter.setFontWeight(QtGui.QFont.Weight.Normal)
         formatter.setFontItalic(False)
         formatter.setFontStrikeOut(False)
-        brush = QtWidgets.QApplication.palette().brush(QtGui.QPalette.Active, QtGui.QPalette.Link)
+        brush = QtWidgets.QApplication.palette().brush(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Link)
         formatter.setForeground(brush)
         formatter.setFontUnderline(False)
 

@@ -24,7 +24,7 @@ import yaml
 import regex
 from random import randint
 
-from PyQt5 import QtWidgets, QtGui, QtCore
+from PyQt6 import QtWidgets, QtGui, QtCore
 
 from CONSTANTS import get_resource
 import CONSTANTS
@@ -47,7 +47,7 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
         super().__init__()
         self.edit_pane = edit_pane
         self.web_view = web_view
-        self.setWindowFlag(QtCore.Qt.Dialog)
+        self.setWindowFlag(QtCore.Qt.WindowType.Dialog)
 
         date = self.edit_pane.current_file_date.split("-")
         self.setSelectedDate(QtCore.QDate(
@@ -57,7 +57,7 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
         self.selectionChanged.connect(self.selection_changed_handler)
 
         self.layout = QtWidgets.QVBoxLayout()
-        self.setVerticalHeaderFormat(self.NoVerticalHeader)
+        self.setVerticalHeaderFormat(self.verticalHeaderFormat().NoVerticalHeader)
         self.setMinimumSize(640, 640)
         self.setMaximumSize(640, 640)
         self.setWindowTitle("Calendar")
@@ -168,7 +168,7 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
         pen.setColor(QtGui.QColor.fromHsl(pen.color().hue(), pen.color().saturation(), pen.color().lightness(), 255))
         painter.setPen(pen)
 
-        painter.drawText(rect, QtCore.Qt.AlignTop, str(date.day()))
+        painter.drawText(rect, QtCore.Qt.AlignmentFlag.AlignTop, str(date.day()))
         text = ""
         try:
             for tag in tags[:5]:
@@ -185,8 +185,8 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
         brush.setColor(QtGui.QColor().fromHsl(randint(0, 255), randint(0, 255), randint(200, 255)))
         painter.setPen(QtGui.QColor("black"))
         painter.setBackground(brush)
-        painter.setBackgroundMode(QtCore.Qt.OpaqueMode)
-        painter.drawText(rect, QtCore.Qt.AlignBottom | QtCore.Qt.AlignHCenter, text)
+        painter.setBackgroundMode(QtCore.Qt.BGMode.OpaqueMode)
+        painter.drawText(rect, QtCore.Qt.AlignmentFlag.AlignBottom | QtCore.Qt.AlignmentFlag.AlignHCenter, text)
         painter.restore()
 
     def get_tags_from_date_file(self, date: datetime.date):

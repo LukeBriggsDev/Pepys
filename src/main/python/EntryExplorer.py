@@ -14,7 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
-from PyQt5 import QtGui, QtWidgets, QtCore
+from PyQt6 import QtGui, QtWidgets, QtCore
 from EditPane import EditPane
 from WebView import WebView
 import datetime
@@ -30,7 +30,7 @@ class EntryExplorer(QtWidgets.QWidget):
         super().__init__()
         self.edit_pane = edit_pane
         self.web_view = web_view
-        self.setWindowFlag(QtCore.Qt.Dialog)
+        self.setWindowFlag(QtCore.Qt.WindowType.Dialog)
 
         date = self.edit_pane.current_file_date.split("-")
 

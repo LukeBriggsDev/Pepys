@@ -16,8 +16,8 @@
 """
 import json
 import re
-from PyQt5 import QtWidgets
-from PyQt5.QtGui import QColor
+from PyQt6 import QtWidgets
+from PyQt6.QtGui import QColor
 import CONSTANTS
 
 def text_to_rgb(color: str) -> QColor:

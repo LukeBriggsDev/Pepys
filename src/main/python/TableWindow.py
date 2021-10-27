@@ -14,7 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
-from PyQt5 import QtWidgets, QtGui, QtCore
+from PyQt6 import QtWidgets, QtGui, QtCore
 import CONSTANTS
 from CONSTANTS import get_resource
 from ColorParser import parse_stylesheet
@@ -28,7 +28,7 @@ class TableWindow(QtWidgets.QDialog):
         self.setMinimumSize(800, 600)
 
         # Workaround for button elements not changing BG on MacOS
-        if QtWidgets.QApplication.palette().color(QtGui.QPalette.Active, QtGui.QPalette.Base).lightness() < 122 and sys.platform == "darwin":
+        if QtWidgets.QApplication.palette().color(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Base).lightness() < 122 and sys.platform == "darwin":
             self.setStyleSheet(
                 """
                 QPushButton{
@@ -92,11 +92,11 @@ class TableWindow(QtWidgets.QDialog):
                     if state == QtCore.Qt.CheckState.Checked:
                         font = cell.font()
                         font.setBold(True)
-                        cell.setBackground(QtWidgets.QApplication.palette().color(QtGui.QPalette.Window))
+                        cell.setBackground(QtWidgets.QApplication.palette().color(QtGui.QPalette.ColorRole.Window))
                         cell.setFont(font)
                     else:
                         self.table_widget.item(0, col)
                         font = cell.font()
                         font.setBold(False)
-                        cell.setBackground(QtWidgets.QApplication.palette().color(QtGui.QPalette.Base))
+                        cell.setBackground(QtWidgets.QApplication.palette().color(QtGui.QPalette.ColorRole.Base))
                         cell.setFont(font)

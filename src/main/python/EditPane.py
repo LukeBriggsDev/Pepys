@@ -29,7 +29,7 @@ import shutil
 import pathlib
 import CONSTANTS
 
-from PyQt5 import QtWidgets, QtGui, QtCore
+from PyQt6 import QtWidgets, QtGui, QtCore
 from num2words import num2words
 
 from CONSTANTS import get_resource, spell_lang, spell_dict
@@ -63,18 +63,18 @@ class EditPane(QtWidgets.QTextEdit):
             font = QtGui.QFont("SF Mono")
         elif sys.platform.startswith("win"):
             font = QtGui.QFont("Consolas")
-        font.setStyleHint(QtGui.QFont.Monospace)
+        font.setStyleHint(QtGui.QFont.StyleHint.Monospace)
         self.document().setDefaultFont(font)
         # Set tab width
-        metrics = QtGui.QFontMetrics(QtGui.QFontDatabase.systemFont(QtGui.QFontDatabase.FixedFont))
+        metrics = QtGui.QFontMetrics(QtGui.QFontDatabase.systemFont(QtGui.QFontDatabase.SystemFont.FixedFont))
 
 
-        self.setTabStopDistance(metrics.width(" " * tab_stop))
+        self.setTabStopDistance(metrics.boundingRect(" " * tab_stop).width())
         # Set to prevent formatting being pasted from clipboard
         self.setAcceptRichText(False)
-        self.setWordWrapMode(QtGui.QTextOption.WrapAtWordBoundaryOrAnywhere)
+        self.setWordWrapMode(QtGui.QTextOption.WrapMode.WrapAtWordBoundaryOrAnywhere)
 
-        self.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
+        self.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOn)
 
         # Used to know current directory to be relative to
         self._current_file = ""
@@ -185,7 +185,7 @@ class EditPane(QtWidgets.QTextEdit):
         super(EditPane, self).keyPressEvent(e)
         current_line = self.document().findBlock(self.textCursor().position())
         # Auto add list
-        if e.key() == QtCore.Qt.Key_Enter or e.key() == QtCore.Qt.Key_Return:
+        if e.key() == QtCore.Qt.Key.Key_Enter or e.key() == QtCore.Qt.Key.Key_Return:
             # If the previous line started with a number list entry
             match = regex.match(r"^(?P<number>[0-9]+)(?P<sep>[\.)]+ )", current_line.previous().text())
             if match is not None:
@@ -212,12 +212,12 @@ class EditPane(QtWidgets.QTextEdit):
         context_menu.setStyleSheet(""
                             "QMenu{background-color: palette(window);}"
                             "QMenu::item:selected{background-color: palette(highlight);}")
-        context_menu.exec_(e.globalPos())
+        context_menu.exec(e.globalPos())
 
     def insert_image(self):
         image_dialog = QtWidgets.QFileDialog(caption="Insert Image", directory=pathlib.Path.home().as_posix(),
                                              filter="Image Files(*.apng *.avif *.gif *.jpg *.jpeg *.jfif *.pjpeg, *.pjp *.png *.svg *.webp)")
-        image_dialog.exec_()
+        image_dialog.exec()
         if len(image_dialog.selectedFiles()) > 0:
             image = image_dialog.selectedFiles()[0]
             shutil.copy(image, pathlib.Path(self.current_file).parent)
@@ -313,7 +313,7 @@ class EditPane(QtWidgets.QTextEdit):
             menu.addAction("Insert Image", self.insert_image)
         menu.addSeparator()
         self.word_cursor = self.cursorForPosition(pos)
-        self.word_cursor.select(QtGui.QTextCursor.WordUnderCursor)
+        self.word_cursor.select(QtGui.QTextCursor.SelectionType.WordUnderCursor)
         enable_dict = False
         with open(CONSTANTS.get_resource("config.json"), "r") as file:
             config_dict = json.loads(file.read())
@@ -348,11 +348,11 @@ class EditPane(QtWidgets.QTextEdit):
 
         return menu
 
-    def replace_selection(self, action: QtWidgets.QAction):
+    def replace_selection(self, action: QtGui.QAction):
         self.word_cursor.insertText(action.text())
         self.save_current_file()
 
-    def add_to_word_list(self, action: QtWidgets.QAction):
+    def add_to_word_list(self, action: QtGui.QAction):
         spell_dict.add_to_pwl(self.word_cursor.selectedText())
         self.markdownHighlighter.rehighlight()
 

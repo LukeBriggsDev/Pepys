@@ -19,7 +19,7 @@ from __future__ import annotations
 import sys
 import typing
 
-from PyQt5 import QtGui, QtCore, QtWebEngineWidgets, QtWidgets
+from PyQt6 import QtGui, QtCore, QtWebEngineWidgets, QtWidgets
 import CONSTANTS
 from CONSTANTS import get_resource
 import pypandoc
@@ -44,7 +44,7 @@ class WebView(QtWebEngineWidgets.QWebEngineView):
         self.bg_colors = {'light': QtGui.QColor(255, 255, 255), 'dark': QtGui.QColor(41, 41, 41)}
 
         self.urlChanged.connect(self.open_in_browser)
-        self.setContextMenuPolicy(QtCore.Qt.NoContextMenu)
+        self.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.NoContextMenu)
 
     def open_in_browser(self, url:QtCore.QUrl) -> None:
         """Open links in browser
@@ -57,8 +57,8 @@ class WebView(QtWebEngineWidgets.QWebEngineView):
 
     def changeEvent(self, event:QtCore.QEvent) -> None:
         # Change background colour when style changes to match themeZ
-        if event.type() == QtCore.QEvent.StyleChange:
-            self.page().setBackgroundColor(QtWidgets.QApplication.palette().color(QtGui.QPalette.Base))
+        if event.type() == QtCore.QEvent.Type.StyleChange:
+            self.page().setBackgroundColor(QtWidgets.QApplication.palette().color(QtGui.QPalette.ColorRole.Base))
 
     def refresh_page(self):
         """Convert markdown to html and set webView"""

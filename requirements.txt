@@ -6,7 +6,8 @@ pyenchant
 PyPDF4
 PyPDF2
 setproctitle
-PyQt5
-PyQtWebEngine
+PyQt6
+PyQt6-WebEngine
 pyYAML
 setproctitle
+pyobjc-framework-Cocoa; sys_platform == "darwin"

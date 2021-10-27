@@ -18,7 +18,7 @@ from __future__ import annotations
 
 import typing
 
-from PyQt5 import QtWidgets, QtGui, QtCore
+from PyQt6 import QtWidgets, QtGui, QtCore
 
 from ColorParser import *
 
@@ -39,16 +39,16 @@ class SettingsWindow(QtWidgets.QWidget):
         super().__init__()
         self.edit_pane = edit_pane
         self.main_window = main_window
-        self.setWindowFlag(QtCore.Qt.Dialog)
+        self.setWindowFlag(QtCore.Qt.WindowType.Dialog)
         self.about_label = QtWidgets.QLabel()
 
         # Link settings
-        self.about_label.setTextFormat(QtCore.Qt.RichText)
-        self.about_label.setTextInteractionFlags(QtCore.Qt.TextBrowserInteraction)
+        self.about_label.setTextFormat(QtCore.Qt.TextFormat.RichText)
+        self.about_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextBrowserInteraction)
         self.about_label.setOpenExternalLinks(True)
 
         #Formatting
-        self.about_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.about_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.about_label.setWordWrap(True)
         self.about_label.setText(
             f'<img src="{get_resource("icons/appicons/hires/128x128/apps/dev.lukebriggs.pepys.png")}"/>'
@@ -76,7 +76,7 @@ class SettingsWindow(QtWidgets.QWidget):
         self.spell_checkbox = QtWidgets.QCheckBox()
         with open(get_resource("config.json"), "r") as file:
             config_dict = json.loads(file.read())
-            self.spell_checkbox.setCheckState(0) if not config_dict["enable_dict"] else self.spell_checkbox.setCheckState(2)
+            self.spell_checkbox.setCheckState(QtCore.Qt.CheckState.Unchecked if not config_dict["enable_dict"] else QtCore.Qt.CheckState.Checked)
 
         self.spell_checkbox.stateChanged.connect(self.change_spellcheck)
         settings_label = QtWidgets.QLabel("Settings")
@@ -108,14 +108,14 @@ class SettingsWindow(QtWidgets.QWidget):
             file.truncate()
 
     def closeEvent(self, event:QtGui.QCloseEvent) -> None:
-        self.main_window.setFocusPolicy(QtCore.Qt.StrongFocus)
+        self.main_window.setFocusPolicy(QtCore.Qt.FocusPolicy.StrongFocus)
         self.main_window.setDisabled(False)
         self.edit_pane.markdownHighlighter.rehighlight()
 
     def license_clicked(self):
         self.license_window = QtWidgets.QTextBrowser()
         self.license_window.setFixedSize(600, 600)
-        self.license_window.setFont(QtGui.QFontDatabase.systemFont(QtGui.QFontDatabase.FixedFont))
+        self.license_window.setFont(QtGui.QFontDatabase.systemFont(QtGui.QFontDatabase.SystemFont.FixedFont))
         self.license_window.setStyleSheet("background-color: palette(base); border: 0px solid white;")
 
         license_text ="""

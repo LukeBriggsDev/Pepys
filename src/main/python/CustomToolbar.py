@@ -19,7 +19,7 @@ from __future__ import annotations
 import sys
 import typing
 
-from PyQt5 import QtWidgets, QtGui, QtCore
+from PyQt6 import QtWidgets, QtGui, QtCore
 
 from WebView import WebView
 from EntryExplorer import EntryExplorer
@@ -139,7 +139,7 @@ class CustomToolbar(QtWidgets.QToolBar):
         self.addWidget(self.font_label)
         self.addWidget(self.font_spinbox)
         spacer = QtWidgets.QWidget()
-        spacer.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
+        spacer.setSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Preferred)
         spacer.setStyleSheet("background-color: rgba(0,0,0,0)")
         self.addWidget(spacer)
         self.addWidget(self.theme_switch_button)
@@ -150,7 +150,7 @@ class CustomToolbar(QtWidgets.QToolBar):
 
     def changeEvent(self, event:QtCore.QEvent) -> None:
         # Change button icons to match theme
-        if event.type() == QtCore.QEvent.PaletteChange:
+        if event.type() == QtCore.QEvent.Type.PaletteChange:
             self.open_entry_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["open_entry"][CONSTANTS.theme])))
             self.refresh_favorite()
 
@@ -242,7 +242,7 @@ class CustomToolbar(QtWidgets.QToolBar):
         insert_button = QtWidgets.QPushButton("Create Table")
         insert_button.clicked.connect(self.table_handler)
         self.table_option_dialog.layout().addWidget(insert_button)
-        self.table_option_dialog.exec_()
+        self.table_option_dialog.exec()
 
     def table_handler(self):
         table = self.table_option_dialog.table_widget
@@ -269,7 +269,7 @@ class CustomToolbar(QtWidgets.QToolBar):
         if current_theme == "light":
             QtWidgets.QApplication.setPalette(CONSTANTS.Colors.getDarkpalette())
             CONSTANTS.theme = "dark"
-        elif CONSTANTS.light_palette.color(QtGui.QPalette.Active, QtGui.QPalette.Base).lightness() > 122:
+        elif CONSTANTS.light_palette.color(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Base).lightness() > 122:
             QtWidgets.QApplication.setPalette(CONSTANTS.light_palette)
             CONSTANTS.theme = "light"
 
@@ -288,7 +288,7 @@ class CustomToolbar(QtWidgets.QToolBar):
         self.export_window = ExportWindow(self.window(), self.edit_pane)
         # Disable current window
         self.window().setFocusProxy(self.export_window)
-        self.export_window.setFocusPolicy(QtCore.Qt.StrongFocus)
+        self.export_window.setFocusPolicy(QtCore.Qt.FocusPolicy.StrongFocus)
 
         self.export_window.show()
 
@@ -296,7 +296,7 @@ class CustomToolbar(QtWidgets.QToolBar):
         self.settings_window = SettingsWindow(self.window(), self.edit_pane)
         # Disable current window
         self.window().setFocusProxy(self.settings_window)
-        self.settings_window.setFocusPolicy(QtCore.Qt.StrongFocus)
+        self.settings_window.setFocusPolicy(QtCore.Qt.FocusPolicy.StrongFocus)
 
         self.settings_window.show()
 
