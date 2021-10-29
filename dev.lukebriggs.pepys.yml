@@ -34,7 +34,7 @@ modules:
     sources:
       - type: git
         commit: 20b07a631f0b15f84cf731a18bf47697599595b8
-        tag: v1.1.1
+        tag: v1.2.0
         url: https://github.com/LukeBriggsDev/Pepys
 
   - python3-requirements.json
@@ -47,10 +47,10 @@ modules:
       - python3-PyQt-builder.json
     sources:
       - type: archive
-        url: https://files.pythonhosted.org/packages/b1/40/dd8f081f04a12912b65417979bf2097def0af0f20c89083ada3670562ac5/PyQt5_sip-12.9.0.tar.gz
-        sha256: d3e4489d7c2b0ece9d203ae66e573939f7f60d4d29e089c9f11daa17cfeaae32
+        url: https://files.pythonhosted.org/packages/50/24/743c4dd6a93d25570186a7940c4f072db1cf3fa919169b0ba598fcfc820a/PyQt6_sip-13.1.0.tar.gz
+        sha256: 7c31073fe8e6cb8a42e85d60d3a096700a9047c772b354d6227dfe965566ec8a
 
-  - name: pyqt5
+  - name: pyqt6
     build-options:
       env:
         - QMAKEPATH=/app/lib
@@ -74,14 +74,14 @@ modules:
       - --enable=QtPrintSupport
       - --bindir=/app/bin
       - --destdir=/app/lib/python3.8/site-packages
-      - --sipdir=/app/share/sip/PyQt5
-      - --stubsdir=/app/lib/python3.8/site-packages/PyQt5
+      - --sipdir=/app/share/sip/PyQt6
+      - --stubsdir=/app/lib/python3.8/site-packages/PyQt6
       - QMAKE_CFLAGS_RELEASE='-I/usr/include/python3.8/'
       - QMAKE_CXXFLAGS_RELEASE='-I/usr/include/python3.8/'
     sources:
       - type: archive
-        url: https://files.pythonhosted.org/packages/8e/a4/d5e4bf99dd50134c88b95e926d7b81aad2473b47fde5e3e4eac2c69a8942/PyQt5-5.15.4.tar.gz
-        sha256: 2a69597e0dd11caabe75fae133feca66387819fc9bc050f547e5551bce97e5be
+        url: https://files.pythonhosted.org/packages/49/34/bd5a65ffc1a887d8d26f59f7993bb2f9abef3085c21dc74f03e3e834e57a/PyQt6-6.2.1.tar.gz
+        sha256: d603a5c8effccc9174b3f43834256401a61ea40f2338306ca22fb6a1e870b89c
       - type: script
         commands:
           - processed=`sed -e 's|prefix|sysroot|' <<< $@`
@@ -99,8 +99,8 @@ modules:
       - --no-qsci-api
       - --no-dist-info
       - --no-sip-files
-      - --destdir=/app/lib/python3.8/site-packages/PyQt5
-      - --stubsdir=/app/lib/python3.8/site-packages/PyQt5
+      - --destdir=/app/lib/python3.8/site-packages/PyQt6
+      - --stubsdir=/app/lib/python3.8/site-packages/PyQt6
       - QMAKE_CFLAGS_RELEASE='-I/usr/include/python3.8/'
       - QMAKE_CXXFLAGS_RELEASE='-I/usr/include/python3.8/'
       - QMAKE_INCDIR+=/app/include/QtWebEngine
@@ -108,8 +108,8 @@ modules:
       - QMAKE_INCDIR+=/app/include/QtWebEngineWidgets
     sources:
       - type: archive
-        url: https://files.pythonhosted.org/packages/fb/5d/4c5bb7adca4f2436545a391fe311dcb4ccc711f1ce2ab7adb87475ec566e/PyQtWebEngine-5.15.4.tar.gz
-        sha256: cedc28f54165f4b8067652145aec7f732a17eadf6736835852868cf76119cc19
+        url: https://files.pythonhosted.org/packages/f7/ed/9af8ee0e44e110c2e5f368b6b23d9600549e70c2f74fea7f3086d682eb5e/PyQt6_WebEngine-6.2.1.tar.gz
+        sha256: cedc28f5416f6d7cb612f20d1f1f8ea1bbe7ebb8bbaa3f7fcd56f0e9c41582851998be20c3
       - type: script
         dest-filename: configure
         commands:
