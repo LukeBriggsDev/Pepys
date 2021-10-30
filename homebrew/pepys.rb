@@ -15,6 +15,7 @@ class Pepys < Formula
     system "cp", "-R", "src", lib
     system "mkdir", bin
     system "cp", "homebrew/pepys.sh", "#{bin}"
+    system "cp", "-R", "homebrew/Pepys.app", "~/Applications"
     system "chmod", "+x", "#{bin}/pepys.sh"
   end
 end
