@@ -236,6 +236,8 @@ class ExportWindow(QtWidgets.QWidget):
             if sys.platform.startswith("win32") and shutil.which("wkhtmltopdf") is None:
                 pdoc_args.append(f"--pdf-engine={get_resource('wkhtmltopdf.exe')}")
             pass
+            if sys.platform.startswith("darwin"):
+                pdoc_args.append(f"--pdf-engine=prince")
 
         if format["type"] == "html" or format["type"] == "pdf":
             with open(get_resource("parsed_stylesheet.css"), "w+") as f:
