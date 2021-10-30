@@ -73,6 +73,14 @@ Pepys is available through winget:
 
 `winget install pepys`
 
+### MacOS
+
+Pepys on MacOS uses the [homebrew](https://brew.sh/) package manager
+
+- Download the ruby (.rb) file from the [releases page](https://github.com/LukeBriggsDev/Pepys/releases)
+- navigate to the ruby file in Terminal
+- `brew install pepys.rb`
+
 ## Linux
 
 ### Flatpak

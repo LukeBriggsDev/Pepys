@@ -60,11 +60,20 @@
 				<dict>
 					<key>COMMAND_STRING</key>
 					<string>/usr/libexec/path_helper -s;
-export PATH=$PATH:/opt/homebrew/bin
-echo $PATH;
+if [[ $(arch) = arm64 ]] 
+then
+	echo "ARM"
+	export PATH=$PATH:/opt/homebrew/bin;
+	export HOMEBREW_CELLAR=/opt/homebrew/Cellar;
+else
+	echo "x86"
+	export 	export PATH=$PATH:/usr/local/bin;
+	export HOMEBREW_CELLAR=/usr/local/Cellar;
+fi
+
 export LANG="$(defaults read -g AppleLanguages | \
   sed '/"/!d;s/["[:space:]]//g;s/-/_/').UTF-8"
-export HOMEBREW_CELLAR=/opt/homebrew/Cellar
+
 /opt/homebrew/Cellar/pepys/1.2.0/bin/pepys.sh;</string>
 					<key>CheckedForUserDefaultShell</key>
 					<true/>
@@ -90,7 +99,7 @@ export HOMEBREW_CELLAR=/opt/homebrew/Cellar
 				<key>Class Name</key>
 				<string>RunShellScriptAction</string>
 				<key>InputUUID</key>
-				<string>5681B17F-4EB4-416A-9A3A-375C2E30311A</string>
+				<string>FFC9F8DE-E55D-46E2-ACA7-0BE2F9DC39E8</string>
 				<key>Keywords</key>
 				<array>
 					<string>Shell</string>
@@ -100,9 +109,9 @@ export HOMEBREW_CELLAR=/opt/homebrew/Cellar
 					<string>Unix</string>
 				</array>
 				<key>OutputUUID</key>
-				<string>D8F0469E-5768-4751-8467-8F9CB40B43D9</string>
+				<string>ED726C93-6FD6-415B-8A71-0AF1B0F662FC</string>
 				<key>UUID</key>
-				<string>04CE505C-48E1-4D53-BE70-D110215EC3E4</string>
+				<string>1E24BF47-1830-4988-BE79-A594EF5699EB</string>
 				<key>UnlocalizedApplications</key>
 				<array>
 					<string>Automator</string>
@@ -175,10 +184,12 @@ export HOMEBREW_CELLAR=/opt/homebrew/Cellar
 						<string>4</string>
 					</dict>
 				</dict>
+				<key>conversionLabel</key>
+				<integer>0</integer>
 				<key>isViewVisible</key>
 				<integer>1</integer>
 				<key>location</key>
-				<string>565.000000:252.000000</string>
+				<string>309.000000:252.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
