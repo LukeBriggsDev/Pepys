@@ -23,8 +23,8 @@ Pepys is a journalling application that utilises markdown for writing and storin
     - [Flatpak](#flatpak)
     - [AUR](#aur)
     - [Debian/Fedora/Arch](#debianfedoraarch)
-- [Source Code](#source-code)
 - [Featured in](#featured-in)
+
 # Features
 ## Markdown Highlighting
 <img alt="syntax highlighting" src="https://lukebriggs.dev/static/pepys/pepys_editpane.png" width="100%"/>
@@ -73,7 +73,7 @@ Pepys is available through winget:
 
 `winget install pepys`
 
-### MacOS
+## MacOS
 
 Pepys on MacOS uses the [homebrew](https://brew.sh/) package manager
 
