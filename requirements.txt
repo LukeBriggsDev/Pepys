@@ -3,11 +3,9 @@ regex
 num2words
 pypandoc
 pyenchant
-PyPDF4
 PyPDF2
 setproctitle
 PyQt6
 PyQt6-WebEngine
 pyYAML
-setproctitle
 pyobjc-framework-Cocoa; sys_platform == "darwin"
