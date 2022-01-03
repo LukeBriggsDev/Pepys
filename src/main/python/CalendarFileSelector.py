@@ -154,6 +154,10 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
         with open(get_resource("config.json")) as file:
             if date.toPyDate().strftime("%Y-%m-%d") in json.loads(file.read())["favorites"]:
                 painter.fillRect(rect, QtGui.QColor.fromRgb(255, 255, 0))
+
+        if not self.file_exists(date.toPyDate()):
+            painter.fillRect(rect, QtGui.QColor.fromRgb(230, 230, 230))
+
         if (date.month() != self.monthShown()):
             painter.setPen(QtGui.QColor("#888888"))
         elif date.dayOfWeek() == 6 or date.dayOfWeek() == 7:
@@ -163,12 +167,18 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
         rect.adjust(0, 0, -1, -1)
         pen = painter.pen()
         pen.setColor(QtGui.QColor.fromHsl(pen.color().hue(), pen.color().saturation(), pen.color().lightness(), 150))
+        if (date == QtCore.QDate.currentDate()):
+            pen.setColor(QtGui.QColor.fromHsl(pen.color().hue(), pen.color().saturation(), pen.color().lightness(), 255))
+            rect.adjust(2, 2, -1, -1)
+            pen.setWidth(4)
         painter.setPen(pen)
         painter.drawRect(rect)
         pen.setColor(QtGui.QColor.fromHsl(pen.color().hue(), pen.color().saturation(), pen.color().lightness(), 255))
         painter.setPen(pen)
 
+        rect.adjust(5, 2, 0, 0)
         painter.drawText(rect, QtCore.Qt.AlignmentFlag.AlignTop, str(date.day()))
+        rect.adjust(-5, 2, 0, 0)
         text = ""
         try:
             for tag in tags[:5]:
@@ -188,6 +198,18 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
         painter.setBackgroundMode(QtCore.Qt.BGMode.OpaqueMode)
         painter.drawText(rect, QtCore.Qt.AlignmentFlag.AlignBottom | QtCore.Qt.AlignmentFlag.AlignHCenter, text)
         painter.restore()
+
+    def file_exists(self, date: datetime.date) -> bool:
+        """Checks if a file for the given date exists"""
+        formatted_date = date.strftime("%Y-%m-%d")
+
+        # Get folder for today's journal entry
+        config_file = get_resource("config.json")
+        with open(config_file, "r") as file:
+            file_directory = os.path.join(json.loads(file.read())["diary_directory"], str(date.year),
+                                          str(date.month), formatted_date)
+        return os.path.exists(file_directory)
+
 
     def get_tags_from_date_file(self, date: datetime.date):
         """Open or create a markdown file corresponding to today"""
