@@ -208,9 +208,13 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
         # Get folder for today's journal entry
         config_file = get_resource("config.json")
         with open(config_file, "r") as file:
-            file_directory = os.path.join(json.loads(file.read())["diary_directory"], str(date.year),
+            # Old path without zero padded month (as it was v1.1.1 and before)
+            diary_directory = json.loads(file.read())["diary_directory"]
+            file_directory_old = os.path.join(diary_directory, str(date.year),
                                           str(date.month), formatted_date)
-        return os.path.exists(file_directory)
+            file_directory_new = os.path.join(diary_directory, str(date.year),
+                                          f"{date.month:02}", formatted_date)
+        return os.path.exists(file_directory_old) | os.path.exists(file_directory_new)
 
 
     def get_tags_from_date_file(self, date: datetime.date):
