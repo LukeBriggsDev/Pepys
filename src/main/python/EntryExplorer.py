@@ -17,10 +17,7 @@
 from PyQt6 import QtGui, QtWidgets, QtCore
 from EditPane import EditPane
 from WebView import WebView
-import datetime
 import calendar
-import os
-import json
 
 class EntryExplorer(QtWidgets.QWidget):
     def __init__(self, edit_pane, web_view):
