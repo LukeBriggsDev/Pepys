@@ -155,8 +155,10 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
             if date.toPyDate().strftime("%Y-%m-%d") in json.loads(file.read())["favorites"]:
                 painter.fillRect(rect, QtGui.QColor.fromRgb(255, 255, 0))
 
+        pen = painter.pen()
+
         if not self.file_exists(date.toPyDate()):
-            painter.fillRect(rect, QtGui.QColor.fromRgb(230, 230, 230))
+            painter.fillRect(rect, QtGui.QColor.fromHsl(pen.color().hue(), pen.color().saturation(), pen.color().lightness(), 50))
 
         if (date.month() != self.monthShown()):
             painter.setPen(QtGui.QColor("#888888"))
