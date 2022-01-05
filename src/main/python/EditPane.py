@@ -17,8 +17,6 @@
 from __future__ import annotations
 
 import json
-import locale
-import os
 import sys
 import typing
 from datetime import date
@@ -35,6 +33,7 @@ from num2words import num2words
 from CONSTANTS import get_resource, spell_lang, spell_dict
 from MarkdownSyntaxHighlighter import MarkdownSyntaxHighlighter
 from ActionHandler import ActionHandler
+from EntryFile import EntryFile
 
 if typing.TYPE_CHECKING:
     from main import AppContext
@@ -77,7 +76,8 @@ class EditPane(QtWidgets.QTextEdit):
         self.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOn)
 
         # Used to know current directory to be relative to
-        self._current_file = ""
+        self._entry_file = EntryFile(None)
+    
         self.markdownHighlighter = MarkdownSyntaxHighlighter(self)
 
         self.setStyleSheet("""
@@ -92,64 +92,30 @@ class EditPane(QtWidgets.QTextEdit):
     @property
     def current_file(self):
         """Returns current file path"""
-        return self._current_file
+        return self._entry_file.path
 
     @property
     def current_file_date(self):
-        """Returns current file date as list [YYYY, MM, DD]"""
-        return os.path.split(self.current_file)[1][:-3]
+        """Returns current file date formatted as YYYY-MM-DD"""
+        return self._entry_file.formatted_date
 
     def set_current_file(self, filepath: typing.TextIO) -> None:
-        self._current_file = filepath.name
+        self._entry_file = EntryFile(filepath.name)
         self.setText(filepath.read())
 
     def open_file_from_date(self, file_date: date):
         """Open or create a markdown file corresponding to today"""
-        formatted_date = file_date.strftime("%Y-%m-%d")
+        self._entry_file = EntryFile(file_date)
+       
+        self._entry_file.create_directory()
 
-        # Add ordinal to end of number if it exists
-        try:
-            day_of_month = num2words(file_date.day, to="ordinal_num", lang=locale.getlocale()[0])
-        except (NotImplementedError, TypeError):
-            day_of_month = file_date.day
-
-        long_date = file_date.strftime(f"%A {day_of_month} %B %Y")
-
-        # Get folder for today's journal entry
-        config_file = get_resource("config.json")
-        with open(config_file, "r") as file:
-            diary_directory = json.loads(file.read())["diary_directory"]
-            month_directory = os.path.join(diary_directory, str(file_date.year), f"{file_date.month:02}")
-            # directory without zero filled months (as it was v1.1.1 and before)
-            back_compat_directory = os.path.join(diary_directory, str(file_date.year), str(file_date.month))
-
-        file_directory = os.path.join(month_directory, formatted_date)
-        print(file_directory)
-        # Make folder for today's entry if not already exist
-        print(get_resource("config.json"))
-        if not os.path.exists(file_directory):
-            if os.path.exists(back_compat_directory):
-                file_directory = os.path.join(back_compat_directory, formatted_date)
-
-            pathlib.Path(file_directory).mkdir(parents=True, exist_ok=True)
-
-        # Open markdown in r+ mode if it exists, else open in w+ mode
-        try:
-            with open(os.path.join(file_directory, f"{formatted_date}.md"), "r+") as file:
-                self.set_current_file(file)
-
-        except FileNotFoundError:
-            print(os.path.join(file_directory, f"{formatted_date}.md"))
-            with open(os.path.join(file_directory, f"{formatted_date}.md"), "w+") as file:
-                self.set_current_file(file)
-                self.setText('---\n'
-                             f'title: {long_date}\n'
-                             f'date: {formatted_date}\n'
-                             'tags: []\n'
-                             '---\n')
-        self.save_current_file()
+        if self._entry_file.exists():
+            self.setText(self._entry_file.get_content())
+        else:
+            self.setText(self._entry_file.get_header_text())
+       
         self.file_changed.emit()
-        self.window().setWindowTitle(long_date)
+        self.window().setWindowTitle(self._entry_file.long_date)
         self.set_margins()
         # Set font size
         with open(get_resource("config.json"), "r+") as file:
@@ -159,15 +125,7 @@ class EditPane(QtWidgets.QTextEdit):
             except KeyError:
                 # Font size not in config
                 self.parent().tool_bar.font_spinbox.setValue(int(self.fontPointSize()))
-
-
-    def save_current_file(self) -> None:
-        """Save currently open file"""
-
-        # Get folder for today's journal entry
-        with open(self.current_file, "w+") as file:
-            file.write(self.toPlainText())
-
+        
     def keyReleaseEvent(self, e: QtGui.QKeyEvent) -> None:
         """"Override base QTextEdit method, called when key is released
 
@@ -201,11 +159,6 @@ class EditPane(QtWidgets.QTextEdit):
             if match is not None:
                 self.insertPlainText(match.group())
 
-
-
-
-        self.save_current_file()
-
     def contextMenuEvent(self, e:QtGui.QContextMenuEvent) -> None:
         context_menu = self.createCustomContextMenu(e.pos())
         # Fix white border in context menu in Windows dark mode
@@ -222,7 +175,6 @@ class EditPane(QtWidgets.QTextEdit):
             image = image_dialog.selectedFiles()[0]
             shutil.copy(image, pathlib.Path(self.current_file).parent)
             self.insertPlainText(f"![]({pathlib.Path(image).name})")
-            self.save_current_file()
 
     def insert_table(self, table: list[list[str]], type: int, include_headers: bool):
         """Insert a table based off a given list of lists of text edits [row][col] and the type of table
@@ -300,7 +252,6 @@ class EditPane(QtWidgets.QTextEdit):
             table_str += "-" * (sum(column_widths) + len(table[0]) -1) + "\n"
 
         self.insertPlainText(table_str)
-        self.save_current_file()
 
 
     def createCustomContextMenu(self, pos) -> QtWidgets.QMenu:
@@ -350,7 +301,6 @@ class EditPane(QtWidgets.QTextEdit):
 
     def replace_selection(self, action: QtGui.QAction):
         self.word_cursor.insertText(action.text())
-        self.save_current_file()
 
     def add_to_word_list(self, action: QtGui.QAction):
         spell_dict.add_to_pwl(self.word_cursor.selectedText())
@@ -389,3 +339,7 @@ class EditPane(QtWidgets.QTextEdit):
         format.setRightMargin(margin_size)
         self.document().rootFrame().frameFormat().setRightMargin(margin_size)
         self.document().rootFrame().setFrameFormat(format)
+
+    def leaveEvent(self, e:QtCore.QEvent) -> None:
+        super().leaveEvent(e)
+        self._entry_file.save(self.toPlainText())
