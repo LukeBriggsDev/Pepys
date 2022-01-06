@@ -2,6 +2,7 @@ from datetime import date
 from genericpath import exists
 import json
 import locale
+import shutil
 import num2words
 import os
 import pathlib
@@ -45,11 +46,12 @@ class EntryFile():
 
     @property
     def directory(self):
-        """Returns current file path"""
+        """The path to the directory of the entry file"""
         return self._directory
 
     @property
     def path(self):
+        """The full path to the entry file"""
         return os.path.join(self._directory, f"{self._formatted_date}.md")
 
 
@@ -111,6 +113,11 @@ class EntryFile():
                 return meta_dict["tags"]
         except Exception:
             return {}
+
+    def copy_image(self, image_path):
+        """Copies the image to the local diary entry folder and returns the relative path to the copy"""
+        shutil.copy(image_path, self._directory)
+        return "./" + pathlib.Path(image_path).name
 
 def get_all_entry_files():
     with open(get_resource("config.json"), "r") as file:

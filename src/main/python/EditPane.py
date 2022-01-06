@@ -23,7 +23,6 @@ from datetime import date
 import enchant
 import regex
 from enchant.tokenize import get_tokenizer
-import shutil
 import pathlib
 import CONSTANTS
 
@@ -173,8 +172,8 @@ class EditPane(QtWidgets.QTextEdit):
         image_dialog.exec()
         if len(image_dialog.selectedFiles()) > 0:
             image = image_dialog.selectedFiles()[0]
-            shutil.copy(image, pathlib.Path(self.current_file).parent)
-            self.insertPlainText(f"![]({pathlib.Path(image).name})")
+            relative_path = self._entry_file.copy_image(image)
+            self.insertPlainText(f"![]({relative_path})")
 
     def insert_table(self, table: list[list[str]], type: int, include_headers: bool):
         """Insert a table based off a given list of lists of text edits [row][col] and the type of table
