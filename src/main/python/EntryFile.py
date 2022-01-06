@@ -25,8 +25,11 @@ class EntryFile():
         
         config_file = get_resource("config.json")
         with open(config_file, "r") as file:
-            diary_directory = json.loads(file.read())["diary_directory"]
-            month_directory = os.path.join(diary_directory, str(file_date.year), f"{file_date.month:02}")
+            config_dict = json.loads(file.read())
+            diary_directory = config_dict["diary_directory"]
+            self._flat_structure = ("use_flat_directory_structure" in config_dict) and config_dict["use_flat_directory_structure"]
+        
+        month_directory = os.path.join(diary_directory, str(file_date.year), f"{file_date.month:02}")
         
         self._directory = os.path.join(month_directory, self._formatted_date)
         
@@ -35,6 +38,21 @@ class EntryFile():
             back_compat_directory = os.path.join(diary_directory, str(file_date.year), str(file_date.month))
             if os.path.exists(back_compat_directory):
                 self._directory = os.path.join(back_compat_directory, self._formatted_date)
+
+        if self.exists():
+            # File already exists at the default location
+            self._flat_structure = False
+        else:
+            # Check if file already exists with flat directory structure
+            default_directory = self._directory
+            self._directory = os.path.join(diary_directory, str(file_date.year))
+            if self.exists():
+                self._flat_structure = True
+            else:
+                # For a new file select the file location from the settings
+                if self._flat_structure == False:
+                    self._directory = default_directory
+
 
          # Add ordinal to end of number if it exists
         try:
@@ -116,8 +134,19 @@ class EntryFile():
 
     def copy_image(self, image_path):
         """Copies the image to the local diary entry folder and returns the relative path to the copy"""
-        shutil.copy(image_path, self._directory)
-        return "./" + pathlib.Path(image_path).name
+        if (self._flat_structure):
+            image_directory = os.path.join(self._directory, "images")
+            pathlib.Path(image_directory).mkdir(parents=True, exist_ok=True)
+        else:
+            image_directory = self._directory
+
+        shutil.copy(image_path, image_directory)
+
+        if (self._flat_structure):
+            return "./images/" + pathlib.Path(image_path).name
+        else:
+            return "./" + pathlib.Path(image_path).name
+        
 
 def get_all_entry_files():
     with open(get_resource("config.json"), "r") as file:

@@ -78,11 +78,21 @@ class SettingsWindow(QtWidgets.QWidget):
             config_dict = json.loads(file.read())
             self.spell_checkbox.setCheckState(QtCore.Qt.CheckState.Unchecked if not config_dict["enable_dict"] else QtCore.Qt.CheckState.Checked)
 
+        self.flat_structure_checkbox = QtWidgets.QCheckBox()
+        with open(get_resource("config.json"), "r") as file:
+            config_dict = json.loads(file.read())
+            check_state = QtCore.Qt.CheckState.Unchecked
+            if ("use_flat_directory_structure" in config_dict) and config_dict["use_flat_directory_structure"]:
+                check_state = QtCore.Qt.CheckState.Checked
+            self.flat_structure_checkbox.setCheckState(check_state)
+
         self.spell_checkbox.stateChanged.connect(self.change_spellcheck)
+        self.flat_structure_checkbox.stateChanged.connect(self.change_flat_structure)
         settings_label = QtWidgets.QLabel("Settings")
         settings_label.setStyleSheet("font-size: 16px; font-weight: bold;")
         formLayout.addRow(settings_label)
         formLayout.addRow(QtWidgets.QLabel("Enable spell checker: "), self.spell_checkbox)
+        formLayout.addRow(QtWidgets.QLabel("Use flat directory structure: "), self.flat_structure_checkbox)
 
         self.setLayout(formLayout)
 
@@ -101,6 +111,18 @@ class SettingsWindow(QtWidgets.QWidget):
         with open(get_resource("config.json"), "r+") as file:
             config_dict = json.loads(file.read())
             config_dict["enable_dict"] = True if state == CHECKED else False
+
+            # Write changes and refresh icon
+            file.seek(0)
+            file.write(json.dumps(config_dict, sort_keys=True, indent=4))
+            file.truncate()
+
+    def change_flat_structure(self, state):
+        CHECKED = 2
+        # save state
+        with open(get_resource("config.json"), "r+") as file:
+            config_dict = json.loads(file.read())
+            config_dict["use_flat_directory_structure"] = True if state == CHECKED else False
 
             # Write changes and refresh icon
             file.seek(0)
