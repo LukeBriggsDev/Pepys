@@ -108,7 +108,7 @@ class MainWindow(QtWidgets.QWidget):
             if sys.platform.startswith("linux"):
                 config_dict["diary_directory"] = file_dialog.getExistingDirectory(self,
                                                         "Please select a directory to store your journal files",
-                                                        "", QtWidgets.QFileDialog.ShowDirsOnly | QtWidgets.QFileDialog.DontUseNativeDialog)
+                                                        "", QtWidgets.QFileDialog.Option.ShowDirsOnly | QtWidgets.QFileDialog.Option.DontUseNativeDialog)
             else:
                 config_dict["diary_directory"] = file_dialog.getExistingDirectory(self,
                                                                                   "Please select a directory to store your journal files",
