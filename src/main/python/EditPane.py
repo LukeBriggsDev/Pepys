@@ -318,7 +318,8 @@ class EditPane(QtWidgets.QTextEdit):
 
         :param event: the QEvent that caused the invocation
         """
-
+        super().leaveEvent(event)
+        self._entry_file.save(self.toPlainText())
         self.verticalScrollBar().setVisible(False)
 
     def insertFromMimeData(self, source: QtCore.QMimeData) -> None:
@@ -338,7 +339,3 @@ class EditPane(QtWidgets.QTextEdit):
         format.setRightMargin(margin_size)
         self.document().rootFrame().frameFormat().setRightMargin(margin_size)
         self.document().rootFrame().setFrameFormat(format)
-
-    def leaveEvent(self, e:QtCore.QEvent) -> None:
-        super().leaveEvent(e)
-        self._entry_file.save(self.toPlainText())
