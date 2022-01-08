@@ -56,7 +56,7 @@ class EntryFile():
 
          # Add ordinal to end of number if it exists
         try:
-            day_of_month = num2words(file_date.day, to="ordinal_num", lang=locale.getlocale()[0])
+            day_of_month = num2words.num2words(file_date.day, to="ordinal_num", lang=locale.getlocale()[0])
         except (NotImplementedError, TypeError):
             day_of_month = file_date.day
         self._long_date = file_date.strftime(f"%A {day_of_month} %B %Y")
