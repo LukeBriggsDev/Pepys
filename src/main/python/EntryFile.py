@@ -92,8 +92,13 @@ class EntryFile():
         if not self.exists():
             return ""
 
-        with open(self.path, "r+") as file:
-                return file.read()
+        try:
+            with open(self.path, "r+") as file:
+                    return file.read()
+        except UnicodeDecodeError:
+            # Fix encoding error if file contains character not in Unicode (such as windows smart quote)
+            with open(self.path, "r+", encoding='cp1252') as file:
+                    return file.read()
 
     def directory_exists(self):
         if self._directory == "":
