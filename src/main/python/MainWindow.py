@@ -17,7 +17,6 @@
 from __future__ import annotations
 
 import os
-import pathlib
 import sys
 import typing
 from datetime import date
@@ -109,7 +108,7 @@ class MainWindow(QtWidgets.QWidget):
             if sys.platform.startswith("linux"):
                 config_dict["diary_directory"] = file_dialog.getExistingDirectory(self,
                                                         "Please select a directory to store your journal files",
-                                                        "", QtWidgets.QFileDialog.ShowDirsOnly | QtWidgets.QFileDialog.DontUseNativeDialog)
+                                                        "", QtWidgets.QFileDialog.Option.ShowDirsOnly | QtWidgets.QFileDialog.Option.DontUseNativeDialog)
             else:
                 config_dict["diary_directory"] = file_dialog.getExistingDirectory(self,
                                                                                   "Please select a directory to store your journal files",

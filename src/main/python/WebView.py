@@ -25,8 +25,6 @@ from CONSTANTS import get_resource
 import pypandoc
 from EditPane import EditPane
 from ColorParser import parse_stylesheet
-import pathlib
-import os
 
 if typing.TYPE_CHECKING:
     from main import AppContext

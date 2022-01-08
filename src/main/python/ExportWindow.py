@@ -22,7 +22,7 @@ from threading import Thread
 
 from PyQt6 import QtWidgets, QtGui, QtCore
 from EditPane import EditPane
-from datetime import date
+from datetime import date, datetime
 
 from CONSTANTS import get_resource
 from ColorParser import *
@@ -33,6 +33,7 @@ import os
 import sys
 import CONSTANTS
 import shutil
+import EntryFile
 
 if typing.TYPE_CHECKING:
     pass
@@ -217,12 +218,13 @@ class ExportWindow(QtWidgets.QWidget):
 
         # Custom Range
         if self.date_options.currentText() == "Custom Range":
-            diary_entries = [entry for entry in diary_entries
-                             if self.start_date_widget.date().toString("yyyy-MM-dd") <= entry.name[:-3] <= self.end_date_widget.date().toString("yyyy-MM-dd")]
-
+            diary_entries = EntryFile.get_all_entry_files_in_range(self.start_date_widget.date().toPyDate(), self.end_date_widget.date().toPyDate())
         # Current Date
-        if self.date_options.currentText() == "Current Entry":
-            diary_entries = list(Path(directory).rglob(f"{self.edit_pane.current_file_date}.[mM][dD]"))
+        elif self.date_options.currentText() == "Current Entry":
+            current_date = datetime.strptime(self.edit_pane.current_file_date, "%Y-%m-%d")
+            diary_entries = EntryFile.get_all_entry_files_in_range(current_date, current_date)
+        else:
+            diary_entries = EntryFile.get_all_entry_files()
 
         format = self.output_formats[self.export_options.currentText()]
 

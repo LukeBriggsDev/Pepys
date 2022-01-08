@@ -19,9 +19,6 @@ from __future__ import annotations
 import random
 import typing
 from datetime import date
-import os
-import yaml
-import regex
 from random import randint
 
 from PyQt6 import QtWidgets, QtGui, QtCore
@@ -32,6 +29,7 @@ from ColorParser import *
 import datetime
 from EditPane import EditPane
 from WebView import WebView
+from EntryFile import EntryFile
 
 if typing.TYPE_CHECKING:
     pass
@@ -157,7 +155,8 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
 
         pen = painter.pen()
 
-        if not self.file_exists(date.toPyDate()):
+        entry_file = EntryFile(date.toPyDate())
+        if not entry_file.exists():
             painter.fillRect(rect, QtGui.QColor.fromHsl(pen.color().hue(), pen.color().saturation(), pen.color().lightness(), 50))
 
         if (date.month() != self.monthShown()):
@@ -165,7 +164,7 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
         elif date.dayOfWeek() == 6 or date.dayOfWeek() == 7:
             painter.setPen(QtGui.QColor("red"))
 
-        tags = self.get_tags_from_date_file(date.toPyDate())
+        tags = entry_file.get_tags()
         rect.adjust(0, 0, -1, -1)
         pen = painter.pen()
         pen.setColor(QtGui.QColor.fromHsl(pen.color().hue(), pen.color().saturation(), pen.color().lightness(), 150))
@@ -200,42 +199,3 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
         painter.setBackgroundMode(QtCore.Qt.BGMode.OpaqueMode)
         painter.drawText(rect, QtCore.Qt.AlignmentFlag.AlignBottom | QtCore.Qt.AlignmentFlag.AlignHCenter, text)
         painter.restore()
-
-    def file_exists(self, date: datetime.date) -> bool:
-        """Checks if a file for the given date exists"""
-        formatted_date = date.strftime("%Y-%m-%d")
-
-        # Get folder for today's journal entry
-        config_file = get_resource("config.json")
-        with open(config_file, "r") as file:
-            # Old path without zero padded month (as it was v1.1.1 and before)
-            diary_directory = json.loads(file.read())["diary_directory"]
-            file_directory_old = os.path.join(diary_directory, str(date.year),
-                                          str(date.month), formatted_date)
-            file_directory_new = os.path.join(diary_directory, str(date.year),
-                                          f"{date.month:02}", formatted_date)
-        return os.path.exists(file_directory_old) or os.path.exists(file_directory_new)
-
-
-    def get_tags_from_date_file(self, date: datetime.date):
-        """Open or create a markdown file corresponding to today"""
-        formatted_date = date.strftime("%Y-%m-%d")
-
-        # Get folder for today's journal entry
-        config_file = get_resource("config.json")
-        with open(config_file, "r") as file:
-            file_directory = os.path.join(json.loads(file.read())["diary_directory"], str(date.year),
-                                          str(date.month), formatted_date)
-
-        try:
-            with open(os.path.join(file_directory, f"{formatted_date}.md"), "r") as file:
-                pattern = regex.compile(r"(?<=(^-{3,}\n)).+?(?=-{3,})", regex.DOTALL)
-                contents = file.read()
-                metadata = regex.search(pattern, contents)
-            if metadata is not None:
-                meta_dict = yaml.safe_load(metadata.group())
-                if "tags" in meta_dict.keys():
-                    return meta_dict["tags"]
-        except Exception:
-            return {}
-
