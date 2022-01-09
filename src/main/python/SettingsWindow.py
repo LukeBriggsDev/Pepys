@@ -84,7 +84,7 @@ class SettingsWindow(QtWidgets.QWidget):
             check_state = QtCore.Qt.CheckState.Unchecked
             if ("use_flat_directory_structure" in config_dict) and config_dict["use_flat_directory_structure"]:
                 check_state = QtCore.Qt.CheckState.Checked
-            self.flat_structure_checkbox.setCheckState(check_state)
+        self.flat_structure_checkbox.setCheckState(check_state)
 
         self.spell_checkbox.stateChanged.connect(self.change_spellcheck)
         self.flat_structure_checkbox.stateChanged.connect(self.change_flat_structure)
@@ -93,7 +93,7 @@ class SettingsWindow(QtWidgets.QWidget):
         formLayout.addRow(settings_label)
         formLayout.addRow(QtWidgets.QLabel("Enable spell checker: "), self.spell_checkbox)
         formLayout.addRow(QtWidgets.QLabel("Use flat directory structure: "), self.flat_structure_checkbox)
-
+       
         self.setLayout(formLayout)
 
 
@@ -185,6 +185,10 @@ that of the main software is listed below.
 
         with open(get_resource("licenses/wkhtmltopdf_license.txt")) as file:
             license_text += "License used by wkhtmltopdf binary <https://github.com/wkhtmltopdf/wkhtmltopdf>\n\n"
+            license_text += file.read() + "\n\n=============================================================================\n\n"
+
+        with open(get_resource("licenses/cryptography_license.txt")) as file:
+            license_text += "License used by python library cryptography <https://github.com/pyca/cryptography>\n\n"
             license_text += file.read() + "\n\n=============================================================================\n\n"
 
         self.license_window.setText(license_text)

@@ -9,3 +9,4 @@ PyQt6
 PyQt6-WebEngine
 pyYAML
 pyobjc-framework-Cocoa; sys_platform == "darwin"
+cryptography
