@@ -23,6 +23,7 @@ from PyQt6 import QtWidgets, QtGui, QtCore
 from ColorParser import *
 
 from EditPane import EditPane
+from Crypto import generateVerificationStringFromPassword, Crypto
 
 if typing.TYPE_CHECKING:
     pass
@@ -67,35 +68,38 @@ class SettingsWindow(QtWidgets.QWidget):
         formLayout = QtWidgets.QFormLayout()
 
         formLayout.addRow(self.about_label)
-
         self.license_button = QtWidgets.QPushButton("Licenses")
         self.license_button.setStyleSheet("margin-bottom: 16px; height: 24px")
         self.license_button.clicked.connect(self.license_clicked)
         formLayout.addRow(self.license_button)
 
-        self.spell_checkbox = QtWidgets.QCheckBox()
         with open(get_resource("config.json"), "r") as file:
             config_dict = json.loads(file.read())
-            self.spell_checkbox.setCheckState(QtCore.Qt.CheckState.Unchecked if not config_dict["enable_dict"] else QtCore.Qt.CheckState.Checked)
+
+        self.spell_checkbox = QtWidgets.QCheckBox()
+        self.spell_checkbox.setCheckState(QtCore.Qt.CheckState.Unchecked if not config_dict["enable_dict"] else QtCore.Qt.CheckState.Checked)
+        self.spell_checkbox.stateChanged.connect(self.change_spellcheck)
 
         self.flat_structure_checkbox = QtWidgets.QCheckBox()
-        with open(get_resource("config.json"), "r") as file:
-            config_dict = json.loads(file.read())
-            check_state = QtCore.Qt.CheckState.Unchecked
-            if ("use_flat_directory_structure" in config_dict) and config_dict["use_flat_directory_structure"]:
-                check_state = QtCore.Qt.CheckState.Checked
+        check_state = QtCore.Qt.CheckState.Unchecked
+        if ("use_flat_directory_structure" in config_dict) and config_dict["use_flat_directory_structure"]:
+            check_state = QtCore.Qt.CheckState.Checked
         self.flat_structure_checkbox.setCheckState(check_state)
-
-        self.spell_checkbox.stateChanged.connect(self.change_spellcheck)
         self.flat_structure_checkbox.stateChanged.connect(self.change_flat_structure)
+
+        password_set = "password_hash" in config_dict
+        self.button_setup_encryption = QtWidgets.QPushButton("Setup Encryption")
+        self.button_setup_encryption.clicked.connect(self.setup_encryption)
+        self.button_setup_encryption.setEnabled(not password_set)
+
         settings_label = QtWidgets.QLabel("Settings")
         settings_label.setStyleSheet("font-size: 16px; font-weight: bold;")
         formLayout.addRow(settings_label)
         formLayout.addRow(QtWidgets.QLabel("Enable spell checker: "), self.spell_checkbox)
         formLayout.addRow(QtWidgets.QLabel("Use flat directory structure: "), self.flat_structure_checkbox)
-       
-        self.setLayout(formLayout)
+        formLayout.addRow(QtWidgets.QLabel("Encryption: "), self.button_setup_encryption)
 
+        self.setLayout(formLayout)
 
         self.setStyleSheet("""    
         text-align: center;
@@ -128,6 +132,46 @@ class SettingsWindow(QtWidgets.QWidget):
             file.seek(0)
             file.write(json.dumps(config_dict, sort_keys=True, indent=4))
             file.truncate()
+
+    def setup_encryption(self, state):
+        ret = QtWidgets.QMessageBox.question(self, "Setup encryption", """
+        If you setup encryption you can optionally encrypt diary entries with a password. In this case Pepys asks you about your password on startup.
+        
+        The password is not stored anywhere and cannot be recovered if you forget it. So remember it well, otherwise your diary entries are lost!
+
+        Do you want to proceed?
+        """, QtWidgets.QMessageBox.StandardButton.Ok | QtWidgets.QMessageBox.StandardButton.No, QtWidgets.QMessageBox.StandardButton.No)
+
+        if ret == QtWidgets.QMessageBox.StandardButton.No:
+            return
+
+        password, ok = QtWidgets.QInputDialog.getText(self, "Select Password", "Enter your encryption password: ", QtWidgets.QLineEdit.EchoMode.Password)
+        if not ok or not password:
+            return
+
+        password_repeat, ok = QtWidgets.QInputDialog.getText(self, "Repeat Password", "Reapeat password: ", QtWidgets.QLineEdit.EchoMode.Password)
+        if not ok or not password_repeat:
+            return
+       
+        if password != password_repeat:
+            QtWidgets.QMessageBox.warning(self, "Error", "Passwords do not match", QtWidgets.QMessageBox.StandardButton.Ok)
+            return
+
+        hash = generateVerificationStringFromPassword(password)
+
+        with open(get_resource("config.json"), "r+") as file:
+            config_dict = json.loads(file.read())
+            config_dict["password_hash"] = hash
+
+            # Write changes and refresh icon
+            file.seek(0)
+            file.write(json.dumps(config_dict, sort_keys=True, indent=4))
+            file.truncate()
+
+        c = Crypto(password)
+        self.button_setup_encryption.setEnabled(False)
+
+
 
     def closeEvent(self, event:QtGui.QCloseEvent) -> None:
         self.main_window.setFocusPolicy(QtCore.Qt.FocusPolicy.StrongFocus)

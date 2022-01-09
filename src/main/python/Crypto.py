@@ -13,6 +13,10 @@ class Crypto:
         if Crypto._key == None and password:
             Crypto._key = self.__generateKeyFromPassword(password)
 
+    @property
+    def is_initialized(self):
+        return not Crypto._key == None
+
     def encrypt(self, text: str) -> str:
         crypted_text = Fernet(Crypto._key).encrypt(text.encode())
         return base64.urlsafe_b64encode(crypted_text).decode()

@@ -27,6 +27,7 @@ from ColorParser import *
 from CustomToolbar import CustomToolbar
 from EditPane import EditPane
 from WebView import WebView
+from Crypto import generateVerificationStringFromPassword, Crypto
 from shutil import which
 from pypandoc.pandoc_download import download_pandoc
 
@@ -74,6 +75,19 @@ class MainWindow(QtWidgets.QWidget):
                 self.select_diary_directory()
             else:
                 exit(0)
+
+        if ("password_hash" in config_dict):
+            password_ok = False
+            while(not password_ok):
+                password, ok = QtWidgets.QInputDialog.getText(self, "Enter Password", "Please enter your encryption password: ", QtWidgets.QLineEdit.EchoMode.Password)
+                if not ok:
+                    exit(0)
+                hash = generateVerificationStringFromPassword(password)
+                if (hash == config_dict["password_hash"]):
+                    password_ok = True
+                else:
+                    QtWidgets.QMessageBox.warning(self, "Error", "Wrong password. Try again.", QtWidgets.QMessageBox.StandardButton.Ok)
+            c = Crypto(password)
 
         # Layout
         self.layout = QtWidgets.QVBoxLayout(self)
