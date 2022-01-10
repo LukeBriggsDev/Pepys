@@ -66,7 +66,7 @@ class EntryFile():
 
          # Add ordinal to end of number if it exists
         try:
-            day_of_month = num2words(file_date.day, to="ordinal_num", lang=locale.getlocale()[0])
+            day_of_month = num2words.num2words(file_date.day, to="ordinal_num", lang=locale.getlocale()[0])
         except (NotImplementedError, TypeError):
             day_of_month = file_date.day
         self._long_date = file_date.strftime(f"%A {day_of_month} %B %Y")
@@ -173,11 +173,19 @@ class EntryFile():
         if not self.exists():
             return ""
 
-        with open(self.path, "r+") as file:
-            content = file.read()
-            if self.is_encrypted():
-                content = self._crypto.decrypt(content)
-            return content
+        try:
+            with open(self.path, "r+") as file:
+                content = file.read()
+                if self.is_encrypted():
+                    content = self._crypto.decrypt(content)
+                return content
+        except UnicodeDecodeError:
+            # Fix encoding error if file contains character not in Unicode (such as windows smart quote)
+            with open(self.path, "r+", encoding='cp1252') as file:
+                content = file.read()
+                if self.is_encrypted():
+                    content = self._crypto.decrypt(content)
+                return content
 
 
     def directory_exists(self):

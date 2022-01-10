@@ -110,4 +110,12 @@ ConnectWWW.com - <https://connectwww.com/pepys-markdown-journal-application/6294
 # Contributors
 
 [Hubert Figuière](https://github.com/hfiguiere)
-[Evie Jackson](Sh4d0w-47)
+  - Scripts for flatpak build on aarch64
+
+[Evie Jackson](https://github.com/Sh4d0w-47)
+  - Updating out of date TODO.md
+
+[uhrfra](https://github.com/uhrfra/)
+  - Beautifying calendar view
+  - Various refactoring
+  - Add option for flat entry structure
