@@ -24,6 +24,7 @@ from ColorParser import *
 
 from EditPane import EditPane
 from Crypto import generateVerificationStringFromPassword, Crypto
+from EntryFile import get_all_entry_files, EntryFile
 
 if typing.TYPE_CHECKING:
     pass
@@ -31,7 +32,7 @@ import CONSTANTS
 from CONSTANTS import get_resource
 
 
-class SettingsWindow(QtWidgets.QWidget):
+class SettingsWindow(QtWidgets.QDialog):
     """Window showing basic info, licenses, and version"""
     def __init__(self, main_window, edit_pane: EditPane):
         """Constructor
@@ -87,10 +88,21 @@ class SettingsWindow(QtWidgets.QWidget):
         self.flat_structure_checkbox.setCheckState(check_state)
         self.flat_structure_checkbox.stateChanged.connect(self.change_flat_structure)
 
-        password_set = "password_hash" in config_dict
         self.button_setup_encryption = QtWidgets.QPushButton("Setup Encryption")
         self.button_setup_encryption.clicked.connect(self.setup_encryption)
-        self.button_setup_encryption.setEnabled(not password_set)
+
+        self.encryption_default_checkbox = QtWidgets.QCheckBox()
+        encryption_default_state = QtCore.Qt.CheckState.Unchecked
+        if ("encrypt_as_default" in config_dict) and config_dict["encrypt_as_default"]:
+            encryption_default_state = QtCore.Qt.CheckState.Checked
+        self.encryption_default_checkbox.setCheckState(encryption_default_state)
+        self.encryption_default_checkbox.stateChanged.connect(self.change_encryption_default)
+
+        self.button_encrypt_everything = QtWidgets.QPushButton("Encrypt everything")
+        self.button_encrypt_everything.clicked.connect(self.encrypt_everything)
+
+        self.button_decrypt_everything = QtWidgets.QPushButton("Decrypt everything")
+        self.button_decrypt_everything.clicked.connect(self.decrypt_everything)
 
         settings_label = QtWidgets.QLabel("Settings")
         settings_label.setStyleSheet("font-size: 16px; font-weight: bold;")
@@ -98,6 +110,9 @@ class SettingsWindow(QtWidgets.QWidget):
         formLayout.addRow(QtWidgets.QLabel("Enable spell checker: "), self.spell_checkbox)
         formLayout.addRow(QtWidgets.QLabel("Use flat directory structure: "), self.flat_structure_checkbox)
         formLayout.addRow(QtWidgets.QLabel("Encryption: "), self.button_setup_encryption)
+        formLayout.addRow(QtWidgets.QLabel("Encrypt new diary entries as default: "), self.encryption_default_checkbox)
+        formLayout.addRow(QtWidgets.QLabel("Encrypt all diary entries: "), self.button_encrypt_everything)
+        formLayout.addRow(QtWidgets.QLabel("Decrypt all diary entries: "), self.button_decrypt_everything)
 
         self.setLayout(formLayout)
 
@@ -107,6 +122,7 @@ class SettingsWindow(QtWidgets.QWidget):
         color: palette(text);
     """)
         self.setWindowTitle("About")
+        self.refresh_buttons()
 
 
     def change_spellcheck(self, state):
@@ -133,7 +149,7 @@ class SettingsWindow(QtWidgets.QWidget):
             file.write(json.dumps(config_dict, sort_keys=True, indent=4))
             file.truncate()
 
-    def setup_encryption(self, state):
+    def setup_encryption(self):
         ret = QtWidgets.QMessageBox.question(self, "Setup encryption", """
         If you setup encryption you can optionally encrypt diary entries with a password. In this case Pepys asks you about your password on startup.
         
@@ -163,7 +179,7 @@ class SettingsWindow(QtWidgets.QWidget):
             config_dict = json.loads(file.read())
             config_dict["password_hash"] = hash
 
-            # Write changes and refresh icon
+            # Write changes
             file.seek(0)
             file.write(json.dumps(config_dict, sort_keys=True, indent=4))
             file.truncate()
@@ -171,7 +187,50 @@ class SettingsWindow(QtWidgets.QWidget):
         c = Crypto(password)
         self.button_setup_encryption.setEnabled(False)
 
+    def change_encryption_default(self, state):
+        CHECKED = 2
+        # save state
+        with open(get_resource("config.json"), "r+") as file:
+            config_dict = json.loads(file.read())
+            config_dict["encrypt_as_default"] = True if state == CHECKED else False
 
+            # Write changes
+            file.seek(0)
+            file.write(json.dumps(config_dict, sort_keys=True, indent=4))
+            file.truncate()
+
+    def encrypt_everything(self):
+        ret = QtWidgets.QMessageBox.question(self, "Encrypt all files", """
+        This will encrypt all diary entries.
+        Do you want to proceed?
+        """, QtWidgets.QMessageBox.StandardButton.Ok | QtWidgets.QMessageBox.StandardButton.No, QtWidgets.QMessageBox.StandardButton.No)
+
+        if ret == QtWidgets.QMessageBox.StandardButton.No:
+            return
+
+        files = get_all_entry_files()
+        for file in files:
+            if not file.is_encrypted():
+                file.set_to_encrypted()
+
+    def decrypt_everything(self):
+        ret = QtWidgets.QMessageBox.question(self, "Decrypt all files", """
+        This will corvert all diary entries to unencrypted markdown files.
+        Do you want to proceed?
+        """, QtWidgets.QMessageBox.StandardButton.Ok | QtWidgets.QMessageBox.StandardButton.No, QtWidgets.QMessageBox.StandardButton.No)
+
+        if ret == QtWidgets.QMessageBox.StandardButton.No:
+            return
+
+        files = get_all_entry_files()
+        for file in files:
+            if file.is_encrypted():
+                file.set_to_unencrypted()
+
+    def refresh_buttons(self):
+        c = Crypto()
+        self.button_setup_encryption.setEnabled(not c.is_initialized())
+        self.encryption_default_checkbox.setEnabled(c.is_initialized())
 
     def closeEvent(self, event:QtGui.QCloseEvent) -> None:
         self.main_window.setFocusPolicy(QtCore.Qt.FocusPolicy.StrongFocus)
