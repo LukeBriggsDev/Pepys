@@ -119,3 +119,7 @@ ConnectWWW.com - <https://connectwww.com/pepys-markdown-journal-application/6294
   - Beautifying calendar view
   - Various refactoring
   - Add option for flat entry structure
+
+# Attributions
+
+Icons used in the application are licensed from [Bootstrap icons](https://icons.getbootstrap.com/) under [MIT License](https://github.com/twbs/icons/blob/main/LICENSE.md)
