@@ -88,8 +88,8 @@ class SettingsWindow(QtWidgets.QDialog):
         self.flat_structure_checkbox.setCheckState(check_state)
         self.flat_structure_checkbox.stateChanged.connect(self.change_flat_structure)
 
-        self.button_setup_encryption = QtWidgets.QPushButton("Setup Encryption")
-        self.button_setup_encryption.clicked.connect(self.setup_encryption)
+        self.button_encryption = QtWidgets.QPushButton("Setup Encryption")
+        self.button_encryption.clicked.connect(self.encryption_clicked)
 
         self.encryption_default_checkbox = QtWidgets.QCheckBox()
         encryption_default_state = QtCore.Qt.CheckState.Unchecked
@@ -109,7 +109,7 @@ class SettingsWindow(QtWidgets.QDialog):
         formLayout.addRow(settings_label)
         formLayout.addRow(QtWidgets.QLabel("Enable spell checker: "), self.spell_checkbox)
         formLayout.addRow(QtWidgets.QLabel("Use flat directory structure: "), self.flat_structure_checkbox)
-        formLayout.addRow(QtWidgets.QLabel("Encryption: "), self.button_setup_encryption)
+        formLayout.addRow(QtWidgets.QLabel("Encryption: "), self.button_encryption)
         formLayout.addRow(QtWidgets.QLabel("Encrypt new diary entries as default: "), self.encryption_default_checkbox)
         formLayout.addRow(QtWidgets.QLabel("Encrypt all diary entries: "), self.button_encrypt_everything)
         formLayout.addRow(QtWidgets.QLabel("Decrypt all diary entries: "), self.button_decrypt_everything)
@@ -149,6 +149,13 @@ class SettingsWindow(QtWidgets.QDialog):
             file.write(json.dumps(config_dict, sort_keys=True, indent=4))
             file.truncate()
 
+    def encryption_clicked(self):
+        if Crypto().is_initialized():
+            self.remove_encryption()
+        else:
+            self.setup_encryption()
+        self.refresh_buttons()
+
     def setup_encryption(self):
         ret = QtWidgets.QMessageBox.question(self, "Setup encryption", """
         If you setup encryption you can optionally encrypt diary entries with a password. In this case Pepys asks you about your password on startup.
@@ -184,8 +191,35 @@ class SettingsWindow(QtWidgets.QDialog):
             file.write(json.dumps(config_dict, sort_keys=True, indent=4))
             file.truncate()
 
-        c = Crypto(password)
-        self.button_setup_encryption.setEnabled(False)
+        Crypto(password)
+        self.refresh_buttons()
+
+    def remove_encryption(self):
+        ret = QtWidgets.QMessageBox.question(self, "Remove encryption", """
+        This will corvert all diary entries to unencrypted markdown files and never ask for the password again.
+        Do you want to proceed?
+        """, QtWidgets.QMessageBox.StandardButton.Ok | QtWidgets.QMessageBox.StandardButton.No, QtWidgets.QMessageBox.StandardButton.No)
+
+        if ret == QtWidgets.QMessageBox.StandardButton.No:
+            return
+
+        files = get_all_entry_files()
+        for file in files:
+            if file.is_encrypted():
+                file.set_to_unencrypted()
+
+        with open(get_resource("config.json"), "r+") as file:
+            config_dict = json.loads(file.read())
+            del config_dict["password_hash"]
+
+            # Write changes
+            file.seek(0)
+            file.write(json.dumps(config_dict, sort_keys=True, indent=4))
+            file.truncate()
+
+        Crypto().uninitialize()
+        self.refresh_buttons()
+
 
     def change_encryption_default(self, state):
         CHECKED = 2
@@ -229,8 +263,14 @@ class SettingsWindow(QtWidgets.QDialog):
 
     def refresh_buttons(self):
         c = Crypto()
-        self.button_setup_encryption.setEnabled(not c.is_initialized())
+        if c.is_initialized():
+            self.button_encryption.setText("Remove encryption")
+        else:
+            self.button_encryption.setText("Setup encryption")
+
         self.encryption_default_checkbox.setEnabled(c.is_initialized())
+        self.button_decrypt_everything.setEnabled(c.is_initialized())
+        self.button_encrypt_everything.setEnabled(c.is_initialized())
 
     def closeEvent(self, event:QtGui.QCloseEvent) -> None:
         self.main_window.setFocusPolicy(QtCore.Qt.FocusPolicy.StrongFocus)

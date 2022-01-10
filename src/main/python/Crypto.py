@@ -19,6 +19,10 @@ class Crypto:
         return not Crypto._key == None
 
 
+    def uninitialize(self):
+        Crypto._key = None
+
+
     def encrypt(self, text: str) -> str:
         crypted_text = Fernet(Crypto._key).encrypt(text.encode())
         return base64.urlsafe_b64encode(crypted_text).decode()
