@@ -132,9 +132,9 @@ class CustomToolbar(QtWidgets.QToolBar):
 
          # Encryption switch button
         self.encryption_switch_button = QtWidgets.QPushButton()
-        self.encryption_switch_button.setText("CRYPT")
         self.encryption_switch_button.setMinimumSize(32, 32)
         self.encryption_switch_button.setMaximumSize(32, 32)
+        self.encryption_switch_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["unencrypted"][CONSTANTS.theme])))
         self.encryption_switch_button.setToolTip("Change encryption")
         self.encryption_switch_button.clicked.connect(self.encryption_switch_clicked)
 
@@ -179,6 +179,7 @@ class CustomToolbar(QtWidgets.QToolBar):
             self.settings_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["settings"][CONSTANTS.theme])))
             if sys.platform == "win32":
                 self.font_spinbox.setStyleSheet("color: black;")
+            self.refesh_encryption_switch_button()
 
     def font_change(self, i):
         # Change font
@@ -330,16 +331,16 @@ class CustomToolbar(QtWidgets.QToolBar):
     def refesh_encryption_switch_button(self):
         c = Crypto()
         if not c.is_initialized():
-            self.encryption_switch_button.setText("MD")
+            self.encryption_switch_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["unencrypted"][CONSTANTS.theme])))
             self.encryption_switch_button.setEnabled(False)
             return
 
         self.encryption_switch_button.setEnabled(True)
 
         if self.edit_pane._entry_file.is_encrypted():
-             self.encryption_switch_button.setText("CRYPT")
+            self.encryption_switch_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["encrypted"][CONSTANTS.theme])))
         else:
-             self.encryption_switch_button.setText("MD")
+            self.encryption_switch_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["unencrypted"][CONSTANTS.theme])))
 
     def refresh_stylesheet(self):
         self.setStyleSheet("""
