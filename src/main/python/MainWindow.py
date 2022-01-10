@@ -87,7 +87,8 @@ class MainWindow(QtWidgets.QWidget):
                     password_ok = True
                 else:
                     QtWidgets.QMessageBox.warning(self, "Error", "Wrong password. Try again.", QtWidgets.QMessageBox.StandardButton.Ok)
-            c = Crypto(password)
+            Crypto(password) # Initialize crypto key
+            
 
         # Layout
         self.layout = QtWidgets.QVBoxLayout(self)

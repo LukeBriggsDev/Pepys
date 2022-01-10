@@ -48,7 +48,7 @@ class WebView(QtWebEngineWidgets.QWebEngineView):
         """Open links in browser
         :param url: Url of file
         """
-        if url.path()[-3:] != ".md":
+        if url.path()[-3:] != ".md" and url.path()[-6:] != ".crypt":
 
             self.back()
             QtGui.QDesktopServices.openUrl(url)
