@@ -124,6 +124,8 @@ class EditPane(QtWidgets.QTextEdit):
             except KeyError:
                 # Font size not in config
                 self.parent().tool_bar.font_spinbox.setValue(int(self.fontPointSize()))
+
+        self.parent().tool_bar.entry_file_changed()
         
     def keyReleaseEvent(self, e: QtGui.QKeyEvent) -> None:
         """"Override base QTextEdit method, called when key is released
