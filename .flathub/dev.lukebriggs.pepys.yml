@@ -1,9 +1,9 @@
 app-id: dev.lukebriggs.pepys
 runtime: org.kde.Platform
-runtime-version: '5.15'
+runtime-version: '6.2'
 sdk: org.kde.Sdk
 base: io.qt.qtwebengine.BaseApp
-base-version: '5.15'
+base-version: '6.2'
 command: runner.sh
 finish-args:
   - --share=ipc
@@ -12,6 +12,7 @@ finish-args:
   - --device=dri
   # For user to choose journal directory
   - --filesystem=home
+  - --filesystem=/media/
   # To access online content from journals
   - --share=network
   - --env=QTWEBENGINEPROCESS_PATH=/app/bin/QtWebEngineProcess
@@ -33,7 +34,7 @@ modules:
       - cp ./dev.lukebriggs.pepys.svg /app/share/icons/hicolor/scalable/apps/
     sources:
       - type: git
-        commit: 20b07a631f0b15f84cf731a18bf47697599595b8
+        commit: a4f30eefd486708dab16a2cba2181a44560b41df
         tag: v1.2.0
         url: https://github.com/LukeBriggsDev/Pepys
 
@@ -47,74 +48,65 @@ modules:
       - python3-PyQt-builder.json
     sources:
       - type: archive
-        url: https://files.pythonhosted.org/packages/50/24/743c4dd6a93d25570186a7940c4f072db1cf3fa919169b0ba598fcfc820a/PyQt6_sip-13.1.0.tar.gz
-        sha256: 7c31073fe8e6cb8a42e85d60d3a096700a9047c772b354d6227dfe965566ec8a
+        url: https://files.pythonhosted.org/packages/f0/c1/a394f3508c55bb8ee8e58da8a9b20f01576082da0f1d6908773b9a763cfd/PyQt6_sip-13.2.0.tar.gz
+        sha256: 10e6c5d0004308efcbe8826ff0b8faf6e6f60c9e906cffeb26834e18e6340ed4
 
   - name: pyqt6
+    buildsystem: simple
     build-options:
       env:
-        - QMAKEPATH=/app/lib
-      arch:
-        aarch64:
-          config-opts:
-            - --disable-feature=PyQt_Desktop_OpenGL
-    cleanup:
-      - /share/sip
-    config-opts:
-      - --confirm-license
-      - --no-designer-plugin
-      - --no-qml-plugin
-      - --no-python-dbus
-      - --no-tools
-      - --enable=QtCore
-      - --enable=QtGui
-      - --enable=QtNetwork
-      - --enable=QtWidgets
-      - --enable=QtWebChannel
-      - --enable=QtPrintSupport
-      - --bindir=/app/bin
-      - --destdir=/app/lib/python3.8/site-packages
-      - --sipdir=/app/share/sip/PyQt6
-      - --stubsdir=/app/lib/python3.8/site-packages/PyQt6
-      - QMAKE_CFLAGS_RELEASE='-I/usr/include/python3.8/'
-      - QMAKE_CXXFLAGS_RELEASE='-I/usr/include/python3.8/'
+        - QMAKEPATH=/app
+    build-commands:
+      - sip-install
+        --confirm-license
+        --no-designer-plugin
+        --no-tools
+        --concatenate=1
+        --debug
+        --no-docstrings
+        --verbose
+        --qt-shared
+        --build-dir="${FLATPAK_BUILDER_BUILDDIR}/tmp"
+        --scripts-dir="${FLATPAK_DEST}/bin"
+        --target-dir=/app/lib/python3.9/site-packages/
+        --enable=QtCore
+        --enable=QtWidgets
+        --enable=QtGui
+        --enable=QtWebChannel
+        --enable=QtNetwork
+        --enable=QtPrintSupport
+        --qmake-setting=QMAKE_CFLAGS_RELEASE='-I/usr/include/python3.9/'
+        --qmake-setting=QMAKE_CXXFLAGS_RELEASE='-I/usr/include/python3.9/'
+        --qmake-setting=QMAKE_INCDIR+=/app/include/QtWebEngine
+        --qmake-setting=QMAKE_INCDIR+=/app/include/QtWebEngineCore
+        --qmake-setting=QMAKE_INCDIR+=/app/include/QtWebEngineWidgets
     sources:
       - type: archive
-        url: https://files.pythonhosted.org/packages/49/34/bd5a65ffc1a887d8d26f59f7993bb2f9abef3085c21dc74f03e3e834e57a/PyQt6-6.2.1.tar.gz
-        sha256: d603a5c8effccc9174b3f43834256401a61ea40f2338306ca22fb6a1e870b89c
-      - type: script
-        commands:
-          - processed=`sed -e 's|prefix|sysroot|' <<< $@`
-          - python3 configure.py $processed
-        dest-filename: configure
-
+        url: https://files.pythonhosted.org/packages/7f/07/cf29b7e37069658f93b152c33fd0e9f0a1b0a9ac1ead84b2151a38eef473/PyQt6-6.2.2.tar.gz
+        sha256: 9325a0f51c08e37340d916d2723daf9a25c844dac99d71d6c5aacb4f6ee00171
 
   - name: pyqt-webengine
+    buildsystem: simple
     build-options:
-      cppflags: "-I/app/include/QtWebEngine -I/app/include/QtWebEngineCore -I/app/include/QtWebEngineWidgets -I/usr/include/python3.8"
       env:
-        - QMAKEPATH=/app/lib
-    config-opts:
-      - --concatenate
-      - --no-qsci-api
-      - --no-dist-info
-      - --no-sip-files
-      - --destdir=/app/lib/python3.8/site-packages/PyQt6
-      - --stubsdir=/app/lib/python3.8/site-packages/PyQt6
-      - QMAKE_CFLAGS_RELEASE='-I/usr/include/python3.8/'
-      - QMAKE_CXXFLAGS_RELEASE='-I/usr/include/python3.8/'
-      - QMAKE_INCDIR+=/app/include/QtWebEngine
-      - QMAKE_INCDIR+=/app/include/QtWebEngineCore
-      - QMAKE_INCDIR+=/app/include/QtWebEngineWidgets
+        - QMAKEPATH=/app
+    build-commands:
+      - sip-install 
+        --target-dir=/app/lib/python3.9/site-packages/ 
+        --verbose 
+        --no-docstrings 
+        --concatenate=1
+        --build-dir="${FLATPAK_BUILDER_BUILDDIR}/tmp"
+        --scripts-dir="${FLATPAK_DEST}/bin"
+        --target-dir=/app/lib/python3.9/site-packages/
+        --disable=QtWebEngineQuick
+        --qmake-setting=QMAKE_INCDIR+=/app/include/QtWebEngine
+        --qmake-setting=QMAKE_INCDIR+=/app/include/QtWebEngineCore
+        --qmake-setting=QMAKE_INCDIR+=/app/include/QtWebEngineWidgets
     sources:
       - type: archive
         url: https://files.pythonhosted.org/packages/f7/ed/9af8ee0e44e110c2e5f368b6b23d9600549e70c2f74fea7f3086d682eb5e/PyQt6_WebEngine-6.2.1.tar.gz
-        sha256: cedc28f5416f6d7cb612f20d1f1f8ea1bbe7ebb8bbaa3f7fcd56f0e9c41582851998be20c3
-      - type: script
-        dest-filename: configure
-        commands:
-          - processed=`sed -e 's|prefix|sysroot|' <<< $@`
-          - python3 configure.py $processed
+        sha256: 6f6d7cb612f20d1f1f8ea1bbe7ebb8bbaa3f7fcd56f0e9c41582851998be20c3
 
   - name: enchant
     cleanup:
