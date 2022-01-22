@@ -172,7 +172,7 @@ class SettingsWindow(QtWidgets.QDialog):
         if not ok or not password:
             return
 
-        password_repeat, ok = QtWidgets.QInputDialog.getText(self, "Repeat Password", "Reapeat password: ", QtWidgets.QLineEdit.EchoMode.Password)
+        password_repeat, ok = QtWidgets.QInputDialog.getText(self, "Repeat Password", "Repeat password: ", QtWidgets.QLineEdit.EchoMode.Password)
         if not ok or not password_repeat:
             return
        
