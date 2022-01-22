@@ -198,4 +198,15 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
         painter.setBackground(brush)
         painter.setBackgroundMode(QtCore.Qt.BGMode.OpaqueMode)
         painter.drawText(rect, QtCore.Qt.AlignmentFlag.AlignBottom | QtCore.Qt.AlignmentFlag.AlignHCenter, text)
+
+        if entry_file.is_encrypted():
+            # Draw a little lock symbol
+            painter.setPen(QtGui.QColor.fromRgb(255, 130, 0))
+            o = QtCore.QPoint(rect.x() + 77, rect.y() + 3)
+            r = QtCore.QRect(o.x(), o.y(), 8, 8)
+            painter.drawEllipse(QtCore.QPoint(o.x()+4, o.y()), 3, 3)
+            painter.fillRect(r, QtGui.QColor().fromRgb(255, 130, 0))
+            painter.setPen(QtGui.QColor.fromRgb(150, 50, 0))
+            painter.drawLine(o.x()+4, o.y()+3, o.x()+4, o.y()+5)
+        
         painter.restore()

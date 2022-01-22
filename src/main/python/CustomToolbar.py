@@ -32,7 +32,9 @@ from ColorParser import parse_stylesheet
 if typing.TYPE_CHECKING:
     pass
 
+from Crypto import Crypto
 from EditPane import EditPane
+from EntryFile import EntryFile
 from ExportWindow import ExportWindow
 from TableWindow import TableWindow
 from SettingsWindow import SettingsWindow
@@ -72,6 +74,7 @@ class CustomToolbar(QtWidgets.QToolBar):
         self.setToolTip("Favourite")
         self.favorite_button.clicked.connect(self.favorite_clicked)
 
+        # Changedir button
         self.changedir_button = QtWidgets.QPushButton()
         self.changedir_button.setMinimumSize(32, 32)
         self.changedir_button.setMaximumSize(32, 32)
@@ -120,18 +123,27 @@ class CustomToolbar(QtWidgets.QToolBar):
         self.settings_button.setToolTip("Settings")
         self.settings_button.clicked.connect(self.settings_clicked)
 
-
         # Theme switch button
         self.theme_switch_button = QtWidgets.QPushButton()
         self.theme_switch_button.setMinimumSize(32, 32)
         self.theme_switch_button.setMaximumSize(32, 32)
         self.theme_switch_button.setToolTip("Change theme")
-        self.theme_switch_button.clicked.connect(self.theme_switch)
+        self.theme_switch_button.clicked.connect(self.theme_switch_clicked)
+
+         # Encryption switch button
+        self.encryption_switch_button = QtWidgets.QPushButton()
+        self.encryption_switch_button.setMinimumSize(32, 32)
+        self.encryption_switch_button.setMaximumSize(32, 32)
+        self.encryption_switch_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["unencrypted"][CONSTANTS.theme])))
+        self.encryption_switch_button.setToolTip("Change encryption")
+        self.encryption_switch_button.clicked.connect(self.encryption_switch_clicked)
+
         #Read current theme
 
         # Add buttons to layout
         self.addWidget(self.open_entry_button)
         self.addWidget(self.favorite_button)
+        self.addWidget(self.encryption_switch_button)
         self.addWidget(self.changedir_button)
         self.addWidget(self.export_button)
         self.font_label = QtWidgets.QLabel("Font size: ")
@@ -147,6 +159,7 @@ class CustomToolbar(QtWidgets.QToolBar):
         self.addWidget(self.preview_button)
         self.addWidget(self.settings_button)
         self.refresh_stylesheet()
+        self.refesh_encryption_switch_button()
 
     def changeEvent(self, event:QtCore.QEvent) -> None:
         # Change button icons to match theme
@@ -166,6 +179,7 @@ class CustomToolbar(QtWidgets.QToolBar):
             self.settings_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["settings"][CONSTANTS.theme])))
             if sys.platform == "win32":
                 self.font_spinbox.setStyleSheet("color: black;")
+            self.refesh_encryption_switch_button()
 
     def font_change(self, i):
         # Change font
@@ -185,6 +199,10 @@ class CustomToolbar(QtWidgets.QToolBar):
             file.seek(0)
             file.write(json.dumps(config_dict, sort_keys=True, indent=4))
             file.truncate()
+
+    def entry_file_changed(self):
+       self.refesh_encryption_switch_button()
+
 
     def open_entry_clicked(self):
         """Open calendar dialog and disable main window"""
@@ -261,9 +279,7 @@ class CustomToolbar(QtWidgets.QToolBar):
                                     self.table_option_dialog.include_headers.isChecked())
         self.table_option_dialog.close()
 
-    def theme_switch(self):
-
-
+    def theme_switch_clicked(self):
         current_theme = CONSTANTS.theme
 
         if current_theme == "light":
@@ -298,7 +314,33 @@ class CustomToolbar(QtWidgets.QToolBar):
         self.window().setFocusProxy(self.settings_window)
         self.settings_window.setFocusPolicy(QtCore.Qt.FocusPolicy.StrongFocus)
 
-        self.settings_window.show()
+        self.settings_window.exec()
+
+        # Refresh entry_file as file name might be changed
+        self.edit_pane._entry_file.update()
+        self.refesh_encryption_switch_button()
+
+    def encryption_switch_clicked(self):
+        if self.edit_pane._entry_file.is_encrypted():
+            self.edit_pane._entry_file.set_to_unencrypted()
+        else:
+            self.edit_pane._entry_file.set_to_encrypted()
+
+        self.refesh_encryption_switch_button()
+
+    def refesh_encryption_switch_button(self):
+        c = Crypto()
+        if not c.is_initialized():
+            self.encryption_switch_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["unencrypted"][CONSTANTS.theme])))
+            self.encryption_switch_button.setEnabled(False)
+            return
+
+        self.encryption_switch_button.setEnabled(True)
+
+        if self.edit_pane._entry_file.is_encrypted():
+            self.encryption_switch_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["encrypted"][CONSTANTS.theme])))
+        else:
+            self.encryption_switch_button.setIcon(QtGui.QIcon(get_resource(CONSTANTS.icons["unencrypted"][CONSTANTS.theme])))
 
     def refresh_stylesheet(self):
         self.setStyleSheet("""

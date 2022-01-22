@@ -50,6 +50,13 @@
   "settings": {
     "light": "icons/gear.svg",
     "dark": "icons/gear-white.svg"
+  },
+  "encrypted": {
+    "light": "icons/lock.svg",
+    "dark": "icons/lock-white.svg"
+  },
+  "unencrypted": {
+    "light": "icons/unlock.svg",
+    "dark": "icons/unlock-white.svg"
   }
-
 }

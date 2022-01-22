@@ -214,8 +214,6 @@ class ExportWindow(QtWidgets.QWidget):
 
             self.chosen_directory.setText(os.path.join(directory, "export"))
 
-        diary_entries = list(Path(directory).rglob("*-*-*.[mM][dD]"))
-
         # Custom Range
         if self.date_options.currentText() == "Custom Range":
             diary_entries = EntryFile.get_all_entry_files_in_range(self.start_date_widget.date().toPyDate(), self.end_date_widget.date().toPyDate())
@@ -256,13 +254,19 @@ class ExportWindow(QtWidgets.QWidget):
         # Conversion
         for entry in diary_entries:
             if self.load_dialog.isVisible():
-                os.chdir(entry.parent.as_posix())
+               
+                has_encryption = entry.is_encrypted()
+                if has_encryption:
+                    entry.set_to_unencrypted()
+
+                path = pathlib.Path(entry.directory).as_posix()
+                os.chdir(path)
                 try:
-                    pypandoc.convert_file(entry.as_posix(), format["type"],
-                                          outputfile=(self.chosen_directory.text() + "/" + entry.name[:-3] + "." + format["ext"]),
+                    pypandoc.convert_file(entry.filename, format["type"],
+                                          outputfile=(self.chosen_directory.text() + "/" + entry.filename[:-3] + "." + format["ext"]),
                                           extra_args=pdoc_args)
                 except RuntimeError as err:
-                    progress_label.setText("ERROR IN FILE " + entry.name)
+                    progress_label.setText("ERROR IN FILE " + entry.filename)
                     QtWidgets.QApplication.processEvents()
                     errors.append(entry)
                     print(str(err))
@@ -276,6 +280,10 @@ class ExportWindow(QtWidgets.QWidget):
                         progress_label.setText("No wkhtmltopdf installation found.\n"
                                                "Please install wkhtmltopdf.\n\n")
                         return 1
+                
+                if has_encryption:
+                    entry.set_to_encrypted()
+
                 finished += 1
                 progress_label.setText(str(finished) + "/" + str(len(diary_entries)))
                 progress_bar.setValue(finished)
