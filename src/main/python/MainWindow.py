@@ -167,4 +167,9 @@ class MainWindow(QtWidgets.QWidget):
         MainWindow EditPane:!active{
             background-color: palette(base);
         }
+        QTextEdit{
+            color: palette(text);
+            background-color: palette(base);
+            border: 0px solid palette(base);
+        }
         """)
