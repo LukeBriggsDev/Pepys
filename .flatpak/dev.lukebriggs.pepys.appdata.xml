@@ -47,6 +47,17 @@
         </p>
     </description>
     <releases>
+        <release version="1.3.0" date="2021-08-17">
+            <description>
+                <ul>
+                    <li>Add ability to encrypt entries</li>
+                    <li>Add ability to have a flat file structure</li>
+                    <li>Update to Qt6 bringing improvements to high DPI</li>
+                    <li>Beautify calendar view by marking the current day and greying out days without diary entry</li>
+                </ul>
+                Special thanks to uhrfra (https://github.com/uhrfra) for development on some of these features
+            </description>
+        </release>
         <release version="1.1.1" date="2021-08-17">
             <description>
                 <ul>
