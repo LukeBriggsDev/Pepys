@@ -2,7 +2,7 @@ class Pepys < Formula
   desc "A Straightforward Markdown Journal"
   homepage "https://lukebriggs.dev/pepys"
   url "https://github.com/LukeBriggsDev/Pepys/archive/refs/tags/v1.3.1.tar.gz"
-  sha256 "19c7a38f7d2aa1636e6f611bd88a73a900b782dda2f6467ebb9ffdc4d12eede8"
+  sha256 "6ef4a0c1e911d01b563b972d78b0e85b15712e69ecaf9c988a18886e1cc3fccc"
   license "GPL-3.0"
   depends_on "python@3.8"
   depends_on "pandoc"
@@ -16,8 +16,6 @@ class Pepys < Formula
     system "mkdir", bin
     system "mkdir", "-p","#{bin}/Applications/Pepys.app"
     system "cp", "-R", "homebrew/Pepys.app", "#{bin}/Applications/"
-    system "cp", "homebrew/pepys.sh", "#{bin}"
-    system "chmod", "777", "#{bin}/pepys.sh"
   end
 
   def post_install
