@@ -260,6 +260,7 @@ class ExportWindow(QtWidgets.QWidget):
                     entry.set_to_unencrypted()
 
                 path = pathlib.Path(entry.directory).as_posix()
+
                 os.chdir(path)
                 try:
                     pypandoc.convert_file(entry.filename, format["type"],
@@ -352,9 +353,9 @@ class ExportWindow(QtWidgets.QWidget):
             self.error_dialog = QtWidgets.QMessageBox()
             self.error_dialog.setText("Errors occured in the following entries and they were not converted.\n\nPerhaps they link to files that do not exist")
             if len(errors) > 10:
-                self.error_dialog.setInformativeText("\n".join([str(error) for error in errors[:10]]) + "...")
+                self.error_dialog.setInformativeText("\n".join([str(error.filename) for error in errors[:10]]) + "...")
             else:
-                self.error_dialog.setInformativeText("\n".join([str(error) for error in errors]))
+                self.error_dialog.setInformativeText("\n".join([str(error.filename) for error in errors]))
             self.error_dialog.show()
         CONSTANTS.openFolder(self.chosen_directory.text())
         self.load_dialog.close()
