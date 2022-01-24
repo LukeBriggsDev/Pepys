@@ -98,7 +98,6 @@ light_palette = QtWidgets.QApplication.palette()
 if not sys.platform.startswith("linux"):
     light_palette.setColor(QtGui.QPalette.ColorRole.Mid, QtGui.QColor.fromRgbF(0.85, 0.85, 0.85))
     light_palette.setColor(QtGui.QPalette.ColorRole.Dark, QtGui.QColor.fromRgbF(0.8, 0.8, 0.8))
-    QtWidgets.QApplication.setPalette(light_palette)
 
 
 class Colors:
