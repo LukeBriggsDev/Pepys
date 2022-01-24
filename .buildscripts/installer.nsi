@@ -4,10 +4,11 @@ InstallDir "$PROGRAMFILES64\Pepys"
 Section "Install"
     SetOutPath "$INSTDIR"
     File /r enchant
-    File /r PyQt5
+    File /r PyQt6
     File /r regex
     File /r resources
     File /r yaml
+    File /r cryptography
     File *
     WriteUninstaller "$INSTDIR\uninstaller.exe"
     CreateShortCut "$SMPROGRAMS\Pepys.lnk" "$INSTDIR\Pepys.exe"
@@ -17,7 +18,7 @@ Section "Install"
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Pepys" "Publisher" "Luke Briggs"
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Pepys" "Publisher" "Luke Briggs"
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Pepys" "Version" 0x010101
-    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Pepys" "DisplayVersion" 1.1.1
+    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Pepys" "DisplayVersion" 1.3.1
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Pepys" "UrlInfoAbout" "https://www.lukebriggs.dev/pepys"
 
 SectionEnd
