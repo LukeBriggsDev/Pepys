@@ -17,23 +17,23 @@
     <screenshots>
         <screenshot type="default">
             <caption>Pepys edit window</caption>
-            <image type="source" width="1910" height="1043">https://www.lukebriggs.dev/static/pepys/pepys_editpane.png</image>
+            <image type="source">https://www.lukebriggs.dev/static/pepys/pepys_editpane.png</image>
         </screenshot>
         <screenshot>
             <caption>Pepys preview window</caption>
-            <image type="source" width="1910" height="1043">https://www.lukebriggs.dev/static/pepys/pepys_webview.png</image>
+            <image type="source">https://www.lukebriggs.dev/static/pepys/pepys_webview.png</image>
         </screenshot>
         <screenshot>
             <caption>Pepys table creation</caption>
-            <image type="source" width="820" height="655">https://www.lukebriggs.dev/static/pepys/pepys_tablecreation.png</image>
+            <image type="source">https://www.lukebriggs.dev/static/pepys/pepys_tablecreation.png</image>
         </screenshot>
         <screenshot>
             <caption>Pepys calendar window</caption>
-            <image type="source" width="642" height="679">https://www.lukebriggs.dev/static/pepys/pepys_calendar.png</image>
+            <image type="source">https://www.lukebriggs.dev/static/pepys/pepys_calendar.png</image>
         </screenshot>
         <screenshot>
             <caption>Pepys dark theme</caption>
-            <image type="source" width="1910" height="1043">https://www.lukebriggs.dev/static/pepys/pepys_darkmode.png</image>
+            <image type="source">https://www.lukebriggs.dev/static/pepys/pepys_darkmode.png</image>
         </screenshot>
     </screenshots>
     <description>
