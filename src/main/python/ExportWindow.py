@@ -299,9 +299,9 @@ class ExportWindow(QtWidgets.QWidget):
                 progress_label.setText("Starting pdf collation")
                 QtWidgets.QApplication.processEvents()
                 file_merger = PyPDF2.PdfFileMerger(strict=False)
-                pdf_list = sorted([Path(os.path.join(self.chosen_directory.text(), entry.name[:-3] + ".pdf"))
+                pdf_list = sorted([Path(os.path.join(self.chosen_directory.text(), entry.filename[:-3] + ".pdf"))
                                    for entry in diary_entries
-                                   if os.path.isfile(os.path.join(self.chosen_directory.text(), entry.name[:-3] + ".pdf"))],
+                                   if os.path.isfile(os.path.join(self.chosen_directory.text(), entry.filename[:-3] + ".pdf"))],
                                    key=lambda x: x.name)
 
                 for pdf in pdf_list:
@@ -320,9 +320,9 @@ class ExportWindow(QtWidgets.QWidget):
             if format["type"] == "html":
                 progress_label.setText("Starting html collation")
                 QtWidgets.QApplication.processEvents()
-                html_list = sorted([Path(os.path.join(self.chosen_directory.text(), entry.name[:-3] + ".html"))
+                html_list = sorted([Path(os.path.join(self.chosen_directory.text(), entry.filename[:-3] + ".html"))
                                     for entry in diary_entries
-                                    if os.path.isfile(os.path.join(self.chosen_directory.text(), entry.name[:-3] + ".html"))],
+                                    if os.path.isfile(os.path.join(self.chosen_directory.text(), entry.filename[:-3] + ".html"))],
                                     key=lambda x: x.name)
                 html = ""
                 try:
