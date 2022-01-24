@@ -27,7 +27,7 @@ jobs:
       - name: Flatpak setup
         run: |
           sudo apt install flatpak
-          flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+          sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
           flatpak install org.kde.Platform//6.2 io.qt.qtwebengine.BaseApp//6.2
 
       # Build flatpak
