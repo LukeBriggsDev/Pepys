@@ -17,23 +17,23 @@
     <screenshots>
         <screenshot type="default">
             <caption>Pepys edit window</caption>
-            <image type="source" width="1910" height="1043">https://github.com/LukeBriggsDev/Pepys/raw/master/README_IMAGES/light_edit.png</image>
+            <image type="source">https://github.com/LukeBriggsDev/Pepys/raw/master/README_IMAGES/light_edit.png</image>
         </screenshot>
         <screenshot>
             <caption>Pepys preview window</caption>
-            <image type="source" width="1910" height="1043">https://github.com/LukeBriggsDev/Pepys/raw/master/README_IMAGES/light_view.png</image>
+            <image type="source">https://github.com/LukeBriggsDev/Pepys/raw/master/README_IMAGES/light_view.png</image>
         </screenshot>
         <screenshot>
             <caption>Pepys table creation</caption>
-            <image type="source" width="820" height="655">https://github.com/LukeBriggsDev/Pepys/raw/master/README_IMAGES/table_creation.png</image>
+            <image type="source">https://github.com/LukeBriggsDev/Pepys/raw/master/README_IMAGES/table_creation.png</image>
         </screenshot>
         <screenshot>
             <caption>Pepys calendar window</caption>
-            <image type="source" width="642" height="679">https://github.com/LukeBriggsDev/Pepys/raw/master/README_IMAGES/calendar.png</image>
+            <image type="source">https://github.com/LukeBriggsDev/Pepys/raw/master/README_IMAGES/calendar.png</image>
         </screenshot>
         <screenshot>
             <caption>Pepys dark theme</caption>
-            <image type="source" width="1910" height="1043">https://github.com/LukeBriggsDev/Pepys/raw/master/README_IMAGES/dark_edit.png</image>
+            <image type="source">https://github.com/LukeBriggsDev/Pepys/raw/master/README_IMAGES/dark_edit.png</image>
         </screenshot>
     </screenshots>
     <description>
