@@ -47,7 +47,8 @@ class SearchWorker(QtCore.QObject):
 
         pos = match_positions[0]
 
-        end = pos + 78
+        max_len = 77
+        end = pos + max_len
         if end >= len(entryText):
             table_text = entryText[pos:]
         else:
