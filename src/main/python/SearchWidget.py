@@ -17,22 +17,16 @@ class SearchWorker(QtCore.QObject):
     def __init__(self, searchText):
         super().__init__()
         self._searchText = searchText
-        self._is_running = False
         self._break = False
 
     def interrupt(self):
         self._break = True
 
-    def is_running(self):
-        return self._is_running
-
     def run(self):
-        self._break = False
-        self._is_running = True
+        self._break = False 
         entry_files = get_all_entry_files()
         entry_files.sort(key=lambda x: x.formatted_date)
 
-        results = []
         counter = 0
         for e in entry_files:
             if self._break:
@@ -44,7 +38,6 @@ class SearchWorker(QtCore.QObject):
                 self.result_found.emit([e.formatted_date, table_text])
 
         self.finished.emit()
-        self._is_running = False
 
     def _build_table_text(self, entryText):
         match_positions = [m.start() for m in re.finditer(self._searchText, entryText, re.IGNORECASE)]
@@ -72,7 +65,8 @@ class SearchWidget(QtWidgets.QWidget):
 
         self.edit_pane = edit_pane
         self.web_view = web_view
-        self.worker = None
+        self.thread = QtCore.QThread(parent= self)
+        self.thread.finished.connect(self.search_finished)
 
         self.searchText = QtWidgets.QLineEdit(self)
         self.searchText.returnPressed.connect(self.search_clicked)
@@ -110,7 +104,7 @@ class SearchWidget(QtWidgets.QWidget):
 
 
     def search_clicked(self):
-        if self.worker and self.worker.is_running():
+        if self.thread.isRunning():
             self.worker.interrupt()
             return
 
@@ -124,14 +118,13 @@ class SearchWidget(QtWidgets.QWidget):
         self.table.setRowCount(0)
 
         # Run search in a background thread
-        self.thread = QtCore.QThread()
         self.worker = SearchWorker(self.searchText.text())
         self.worker.moveToThread(self.thread)
         self.thread.started.connect(self.worker.run)
-        self.worker.finished.connect(self.search_finished)
-        self.worker.finished.connect(self.thread.quit)
         self.worker.result_found.connect(self.result_found)
         self.worker.progress.connect(self.update_progress)
+        self.worker.finished.connect(self.thread.quit)
+        self.worker.finished.connect(self.worker.deleteLater)
         self.thread.start()
 
         self.searchButton.setText("Stop")
@@ -166,3 +159,7 @@ class SearchWidget(QtWidgets.QWidget):
 
     def showEvent(self, e):
         self.searchText.setFocus()
+
+    def closeEvent(self, event) -> None:
+        if self.thread.isRunning():
+            self.worker.interrupt()

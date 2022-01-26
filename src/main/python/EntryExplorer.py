@@ -35,12 +35,14 @@ class EntryExplorer(QtWidgets.QTabWidget):
         self.setMaximumSize(640, 660)
         self.setWindowTitle("Entry Explorer")
 
-        calendar = CalendarFileSelector(self.edit_pane, self.web_view)
-        search = SearchWidget(self.edit_pane, self.web_view)
+        self.calendar = CalendarFileSelector(self.edit_pane, self.web_view)
+        self.search = SearchWidget(self.edit_pane, self.web_view)
 
-        self.addTab(calendar, "Calendar")
-        self.addTab(search, "Search")
+        self.addTab(self.calendar, "Calendar")
+        self.addTab(self.search, "Search")
 
 
     def closeEvent(self, a0: QtGui.QCloseEvent) -> None:
+        self.search.close()
+        self.calendar.close()
         self.edit_pane.parentWidget().tool_bar.setEnabled(True)
