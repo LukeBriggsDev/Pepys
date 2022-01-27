@@ -62,7 +62,7 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
 
         self.setStyleSheet("""
         QMenu { 
-            font-size:16px; 
+            font-size: 16px; 
             width: 150px; 
             left: 20px; 
             background-color: palette(base);
@@ -71,7 +71,7 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
             background-color: palette(base);
         }
         QToolButton {
-            icon-size: 24px, 24px;
+            icon-size: 24px 24px;
             background-color: palette(base);
             color: palette(text);
         }
@@ -86,7 +86,7 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
             width: 50px;
         }
         QToolButton::menu-indicator:pressed, QToolButton::menu-indicator:open{
-            top:10px; 
+            top: 10px; 
             left: 10px;
         }
         QListView {
