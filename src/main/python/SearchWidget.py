@@ -109,11 +109,11 @@ class SearchWidget(QtWidgets.QWidget):
             self.worker.interrupt()
             return
 
-        self.progress_bar.setValue(0)
-        self.progress_bar.setVisible(True)
-
         if self.searchText.text() == "":
             return
+
+        self.progress_bar.setValue(0)
+        self.progress_bar.setVisible(True)
 
         self.table.clearContents()
         self.table.setRowCount(0)
