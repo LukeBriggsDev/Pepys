@@ -144,9 +144,6 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
         self.web_view.refresh_page()
 
 
-    def closeEvent(self, a0: QtGui.QCloseEvent) -> None:
-        self.edit_pane.parentWidget().tool_bar.setEnabled(True)
-
     def paintCell(self, painter: QtGui.QPainter, rect: QtCore.QRect, date: typing.Union[QtCore.QDate, datetime.date]) -> None:
         painter.save()
         with open(get_resource("config.json")) as file:
