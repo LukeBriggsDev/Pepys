@@ -268,6 +268,7 @@ def get_all_entry_files():
 
 def get_all_entry_files_in_range(startdate: date, enddate: date):
     diary_entries = get_all_entry_files()
+    print(type(startdate))
     diary_entries = [entry for entry in diary_entries
-                            if startdate <= entry.date <= enddate]
+                            if startdate <= entry.date.date() <= enddate]
     return diary_entries
