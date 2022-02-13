@@ -76,20 +76,18 @@ class ExportWindow(QtWidgets.QWidget):
                 and (sys.platform == "darwin" or sys.platform == "win32"):
             self.setStyleSheet(
                 """
-                QPushButton{
-                    color: palette(text);
-                    background-color: palette(button);
+                QPushButton {
+                    color: #000000;
                 }
-                QComboBox{
-                    color: palette(text);
-                    background-color: palette(button);
+                QComboBox {
+                    color: #000000;
                 }
-                QComboBox QAbstractItemView{
-                    background-color: palette(button);
+                QComboBox QAbstractItemView {
+                    background-color: #EEEEEE;
                 }
                 QDateEdit {
-                    background-color: palette(button);
-
+                    color: #000000;
+                    background-color: #EEEEEE
                 }
                 """
             )
