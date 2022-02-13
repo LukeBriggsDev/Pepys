@@ -103,6 +103,27 @@ class SearchWidget(QtWidgets.QWidget):
         layout.addWidget(self.table)
         self.setLayout(layout)
 
+        self.setStyleSheet(
+            """
+            QToolBar {
+                background-color: palette(base);
+                border: palette(window);
+            }
+            QLineEdit {
+                background-color: palette(base);
+                border: palette(dark);
+            } 
+            QPushButton {
+                background-color: palette(button);
+                border: palette(dark);
+                padding: 5px;
+            }
+             QPushButton:pressed {
+                background-color: palette(dark);     
+            }
+            """
+        )
+
 
     def search_clicked(self):
         if self.thread.isRunning():
