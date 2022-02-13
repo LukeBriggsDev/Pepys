@@ -46,6 +46,16 @@
         </p>
     </description>
     <releases>
+        <release version="1.4.0" date="2022-02-13">
+            <description>
+                <ul>
+                    <li>Add text search functionality (Thanks uhrfra)</li>
+                    <li>Fix styling errors</li>
+                    <li>Fix crash when using custom export dates</li>
+                    <li>Add ability to export and collate plaintext and markdown files</li>
+                </ul>
+            </description>
+        </release>
         <release version="1.3.0" date="2021-08-17">
             <description>
                 <ul>
