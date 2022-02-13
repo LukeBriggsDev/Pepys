@@ -7,7 +7,7 @@
 	<key>AMStayOpen</key>
 	<false/>
 	<key>BuildMachineOSBuild</key>
-	<string>20A241123</string>
+	<string>20A241128</string>
 	<key>CFBundleAllowMixedLocalizations</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
@@ -60,11 +60,11 @@
 	<key>DTPlatformName</key>
 	<string>macosx</string>
 	<key>DTPlatformVersion</key>
-	<string>12.1</string>
+	<string>12.2</string>
 	<key>DTSDKBuild</key>
-	<string>21C40</string>
+	<string>21D34</string>
 	<key>DTSDKName</key>
-	<string>macosx12.1.internal</string>
+	<string>macosx12.2.internal</string>
 	<key>DTXcode</key>
 	<string>1300</string>
 	<key>DTXcodeBuild</key>
