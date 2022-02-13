@@ -111,15 +111,24 @@ class SearchWidget(QtWidgets.QWidget):
             }
             QLineEdit {
                 background-color: palette(base);
-                border: palette(dark);
+                border: 2px solid palette(dark);
+                height: 24px;
             } 
             QPushButton {
                 background-color: palette(button);
-                border: palette(dark);
-                padding: 5px;
+                border: 2px solid palette(dark);
+                height: 24px;
+                padding-left: 4px;
+                padding-right: 4px;
             }
-             QPushButton:pressed {
+            QPushButton:pressed {
                 background-color: palette(dark);     
+            }
+
+            QHeaderView::section {
+                background-color: palette(button);
+
+
             }
             """
         )

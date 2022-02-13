@@ -45,12 +45,18 @@ class EntryExplorer(QtWidgets.QTabWidget):
         self.tabBar().setTabTextColor(1, palette.text().color())
         self.setStyleSheet(
             """
+            QWidget {
+                background: palette(base);
+                border: none;
+            }
             QTabBar::tab {
                 background: palette(button);
+                border: 1px solid palette(mid);
+                padding: 4px;
             } 
             QTabBar::tab:selected { 
                 background: palette(dark); 
-            }
+            } 
             """
         )
 
