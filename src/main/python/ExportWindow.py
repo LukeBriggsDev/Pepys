@@ -38,6 +38,7 @@ import EntryFile
 if typing.TYPE_CHECKING:
     pass
 
+
 class ExportWindow(QtWidgets.QWidget):
     """Window for selecting export options"""
 
@@ -52,6 +53,7 @@ class ExportWindow(QtWidgets.QWidget):
         "PowerPoint Slide Show": {"type": "pptx", "ext": "pptx"},
         "Rich Text Format": {"type": "rtf", "ext": "rtf"},
         "reStructuredText": {"type": "rst", "ext": "rst"},
+        "Plain Markdown": {"type": "markdown", "ext": "markdown"}
     }
 
     def __init__(self, main_window, edit_pane: EditPane):
@@ -69,8 +71,9 @@ class ExportWindow(QtWidgets.QWidget):
         self.export_options = QtWidgets.QComboBox()
 
         # Workaround for button elements not changing BG on MacOS
-        if QtWidgets.QApplication.palette().color(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Base).lightness() < 122\
-            and (sys.platform == "darwin" or sys.platform == "win32"):
+        if QtWidgets.QApplication.palette().color(QtGui.QPalette.ColorGroup.Active,
+                                                  QtGui.QPalette.ColorRole.Base).lightness() < 122 \
+                and (sys.platform == "darwin" or sys.platform == "win32"):
             self.setStyleSheet(
                 """
                 QPushButton{
@@ -84,7 +87,6 @@ class ExportWindow(QtWidgets.QWidget):
                 }
                 """
             )
-
 
         for output_format in sorted(self.output_formats.keys(), key=str.lower):
             self.export_options.addItem(output_format)
@@ -126,18 +128,15 @@ class ExportWindow(QtWidgets.QWidget):
         formLayout.addRow("Select Directory:", chosen_directory_layout)
         browse_button.clicked.connect(self.browse_clicked)
 
-
         self.will_collate = QtWidgets.QCheckBox()
-        formLayout.addRow("Collate together (PDF, HTML only):", self.will_collate)
+        formLayout.addRow("Collate together (PDF, HTML, txt, markdown):", self.will_collate)
 
         self.setLayout(self.dialog_layout)
         self.dialog_layout.addLayout(formLayout)
 
-
         self.export_button = QtWidgets.QPushButton("Export")
         self.export_button.clicked.connect(self.export_clicked)
         self.dialog_layout.addWidget(self.export_button)
-
 
         self.setWindowTitle("Export")
 
@@ -151,13 +150,13 @@ class ExportWindow(QtWidgets.QWidget):
                                                                             pathlib.Path.home().as_posix(),
                                                                             QtWidgets.QFileDialog.Option.ShowDirsOnly))
 
-    def closeEvent(self, event:QtGui.QCloseEvent) -> None:
+    def closeEvent(self, event: QtGui.QCloseEvent) -> None:
         # Re-enable main window
         self.main_window.setFocusPolicy(QtCore.Qt.FocusPolicy.StrongFocus)
         self.main_window.setDisabled(False)
 
     def format_option_change(self, new_text: str):
-        if new_text == "HTML" or new_text == "PDF":
+        if new_text == "HTML" or new_text == "PDF" or new_text == "Plain Markdown" or new_text == "Plain Text":
             self.will_collate.setEnabled(True)
         else:
             self.will_collate.setEnabled(False)
@@ -180,7 +179,6 @@ class ExportWindow(QtWidgets.QWidget):
     def export_clicked(self):
         self.export_diary()
         self.setEnabled(True)
-
 
     def export_diary(self):
 
@@ -216,7 +214,8 @@ class ExportWindow(QtWidgets.QWidget):
 
         # Custom Range
         if self.date_options.currentText() == "Custom Range":
-            diary_entries = EntryFile.get_all_entry_files_in_range(self.start_date_widget.date().toPyDate(), self.end_date_widget.date().toPyDate())
+            diary_entries = EntryFile.get_all_entry_files_in_range(self.start_date_widget.date().toPyDate(),
+                                                                   self.end_date_widget.date().toPyDate())
         # Current Date
         elif self.date_options.currentText() == "Current Entry":
             current_date = datetime.strptime(self.edit_pane.current_file_date, "%Y-%m-%d")
@@ -225,7 +224,6 @@ class ExportWindow(QtWidgets.QWidget):
             diary_entries = EntryFile.get_all_entry_files()
 
         format = self.output_formats[self.export_options.currentText()]
-
 
         pdoc_args = ["--standalone",
                      f"--katex={get_resource('katex/')}"]
@@ -241,10 +239,9 @@ class ExportWindow(QtWidgets.QWidget):
         if format["type"] == "html" or format["type"] == "pdf":
             with open(get_resource("parsed_stylesheet.css"), "w+") as f:
                 f.write(parse_stylesheet(get_resource("ViewPaneStyle.css"), "light"))
-            pdoc_args.append("--css="+get_resource("HTMLExport.css"))
+            pdoc_args.append("--css=" + get_resource("HTMLExport.css"))
             pdoc_args.append("--self-contained")
             pdoc_args.append("--pdf-engine-opt=--enable-local-file-access")
-
 
         progress_label.setText("Converting to " + str(format["type"]))
         progress_bar.setMaximum(len(diary_entries))
@@ -254,7 +251,7 @@ class ExportWindow(QtWidgets.QWidget):
         # Conversion
         for entry in diary_entries:
             if self.load_dialog.isVisible():
-               
+
                 has_encryption = entry.is_encrypted()
                 if has_encryption:
                     entry.set_to_unencrypted()
@@ -264,7 +261,8 @@ class ExportWindow(QtWidgets.QWidget):
                 os.chdir(path)
                 try:
                     pypandoc.convert_file(entry.filename, format["type"],
-                                          outputfile=(self.chosen_directory.text() + "/" + entry.filename[:-3] + "." + format["ext"]),
+                                          outputfile=(self.chosen_directory.text() + "/" + entry.filename[:-3] + "." +
+                                                      format["ext"]),
                                           extra_args=pdoc_args)
                 except RuntimeError as err:
                     progress_label.setText("ERROR IN FILE " + entry.filename)
@@ -281,7 +279,7 @@ class ExportWindow(QtWidgets.QWidget):
                         progress_label.setText("No wkhtmltopdf installation found.\n"
                                                "Please install wkhtmltopdf.\n\n")
                         return 1
-                
+
                 if has_encryption:
                     entry.set_to_encrypted()
 
@@ -295,67 +293,96 @@ class ExportWindow(QtWidgets.QWidget):
         QtWidgets.QApplication.processEvents()
 
         if self.will_collate.isChecked():
-            # Collate pdfs together into one pdf
-            if format["type"] == "pdf":
-                progress_label.setText("Starting pdf collation")
-                QtWidgets.QApplication.processEvents()
-                file_merger = PyPDF2.PdfFileMerger(strict=False)
-                pdf_list = sorted([Path(os.path.join(self.chosen_directory.text(), entry.filename[:-3] + ".pdf"))
-                                   for entry in diary_entries
-                                   if os.path.isfile(os.path.join(self.chosen_directory.text(), entry.filename[:-3] + ".pdf"))],
-                                   key=lambda x: x.name)
 
-                for pdf in pdf_list:
-                    progress_label.setText(pdf.name)
-                    QtWidgets.QApplication.processEvents()
-                    file_merger.append(pdf.as_posix(), pdf.name[:-4], import_bookmarks=False)
+            if format["type"] in ["pdf", "html", "markdown", "plain"]:
+                progress_label.setText(f"Starting {format['type']} collation")
+                QtWidgets.QApplication.processEvents()
+                converted_list = sorted(
+                    [Path(os.path.join(self.chosen_directory.text(), entry.filename[:-3] + "." + format["ext"]))
+                     for entry in diary_entries
+                     if os.path.isfile(os.path.join(self.chosen_directory.text(), entry.filename[:-3] + "." + format["ext"]))],
+                    key=lambda x: x)
+                file_merger = ""
+
+                if format["type"] == "pdf":
+                    file_merger = PyPDF2.PdfFileMerger(strict=False)
+
+                elif format["type"] == "html":
                     try:
-                        os.remove(pdf.as_posix())
-                    except PermissionError:
-                        pass
-                file_merger.write(self.chosen_directory.text() + "/diary.pdf")
-                progress_label.setText("pdf collation finished")
+                        os.mkdir(os.path.join(Path(self.chosen_directory.text()), "html_export"))
+                    except FileExistsError:
+                        shutil.rmtree(os.path.join(Path(self.chosen_directory.text()), "html_export"),
+                                      ignore_errors=True)
+                        os.mkdir(os.path.join(Path(self.chosen_directory.text()), "html_export"))
+
+                for doc in converted_list:
+                    progress_label.setText(doc.name)
+                    QtWidgets.QApplication.processEvents()
+
+                    if format["type"] == "pdf":
+                        file_merger.append(doc.as_posix(), doc.name[:-4], import_bookmarks=False)
+
+                        try:
+                            os.remove(doc.as_posix())
+                        except PermissionError:
+                            pass
+
+                    elif format["type"] == "html":
+                        shutil.move(doc.as_posix(),
+                                    os.path.join(Path(self.chosen_directory.text()), "html_export", doc.name))
+
+                    elif format["type"] == "markdown":
+                        with open(doc.as_posix(), "r") as f:
+                            file_merger += (f.read()) + "\n\n"
+
+                        try:
+                            os.remove(doc.as_posix())
+                        except PermissionError:
+                            pass
+
+                    elif format["type"] == "plain":
+                        with open(doc.as_posix(), "r") as f:
+                            file_merger += (f.read()) + "\n\n"
+
+                        try:
+                            os.remove(doc.as_posix())
+                        except PermissionError:
+                            pass
+
+                if format["type"] == "pdf":
+                    file_merger.write(self.chosen_directory.text() + "/diary.pdf")
+
+                elif format["type"] == "html":
+                    with open(os.path.join(Path(self.chosen_directory.text()), "html_export", "_index.html"), "w") as f:
+                        shutil.copyfile(get_resource("parsed_stylesheet.css"),
+                                        os.path.join(Path(self.chosen_directory.text()), "html_export", "styles.css"))
+                        f.write('<!DOCTYPE HTML>'
+                                '<HTML>'
+                                '<HEAD><LINK rel="stylesheet" href="styles.css" type="text/css">'
+                                '</HEAD>')
+                        for page in converted_list:
+                            f.write(f'<a href="{page.name}">{page.name[:-5]}</a><br>')
+                        f.write('</HTMl>')
+
+                elif format["type"] == "markdown":
+                    with open(self.chosen_directory.text() + "/diary.markdown", "w") as f:
+                        f.write(file_merger)
+
+                elif format["type"] == "plain":
+                    with open(self.chosen_directory.text() + "/diary.txt", "w") as f:
+                        f.write(file_merger)
+
+                progress_label.setText(f"{format['type']} collation finished")
+                self.load_dialog.close()
                 QtWidgets.QApplication.processEvents()
 
-            # Collate html together into one pdf
-            if format["type"] == "html":
-                progress_label.setText("Starting html collation")
-                QtWidgets.QApplication.processEvents()
-                html_list = sorted([Path(os.path.join(self.chosen_directory.text(), entry.filename[:-3] + ".html"))
-                                    for entry in diary_entries
-                                    if os.path.isfile(os.path.join(self.chosen_directory.text(), entry.filename[:-3] + ".html"))],
-                                    key=lambda x: x.name)
-                html = ""
-                try:
-                    os.mkdir(os.path.join(Path(self.chosen_directory.text()), "html_export"))
-                except FileExistsError:
-                    shutil.rmtree(os.path.join(Path(self.chosen_directory.text()), "html_export"), ignore_errors=True)
-                    os.mkdir(os.path.join(Path(self.chosen_directory.text()), "html_export"))
-
-                for document in html_list:
-                    shutil.move(document, os.path.join(Path(self.chosen_directory.text()), "html_export", document.name))
-
-                with open(os.path.join(Path(self.chosen_directory.text()), "html_export", "_index.html"), "w") as f:
-                    shutil.copyfile(get_resource("parsed_stylesheet.css"), os.path.join(Path(self.chosen_directory.text()), "html_export", "styles.css"))
-                    f.write('<!DOCTYPE HTML>'
-                            '<HTML>'
-                            '<HEAD><LINK rel="stylesheet" href="styles.css" type="text/css">'
-                            '</HEAD>')
-                    for page in html_list:
-                        f.write(f'<a href="{page.name}">{page.name[:-5]}</a><br>')
-                    f.write('</HTMl>')
-
-                progress_label.setText("HTML collation finished")
-                QtWidgets.QApplication.processEvents()
-
-        print(self.chosen_directory.text())
         if len(errors) > 0:
             self.error_dialog = QtWidgets.QMessageBox()
-            self.error_dialog.setText("Errors occured in the following entries and they were not converted.\n\nPerhaps they link to files that do not exist")
+            self.error_dialog.setText(
+                "Errors occured in the following entries and they were not converted.\n\nPerhaps they link to files that do not exist")
             if len(errors) > 10:
                 self.error_dialog.setInformativeText("\n".join([str(error.filename) for error in errors[:10]]) + "...")
             else:
                 self.error_dialog.setInformativeText("\n".join([str(error.filename) for error in errors]))
             self.error_dialog.show()
         CONSTANTS.openFolder(self.chosen_directory.text())
-        self.load_dialog.close()
