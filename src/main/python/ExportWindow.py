@@ -77,13 +77,19 @@ class ExportWindow(QtWidgets.QWidget):
             self.setStyleSheet(
                 """
                 QPushButton{
-                    color: palette(base);
+                    color: palette(text);
+                    background-color: palette(button);
                 }
                 QComboBox{
-                    color: palette(base);
+                    color: palette(text);
+                    background-color: palette(button);
                 }
                 QComboBox QAbstractItemView{
-                    background-color: palette(text);
+                    background-color: palette(button);
+                }
+                QDateEdit {
+                    background-color: palette(button);
+
                 }
                 """
             )
