@@ -219,6 +219,7 @@ class ExportWindow(QtWidgets.QWidget):
         # Current Date
         elif self.date_options.currentText() == "Current Entry":
             current_date = datetime.strptime(self.edit_pane.current_file_date, "%Y-%m-%d")
+            current_date = current_date.date()
             diary_entries = EntryFile.get_all_entry_files_in_range(current_date, current_date)
         else:
             diary_entries = EntryFile.get_all_entry_files()
