@@ -156,7 +156,7 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
         if not entry_file.exists():
             painter.fillRect(rect, QtGui.QColor.fromHsl(pen.color().hue(), pen.color().saturation(), pen.color().lightness(), 50))
 
-        if (date.month() != self.monthShown()):
+        if (date.toPyDate().month != self.monthShown()):
             painter.setPen(QtGui.QColor("#888888"))
         elif date.dayOfWeek() == 6 or date.dayOfWeek() == 7:
             painter.setPen(QtGui.QColor("red"))
@@ -175,7 +175,7 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
         painter.setPen(pen)
 
         rect.adjust(5, 2, 0, 0)
-        painter.drawText(rect, QtCore.Qt.AlignmentFlag.AlignTop, str(date.day()))
+        painter.drawText(rect, QtCore.Qt.AlignmentFlag.AlignTop, str(date.toPyDate().day))
         rect.adjust(-5, 2, 0, 0)
         text = ""
         try:
