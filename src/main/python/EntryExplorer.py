@@ -40,6 +40,19 @@ class EntryExplorer(QtWidgets.QTabWidget):
 
         self.addTab(self.calendar, "Calendar")
         self.addTab(self.search, "Search")
+        palette = QtWidgets.QApplication.palette()
+        self.tabBar().setTabTextColor(0, palette.text().color())
+        self.tabBar().setTabTextColor(1, palette.text().color())
+        self.setStyleSheet(
+            """
+            QTabBar::tab {
+                background: palette(button);
+            } 
+            QTabBar::tab:selected { 
+                background: palette(dark); 
+            }
+            """
+        )
 
 
     def closeEvent(self, a0: QtGui.QCloseEvent) -> None:
