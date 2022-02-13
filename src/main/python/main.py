@@ -64,7 +64,10 @@ if __name__ == "__main__":
             file.write("")
     app.setWindowIcon(QtGui.QIcon(get_resource("icons/appicons/icon.svg")))
     CONSTANTS.theme = "light" if QtWidgets.QApplication.palette().color(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Base).lightness() > 122 else "dark"
-    CONSTANTS.light_palette = QtWidgets.QApplication.palette()
+    if CONSTANTS.theme == "light":
+        QtWidgets.QApplication.setPalette(CONSTANTS.light_palette)
+    else:
+        QtWidgets.QApplication.setPalette(CONSTANTS.Colors.getDarkpalette())
     setproctitle.setproctitle("Pepys")
     #Initialise and set size of main_window
     main_window = MainWindow()

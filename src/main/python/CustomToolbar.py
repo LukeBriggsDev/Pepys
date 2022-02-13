@@ -206,7 +206,7 @@ class CustomToolbar(QtWidgets.QToolBar):
 
     def open_entry_clicked(self):
         """Open calendar dialog and disable main window"""
-        self.date_dialog = CalendarFileSelector(self.edit_pane, self.web_view)
+        self.date_dialog = EntryExplorer(self.edit_pane, self.web_view)
         self.setEnabled(False)
         self.date_dialog.show()
 
@@ -361,6 +361,9 @@ class CustomToolbar(QtWidgets.QToolBar):
         }
         QLabel{
             padding-left: 4px;
+        }
+        QSpinBox{
+            background-color: palette(mid);
         }
         
 """)

@@ -4,9 +4,8 @@
     <name>Pepys</name>
     <developer_name>Luke Briggs</developer_name>
     <summary>A straightforward markdown journal</summary>
-    <url type="homepage">https://www.lukebriggs.dev/pepys</url>
+    <url type="homepage">https://www.lukebriggs.dev/projects/pepys/</url>
     <url type="bugtracker">https://github.com/LukeBriggsDev/Pepys</url>
-    <url type="donation">https://www.buymeacoffee.com/lukebriggs</url>
     <id>dev.lukebriggs.pepys</id>
     <launchable type="desktop-id">dev.lukebriggs.pepys.desktop</launchable>
     <content_rating type="oars-1.0" />
@@ -17,23 +16,23 @@
     <screenshots>
         <screenshot type="default">
             <caption>Pepys edit window</caption>
-            <image type="source" width="1910" height="1043">https://www.lukebriggs.dev/static/pepys/pepys_editpane.png</image>
+            <image type="source">https://github.com/LukeBriggsDev/Pepys/raw/master/README_IMAGES/light_edit.png</image>
         </screenshot>
         <screenshot>
             <caption>Pepys preview window</caption>
-            <image type="source" width="1910" height="1043">https://www.lukebriggs.dev/static/pepys/pepys_webview.png</image>
+            <image type="source">https://github.com/LukeBriggsDev/Pepys/raw/master/README_IMAGES/light_view.png</image>
         </screenshot>
         <screenshot>
             <caption>Pepys table creation</caption>
-            <image type="source" width="820" height="655">https://www.lukebriggs.dev/static/pepys/pepys_tablecreation.png</image>
+            <image type="source">https://github.com/LukeBriggsDev/Pepys/raw/master/README_IMAGES/table_creation.png</image>
         </screenshot>
         <screenshot>
             <caption>Pepys calendar window</caption>
-            <image type="source" width="642" height="679">https://www.lukebriggs.dev/static/pepys/pepys_calendar.png</image>
+            <image type="source">https://github.com/LukeBriggsDev/Pepys/raw/master/README_IMAGES/calendar.png</image>
         </screenshot>
         <screenshot>
             <caption>Pepys dark theme</caption>
-            <image type="source" width="1910" height="1043">https://www.lukebriggs.dev/static/pepys/pepys_darkmode.png</image>
+            <image type="source">https://github.com/LukeBriggsDev/Pepys/raw/master/README_IMAGES/dark_edit.png</image>
         </screenshot>
     </screenshots>
     <description>
@@ -47,6 +46,16 @@
         </p>
     </description>
     <releases>
+        <release version="1.4.0" date="2022-02-13">
+            <description>
+                <ul>
+                    <li>Add text search functionality (Thanks uhrfra)</li>
+                    <li>Fix styling errors</li>
+                    <li>Fix crash when using custom export dates</li>
+                    <li>Add ability to export and collate plaintext and markdown files</li>
+                </ul>
+            </description>
+        </release>
         <release version="1.3.0" date="2021-08-17">
             <description>
                 <ul>

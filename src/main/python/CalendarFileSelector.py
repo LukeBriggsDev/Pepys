@@ -62,7 +62,7 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
 
         self.setStyleSheet("""
         QMenu { 
-            font-size:16px; 
+            font-size: 16px; 
             width: 150px; 
             left: 20px; 
             background-color: palette(base);
@@ -71,7 +71,7 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
             background-color: palette(base);
         }
         QToolButton {
-            icon-size: 24px, 24px;
+            icon-size: 24px 24px;
             background-color: palette(base);
             color: palette(text);
         }
@@ -86,7 +86,7 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
             width: 50px;
         }
         QToolButton::menu-indicator:pressed, QToolButton::menu-indicator:open{
-            top:10px; 
+            top: 10px; 
             left: 10px;
         }
         QListView {
@@ -144,9 +144,6 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
         self.web_view.refresh_page()
 
 
-    def closeEvent(self, a0: QtGui.QCloseEvent) -> None:
-        self.edit_pane.parentWidget().tool_bar.setEnabled(True)
-
     def paintCell(self, painter: QtGui.QPainter, rect: QtCore.QRect, date: typing.Union[QtCore.QDate, datetime.date]) -> None:
         painter.save()
         with open(get_resource("config.json")) as file:
@@ -159,7 +156,7 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
         if not entry_file.exists():
             painter.fillRect(rect, QtGui.QColor.fromHsl(pen.color().hue(), pen.color().saturation(), pen.color().lightness(), 50))
 
-        if (date.month() != self.monthShown()):
+        if (date.toPyDate().month != self.monthShown()):
             painter.setPen(QtGui.QColor("#888888"))
         elif date.dayOfWeek() == 6 or date.dayOfWeek() == 7:
             painter.setPen(QtGui.QColor("red"))
@@ -178,7 +175,7 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
         painter.setPen(pen)
 
         rect.adjust(5, 2, 0, 0)
-        painter.drawText(rect, QtCore.Qt.AlignmentFlag.AlignTop, str(date.day()))
+        painter.drawText(rect, QtCore.Qt.AlignmentFlag.AlignTop, str(date.toPyDate().day))
         rect.adjust(-5, 2, 0, 0)
         text = ""
         try:

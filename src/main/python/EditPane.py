@@ -54,13 +54,7 @@ class EditPane(QtWidgets.QTextEdit):
         super().__init__()
         tab_stop = 4
         self.setFontPointSize(14)
-        font = QtGui.QFont()
-        if sys.platform.startswith("linux"):
-            font = QtGui.QFont("monospace")
-        elif sys.platform.startswith("darwin"):
-            font = QtGui.QFont("SF Mono")
-        elif sys.platform.startswith("win"):
-            font = QtGui.QFont("Consolas")
+        font = QtGui.QFontDatabase.systemFont(QtGui.QFontDatabase.SystemFont.FixedFont)
         font.setStyleHint(QtGui.QFont.StyleHint.Monospace)
         self.document().setDefaultFont(font)
         # Set tab width

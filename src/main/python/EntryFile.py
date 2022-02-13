@@ -13,7 +13,7 @@ from Crypto import Crypto
 from CONSTANTS import get_resource
 
 
-class EntryFile():
+class EntryFile:
     def __init__(self, file_date: date = None) -> None:
 
         self._crypto = Crypto()
@@ -91,7 +91,7 @@ class EntryFile():
 
 
     @property
-    def date(self):
+    def date(self) -> datetime.date:
         return self._date
 
     @property
@@ -257,10 +257,11 @@ def get_all_entry_files():
 
     ret = list()
     for file in files:
-        fn = file.name;
+        fn = file.name
         fn = fn.replace(".crypt", "")
         fn = fn[:-3]
-        date = datetime.strptime(fn, "%Y-%m-%d");
+        date = datetime.strptime(fn, "%Y-%m-%d")
+        date = date.date()
         ret.append(EntryFile(date))
 
     return ret
@@ -268,6 +269,7 @@ def get_all_entry_files():
 
 def get_all_entry_files_in_range(startdate: date, enddate: date):
     diary_entries = get_all_entry_files()
+    print(type(startdate))
     diary_entries = [entry for entry in diary_entries
                             if startdate <= entry.date <= enddate]
     return diary_entries
