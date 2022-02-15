@@ -16,6 +16,7 @@
 """
 from __future__ import annotations
 
+import sys
 import typing
 
 from PyQt6 import QtWidgets, QtGui, QtCore
@@ -70,7 +71,9 @@ class SettingsWindow(QtWidgets.QDialog):
 
         formLayout.addRow(self.about_label)
         self.license_button = QtWidgets.QPushButton("Licenses")
-        self.license_button.setStyleSheet("margin-bottom: 16px; height: 24px")
+        self.license_button.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
+        if sys.platform != "darwin":
+            self.license_button.setStyleSheet("margin-bottom: 16px; height: 24px")
         self.license_button.clicked.connect(self.license_clicked)
         formLayout.addRow(self.license_button)
 
@@ -89,6 +92,7 @@ class SettingsWindow(QtWidgets.QDialog):
         self.flat_structure_checkbox.stateChanged.connect(self.change_flat_structure)
 
         self.button_encryption = QtWidgets.QPushButton("Setup Encryption")
+        self.button_encryption.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
         self.button_encryption.clicked.connect(self.encryption_clicked)
 
         self.encryption_default_checkbox = QtWidgets.QCheckBox()
@@ -99,9 +103,11 @@ class SettingsWindow(QtWidgets.QDialog):
         self.encryption_default_checkbox.stateChanged.connect(self.change_encryption_default)
 
         self.button_encrypt_everything = QtWidgets.QPushButton("Encrypt everything")
+        self.button_encrypt_everything.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
         self.button_encrypt_everything.clicked.connect(self.encrypt_everything)
 
         self.button_decrypt_everything = QtWidgets.QPushButton("Decrypt everything")
+        self.button_decrypt_everything.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
         self.button_decrypt_everything.clicked.connect(self.decrypt_everything)
 
         settings_label = QtWidgets.QLabel("Settings")
@@ -117,9 +123,14 @@ class SettingsWindow(QtWidgets.QDialog):
         self.setLayout(formLayout)
 
         self.setStyleSheet("""    
-        text-align: center;
-        background-color: palette(window);
-        color: palette(text);
+        QDialog {
+            text-align: center;
+            background-color: palette(window);
+            color: palette(text);
+        }
+        QPushButton {
+            color: #000000;
+        }
     """)
         self.setWindowTitle("About")
         self.refresh_buttons()
