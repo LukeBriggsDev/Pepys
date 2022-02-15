@@ -344,25 +344,25 @@ class CustomToolbar(QtWidgets.QToolBar):
 
     def refresh_stylesheet(self):
         self.setStyleSheet("""
-        CustomToolbar{
+        CustomToolbar {
             background-color: palette(window);
             border: 1px solid palette(dark);
         }
-        QPushButton{
+        QPushButton {
             background-color: window;
             border: 0px;
             border-radius: 4px;
         }
-        QPushButton:hover{
+        QPushButton:hover {
             background-color: palette(mid);
         }
-        QPushButton:pressed{
+        QPushButton:pressed {
             background-color: palette(dark);
         }
-        QLabel{
+        QLabel {
             padding-left: 4px;
         }
-        QSpinBox{
+        QSpinBox q {
             background-color: palette(base);
             color: palette(text);
         }
