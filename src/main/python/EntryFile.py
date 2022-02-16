@@ -70,6 +70,7 @@ class EntryFile:
         except (NotImplementedError, TypeError):
             day_of_month = file_date.day
         self._long_date = file_date.strftime(f"%A {day_of_month} %B %Y")
+        self._tags = None
 
 
     @property
@@ -103,6 +104,14 @@ class EntryFile:
     def long_date(self):
         return self._long_date
 
+    def get_year_with_week(self):
+        return "Week " +  str(self._date.isocalendar()[1]).zfill(2) + "/" + str(self._date.isocalendar()[0])
+
+    def get_year(self):
+        return str(self._date.year)
+
+    def get_year_with_month(self):
+        return self._date.strftime(f"%B %Y")
 
     def update(self):
         self.__init__(self.date)
@@ -217,9 +226,14 @@ class EntryFile:
         
         with open(self.path, "w+") as file:
             file.write(content)
+        
+        self._tags = None
 
 
     def get_tags(self):
+        if self._tags != None:
+            return self._tags
+
         content = self.get_content()
 
         try:
@@ -228,10 +242,28 @@ class EntryFile:
             if metadata is not None:
                 meta_dict = yaml.safe_load(metadata.group())
             if "tags" in meta_dict.keys():
-                return meta_dict["tags"]
+                self._tags = meta_dict["tags"]
+                return self._tags
         except Exception:
             return {}
 
+    def has_tag(self, tag_name):
+        tags = self.get_tags()
+        for tag in tags:
+            if type(tag) is dict:
+                if list(tag.keys())[0] == tag_name:
+                    return True
+            elif tag == tag_name:
+                return True
+        return False
+
+    def get_tag_value(self, tag_name):
+        tags = self.get_tags()
+        for tag in tags:
+            if type(tag) is dict:
+                if list(tag.keys())[0] == tag_name:
+                    return tag.get(tag_name)
+        return False
 
     def copy_image(self, image_path):
         """Copies the image to the local diary entry folder and returns the relative path to the copy"""
@@ -269,7 +301,6 @@ def get_all_entry_files():
 
 def get_all_entry_files_in_range(startdate: date, enddate: date):
     diary_entries = get_all_entry_files()
-    print(type(startdate))
     diary_entries = [entry for entry in diary_entries
                             if startdate <= entry.date <= enddate]
     return diary_entries
