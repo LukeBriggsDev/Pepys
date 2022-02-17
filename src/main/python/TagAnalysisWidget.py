@@ -260,3 +260,4 @@ class TagAnalysisWidget(QtWidgets.QWidget):
 
     def showEvent(self, e):
         self.tag_name.setFocus()
+        
