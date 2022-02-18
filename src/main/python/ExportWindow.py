@@ -88,6 +88,7 @@ class ExportWindow(QtWidgets.QWidget):
                 QDateEdit {
                     color: palette(buttontext);
                     background-color: palette(button);
+                    border: 1px solid palette(mid);
                 }
                 """
             )
