@@ -362,7 +362,7 @@ class CustomToolbar(QtWidgets.QToolBar):
         QLabel {
             padding-left: 4px;
         }
-        QSpinBox q {
+        QSpinBox {
             background-color: palette(base);
             color: palette(text);
         }
