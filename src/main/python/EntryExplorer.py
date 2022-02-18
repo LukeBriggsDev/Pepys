@@ -50,7 +50,8 @@ class EntryExplorer(QtWidgets.QTabWidget):
                 border: none;
             }
             QTabBar::tab {
-                color: palette(buttontext)
+                color: palette(buttontext);
+                background-color: palette(button);
             } 
             QTabBar::tab:selected { 
                 background: palette(base);
