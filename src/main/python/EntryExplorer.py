@@ -46,6 +46,7 @@ class EntryExplorer(QtWidgets.QTabWidget):
         palette = QtWidgets.QApplication.palette()
         self.tabBar().setTabTextColor(0, palette.text().color())
         self.tabBar().setTabTextColor(1, palette.text().color())
+        self.tabBar().setTabTextColor(2, palette.text().color())
         self.setStyleSheet(
             """
             QWidget {
