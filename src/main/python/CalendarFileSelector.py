@@ -154,7 +154,7 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
 
         entry_file = EntryFile(date.toPyDate())
         if not entry_file.exists():
-            painter.fillRect(rect, palette.color(QtGui.QPalette.ColorRole.Dark))
+            painter.fillRect(rect, palette.color(QtGui.QPalette.ColorRole.Button))
 
         if (date.toPyDate().month != self.monthShown()):
             painter.setPen(QtGui.QColor("#888888"))
