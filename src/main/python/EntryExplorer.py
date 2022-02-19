@@ -20,6 +20,7 @@ from WebView import WebView
 
 from CalendarFileSelector import CalendarFileSelector
 from SearchWidget import SearchWidget
+from TagAnalysisWidget import TagAnalysisWidget
 
 class EntryExplorer(QtWidgets.QTabWidget):
     def __init__(self, edit_pane, web_view):
@@ -37,9 +38,11 @@ class EntryExplorer(QtWidgets.QTabWidget):
 
         self.calendar = CalendarFileSelector(self.edit_pane, self.web_view)
         self.search = SearchWidget(self.edit_pane, self.web_view)
+        self.tag_analysis = TagAnalysisWidget(self.edit_pane, self.web_view)
 
         self.addTab(self.calendar, "Calendar")
         self.addTab(self.search, "Search")
+        self.addTab(self.tag_analysis, "Tag Analysis")
         palette = QtWidgets.QApplication.palette()
         self.tabBar().setTabTextColor(0, palette.text().color())
         self.tabBar().setTabTextColor(1, palette.text().color())
@@ -63,4 +66,5 @@ class EntryExplorer(QtWidgets.QTabWidget):
     def closeEvent(self, a0: QtGui.QCloseEvent) -> None:
         self.search.close()
         self.calendar.close()
+        self.tag_analysis.close()
         self.edit_pane.parentWidget().tool_bar.setEnabled(True)
