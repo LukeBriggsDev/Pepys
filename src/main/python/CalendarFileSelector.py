@@ -161,7 +161,7 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
         elif date.dayOfWeek() == 6 or date.dayOfWeek() == 7:
             painter.setPen(QtGui.QColor("red"))
 
-        tags = entry_file.get_tags()
+        
         rect.adjust(0, 0, -1, -1)
         pen = painter.pen()
         pen.setColor(QtGui.QColor.fromHsl(pen.color().hue(), pen.color().saturation(), pen.color().lightness(), 150))
@@ -175,26 +175,38 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
         painter.setPen(pen)
 
         rect.adjust(5, 2, 0, 0)
-        painter.drawText(rect, QtCore.Qt.AlignmentFlag.AlignTop, str(date.toPyDate().day))
+        painter.drawText(rect, QtCore.Qt.AlignmentFlag.AlignTop, str(date.day()))
         rect.adjust(-5, 2, 0, 0)
-        text = ""
-        try:
-            for tag in tags[:5]:
-                if len(tag) > 12:
-                    tag = str(tag[:12]) + "..."
-                text += f" {tag} \n"
-        except TypeError:
-            text = ""
+
+        # Draw tags text
         font = QtGui.QFont()
         font.setPixelSize(10)
         painter.setFont(font)
-        brush = painter.background()
-        random.seed(date)
-        brush.setColor(QtGui.QColor().fromHsl(randint(0, 255), randint(0, 255), randint(200, 255)))
         painter.setPen(QtGui.QColor("black"))
-        painter.setBackground(brush)
         painter.setBackgroundMode(QtCore.Qt.BGMode.OpaqueMode)
-        painter.drawText(rect, QtCore.Qt.AlignmentFlag.AlignBottom | QtCore.Qt.AlignmentFlag.AlignHCenter, text)
+
+        tags =[]
+        tags = entry_file.get_tags()
+        tag_count = len(tags)
+        if tag_count > 5:
+            tag_count = 5
+     
+        for i in range(0, tag_count):
+            tag = tags[i]
+            if type(tag) is dict:
+                tag = list(tag.keys())[0]
+            if len(tag) > 12:
+                tag = str(tag[:12]) + "..."
+
+            text = tag
+            for j in range(0, tag_count-i):
+                text += f"\n"
+      
+            brush = painter.background()
+            random.seed(sum(bytearray(tag.encode())))
+            brush.setColor(QtGui.QColor().fromHsl(randint(0, 255), 200, 200))
+            painter.setBackground(brush)
+            painter.drawText(rect, QtCore.Qt.AlignmentFlag.AlignBottom | QtCore.Qt.AlignmentFlag.AlignHCenter, text)
 
         if entry_file.is_encrypted():
             # Draw a little lock symbol
