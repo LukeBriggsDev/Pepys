@@ -46,6 +46,7 @@ class EntryExplorer(QtWidgets.QTabWidget):
         palette = QtWidgets.QApplication.palette()
         self.tabBar().setTabTextColor(0, palette.text().color())
         self.tabBar().setTabTextColor(1, palette.text().color())
+        self.tabBar().setTabTextColor(2, palette.text().color())
         self.setStyleSheet(
             """
             QWidget {
@@ -53,9 +54,8 @@ class EntryExplorer(QtWidgets.QTabWidget):
                 border: none;
             }
             QTabBar::tab {
-                background: palette(dark); 
-                border: 1px solid palette(mid);
-                padding: 4px;
+                color: palette(buttontext);
+                background-color: palette(button);
             } 
             QTabBar::tab:selected { 
                 background: palette(base);

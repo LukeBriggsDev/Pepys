@@ -129,7 +129,7 @@ class TagAnalysisWidget(QtWidgets.QWidget):
         self.key_value_selection.setMinimumWidth(90)
         self.key_value_selection.addItem("count")
         self.key_value_selection.addItem("values")
-        self.key_value_selection.addItem("value sum")
+        self.key_value_selection.addItem("sum")
 
         self.interval_selection = QtWidgets.QComboBox(self)
         self.interval_selection.setMinimumWidth(90)
@@ -181,12 +181,29 @@ class TagAnalysisWidget(QtWidgets.QWidget):
             }
             QLineEdit {
                 background-color: palette(base);
-                border: 2px solid palette(dark);
+                border: 2px solid palette(mid);
+                border-radius: 10px;
                 height: 24px;
+                border-radius: 10px;
             } 
+            QLineEdit:focus {
+                border: 2px solid palette(highlight);
+            }       
+            QComboBox {
+                border: 1px solid palette(mid);
+                border-radius: 4px;
+            }
+            QComboBox QAbstractItemView {
+                background-color: palette(window);
+            }
+            QComboBox::item:selected {
+                background-color: palette(highlight);
+            }
             QPushButton {
                 background-color: palette(button);
-                border: 2px solid palette(dark);
+                color: palette(buttontext);
+                border: 2px solid palette(mid);
+                border-radius: 10px;
                 height: 24px;
                 padding-left: 4px;
                 padding-right: 4px;
@@ -197,6 +214,34 @@ class TagAnalysisWidget(QtWidgets.QWidget):
 
             QHeaderView::section {
                 background-color: palette(button);
+                border-radius: 5px;
+            }
+            QScrollBar:vertical{
+                border: 0px solid palette(base);
+                background-color: palette(base);
+                margin: 0px 0px 0px 0px;
+            }
+            QScrollBar::handle:vertical{
+                min-height: 0px;
+                border: 0px solid red;
+                border-radius: 4px;
+                background-color: palette(dark);
+            }
+            QScrollBar::handle:horizontal{
+                min-height: 0px;
+                border: 0px solid red;
+                border-radius: 4px;
+                background-color: palette(dark);
+            }
+            QScrollBar::add-line:vertical{
+                height: 0px;
+                subcontrol-position: bottom;
+                subcontrol-origin: margin;
+            }
+            QScrollBar::sub-line:vertical{
+                height: 0px;
+                subcontrol-position: top;
+                subcontrol-origin: margin;
             }
             """
         )

@@ -111,12 +111,19 @@ class SearchWidget(QtWidgets.QWidget):
             }
             QLineEdit {
                 background-color: palette(base);
-                border: 2px solid palette(dark);
+                border: 2px solid palette(mid);
+                border-radius: 10px;
                 height: 24px;
+                border-radius: 10px;
             } 
+            QLineEdit:focus {
+                border: 2px solid palette(highlight);
+            }
             QPushButton {
                 background-color: palette(button);
-                border: 2px solid palette(dark);
+                color: palette(buttontext);
+                border: 2px solid palette(mid);
+                border-radius: 10px;
                 height: 24px;
                 padding-left: 4px;
                 padding-right: 4px;
@@ -127,8 +134,34 @@ class SearchWidget(QtWidgets.QWidget):
 
             QHeaderView::section {
                 background-color: palette(button);
-
-
+                border-radius: 5px;
+            }
+            QScrollBar:vertical{
+                border: 0px solid palette(base);
+                background-color: palette(base);
+                margin: 0px 0px 0px 0px;
+            }
+            QScrollBar::handle:vertical{
+                min-height: 0px;
+                border: 0px solid red;
+                border-radius: 4px;
+                background-color: palette(dark);
+            }
+            QScrollBar::handle:horizontal{
+                min-height: 0px;
+                border: 0px solid red;
+                border-radius: 4px;
+                background-color: palette(dark);
+            }
+            QScrollBar::add-line:vertical{
+                height: 0px;
+                subcontrol-position: bottom;
+                subcontrol-origin: margin;
+            }
+            QScrollBar::sub-line:vertical{
+                height: 0px;
+                subcontrol-position: top;
+                subcontrol-origin: margin;
             }
             """
         )

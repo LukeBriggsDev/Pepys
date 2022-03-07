@@ -129,7 +129,8 @@ class SettingsWindow(QtWidgets.QDialog):
             color: palette(text);
         }
         QPushButton {
-            color: #000000;
+            color: palette(buttontext);
+            background-color: palette(button);
         }
     """)
         self.setWindowTitle("About")
