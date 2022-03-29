@@ -178,8 +178,7 @@ class EditPane(QtWidgets.QTextEdit):
     def insert_image(self):
         image_dialog = QtWidgets.QFileDialog(caption="Insert Image", directory=pathlib.Path.home().as_posix(),
                                              filter="Image Files(*.apng *.avif *.gif *.jpg *.jpeg *.jfif *.pjpeg, *.pjp *.png *.svg *.webp)")
-        image_dialog.exec()
-        if len(image_dialog.selectedFiles()) > 0:
+        if image_dialog.exec() == 1:
             image = image_dialog.selectedFiles()[0]
             relative_path = self._entry_file.copy_image(image)
             self.insertPlainText(f"![]({relative_path})")
