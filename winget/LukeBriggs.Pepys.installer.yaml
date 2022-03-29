@@ -6,7 +6,7 @@ PackageVersion: 1.5.0
 Installers:
 - Architecture: x64
   InstallerType: nullsoft
-  InstallerUrl: https://github.com/LukeBriggsDev/Pepys/releases/download/v1.4.0/pepys.1.4.0.win.x86_64.installer.exe
-  InstallerSha256: 1095160248B3AADF7A6BC07E7496856F4FE8DBF6B80943938EAC0C3AF04B4ED4
+  InstallerUrl: https://github.com/LukeBriggsDev/Pepys/releases/download/v1.5.0/pepys.1.5.0.win.x86_64.installer.exe
+  InstallerSha256: 061afa46181aad864627cde50e3b39d938c807a0c323a6fd0d8255eff50f9aa4
 ManifestType: installer
 ManifestVersion: 1.0.0
