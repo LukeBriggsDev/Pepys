@@ -46,6 +46,15 @@
         </p>
     </description>
     <releases>
+        <release version="1.5.0" date="2022-03-29">
+            <description>
+                <ul>
+                    <li>New feature: Tag analysis by @uhrfra</li>
+                    <li>Style tweaks by @LukeBriggsDev</li>
+                    <li>Fix crash when using a directory that has a permission error by @LukeBriggsDev(Thanks to @HarryHamilton for spotting this error)</li>
+                </ul>
+            </description>
+        </release>
         <release version="1.4.0" date="2022-02-13">
             <description>
                 <ul>
