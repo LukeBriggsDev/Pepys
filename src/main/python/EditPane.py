@@ -99,8 +99,21 @@ class EditPane(QtWidgets.QTextEdit):
     def open_file_from_date(self, file_date: date):
         """Open or create a markdown file corresponding to today"""
         self._entry_file = EntryFile(file_date)
-       
-        self._entry_file.create_directory()
+
+        try:
+            self._entry_file.create_directory()
+        except PermissionError:
+            self.no_journal_dialog = QtWidgets.QMessageBox()
+            self.no_journal_dialog.setText("You do not have permission to put a diary here")
+            self.no_journal_dialog.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Close |
+                                                      QtWidgets.QMessageBox.StandardButton.Open)
+            self.no_journal_dialog.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Open)
+            answer = self.no_journal_dialog.exec()
+            if answer == QtWidgets.QMessageBox.StandardButton.Open:
+                self.parent().select_diary_directory()
+            else:
+                exit(0)
+            return
 
         if self._entry_file.exists():
             self.setText(self._entry_file.get_content())
