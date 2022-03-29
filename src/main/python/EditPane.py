@@ -102,7 +102,7 @@ class EditPane(QtWidgets.QTextEdit):
 
         try:
             self._entry_file.create_directory()
-        except PermissionError:
+        except (PermissionError, OSError):
             self.no_journal_dialog = QtWidgets.QMessageBox()
             self.no_journal_dialog.setText("You do not have permission to put a diary here")
             self.no_journal_dialog.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Close |
