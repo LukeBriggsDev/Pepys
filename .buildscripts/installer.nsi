@@ -18,7 +18,7 @@ Section "Install"
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Pepys" "Publisher" "Luke Briggs"
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Pepys" "Publisher" "Luke Briggs"
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Pepys" "Version" 0x010101
-    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Pepys" "DisplayVersion" 1.3.1
+    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Pepys" "DisplayVersion" 1.5.0
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Pepys" "UrlInfoAbout" "https://www.lukebriggs.dev/pepys"
 
 SectionEnd
