@@ -46,6 +46,13 @@
         </p>
     </description>
     <releases>
+        <release version="1.5.3" date="2022-03-30">
+            <description>
+                <ul>
+                    <li>Fix crash when clicking cancel at image file dialog by @uhrfra</li>
+                </ul>
+            </description>
+        </release>
         <release version="1.5.0" date="2022-03-29">
             <description>
                 <ul>
