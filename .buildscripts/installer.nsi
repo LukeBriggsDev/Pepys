@@ -27,4 +27,5 @@ Section "Uninstall"
     RMDir /r "$INSTDIR"
     RMDir /r "$LocalAppdata\Pepys"
     Delete "$SMPROGRAMS\Pepys.lnk"
+    DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Pepys"
 SectionEnd
