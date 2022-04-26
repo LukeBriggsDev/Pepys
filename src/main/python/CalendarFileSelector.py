@@ -185,8 +185,8 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
         painter.setPen(QtGui.QColor("black"))
         painter.setBackgroundMode(QtCore.Qt.BGMode.OpaqueMode)
 
-        tags =[]
-        tags = entry_file.get_tags()
+        tags = []
+        tags = [str(tag) for tag in entry_file.get_tags()]
         tag_count = len(tags)
         if tag_count > 5:
             tag_count = 5
