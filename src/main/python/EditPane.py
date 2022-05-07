@@ -167,6 +167,11 @@ class EditPane(QtWidgets.QTextEdit):
             if match is not None:
                 self.insertPlainText(match.group())
 
+
+            # Fix font size bug
+            match = "" == current_line.previous().text()
+            self.setFontPointSize(self.fontPointSize())
+
     def contextMenuEvent(self, e:QtGui.QContextMenuEvent) -> None:
         context_menu = self.createCustomContextMenu(e.pos())
         # Fix white border in context menu in Windows dark mode
