@@ -46,6 +46,13 @@
         </p>
     </description>
     <releases>
+        <release version="1.5.4" date="2022-05-07">
+            <description>
+                <ul>
+                    <li>Fix crash in calendar view with certain tags</li>
+                </ul>
+            </description>
+        </release>
         <release version="1.5.3" date="2022-03-30">
             <description>
                 <ul>
