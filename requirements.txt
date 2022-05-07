@@ -1,12 +1,15 @@
-wheel
-regex
-num2words
-pypandoc
-pyenchant
-PyPDF2
-setproctitle
-PyQt6
-PyQt6-WebEngine
-pyYAML
-pyobjc-framework-Cocoa; sys_platform == "darwin"
-cryptography
+cryptography==37.0.2
+num2words==0.5.10
+pyenchant==3.2.2
+pyobjc-core==8.5; sys.platform=="darwin"
+pyobjc-framework-Cocoa==8.5; sys.platform=="darwin"
+pypandoc==1.7.5
+PyPDF2==1.27.12
+PyQt6==6.2.0
+PyQt6-Qt6==6.2.0
+PyQt6-sip==13.3.1
+PyQt6-WebEngine==6.2.0
+PyQt6-WebEngine-Qt6==6.2.0
+PyYAML==6.0
+regex==2022.4.24
+setproctitle==1.2.3
