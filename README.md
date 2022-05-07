@@ -89,16 +89,6 @@ Pepys is available on [Flathub]((https://flathub.org/apps/details/dev.lukebriggs
 
 `flatpak install flathub dev.lukebriggs.pepys`
 
-### AUR
-
-Pepys is available on the [Arch User Repository](https://aur.archlinux.org/packages/pepys/)
-
-`yay -S pepys`
-
-### Debian/Fedora/Arch
-Distribution specific packages are available on the [releases page](https://github.com/LukeBriggsDev/Pepys/releases)
-
-
 # Source Code
 The source code is available on [Github](https://github.com/LukeBriggsDev/Pepys)
 
