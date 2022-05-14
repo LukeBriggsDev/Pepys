@@ -141,6 +141,7 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
         self.edit_pane.open_file_from_date(date(self.selectedDate().year(),
                                                 self.selectedDate().month(),
                                                 self.selectedDate().day()))
+        self.updateCells()
         self.web_view.refresh_page()
 
 
@@ -165,7 +166,7 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
         rect.adjust(0, 0, -1, -1)
         pen = painter.pen()
         pen.setColor(QtGui.QColor.fromHsl(pen.color().hue(), pen.color().saturation(), pen.color().lightness(), 150))
-        if (date == QtCore.QDate.currentDate()):
+        if (date == self.selectedDate()):
             pen.setColor(QtGui.QColor.fromHsl(pen.color().hue(), pen.color().saturation(), pen.color().lightness(), 255))
             rect.adjust(2, 2, -1, -1)
             pen.setWidth(4)
