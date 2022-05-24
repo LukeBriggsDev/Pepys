@@ -3,7 +3,7 @@ num2words==0.5.10
 pyenchant==3.2.2
 pyobjc-core==8.5; sys.platform=="darwin"
 pyobjc-framework-Cocoa==8.5; sys.platform=="darwin"
-pypandoc==1.7.5
+pypandoc==1.8.1
 PyPDF2==1.27.12
 PyQt6==6.2.0
 PyQt6-Qt6==6.2.0
