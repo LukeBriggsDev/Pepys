@@ -179,12 +179,27 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
         painter.drawText(rect, QtCore.Qt.AlignmentFlag.AlignTop, str(date.day()))
         rect.adjust(-5, 2, 0, 0)
 
+        # Draw word count
+        if entry_file.exists():
+            font = QtGui.QFont()
+            font.setPixelSize(9)
+            painter.setFont(font)
+            wc = len(entry_file.get_content().split(' '))
+            rect.adjust(97-(font.pixelSize()*len(str(wc))), 70, 0, 0)
+            painter.setPen(QtWidgets.QApplication.palette().placeholderText().color())
+            painter.drawText(rect, QtCore.Qt.AlignmentFlag.AlignTop, f"{wc}")
+            rect.adjust(-97 + (font.pixelSize()*len(str(wc))), -70, 0, 0)
+            painter.setPen(QtGui.QColor("black"))
+
         # Draw tags text
         font = QtGui.QFont()
         font.setPixelSize(10)
         painter.setFont(font)
         painter.setPen(QtGui.QColor("black"))
         painter.setBackgroundMode(QtCore.Qt.BGMode.OpaqueMode)
+
+
+
 
         tags = []
         tags = [str(tag) for tag in entry_file.get_tags()]
