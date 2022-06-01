@@ -120,7 +120,7 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
         # Set format of how favorites appear in calendar
         favorite_format = QtGui.QTextCharFormat()
         favorite_brush = QtGui.QBrush()
-        favorite_brush.setColor(QtGui.QColor.fromRgb(255, 228, 0))
+        favorite_brush.setColor(QtGui.QColor.fromCmyk(0, 255, 0, 125))
         favorite_format.setBackground(favorite_brush)
         favorite_brush.setColor(QtGui.QColor.fromRgb(33, 33, 33))
         favorite_format.setForeground(favorite_brush)
@@ -149,7 +149,7 @@ class CalendarFileSelector(QtWidgets.QCalendarWidget):
         painter.save()
         with open(get_resource("config.json")) as file:
             if date.toPyDate().strftime("%Y-%m-%d") in json.loads(file.read())["favorites"]:
-                painter.fillRect(rect, QtGui.QColor.fromRgb(255, 255, 0))
+                painter.fillRect(rect, QtGui.QColor.fromCmyk(0, 0, 255, 0, 150))
 
         palette = QtWidgets.QApplication.palette()
 
