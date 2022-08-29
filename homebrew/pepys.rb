@@ -2,7 +2,7 @@ class Pepys < Formula
   desc "A Straightforward Markdown Journal"
   homepage "https://lukebriggs.dev/pepys"
   url "https://github.com/LukeBriggsDev/Pepys/archive/refs/tags/v1.5.5.tar.gz"
-  sha256 "633dff4d6515bd3b02c0c24f51a54b599b963f603e122c84b22e859c578fef23"
+  sha256 "951c205e63ac81bb18c160061b85e77649a04a6a171d3aeb85586c6eea55295a"
   license "GPL-3.0"
   depends_on "python@3.8"
   depends_on "pandoc"
