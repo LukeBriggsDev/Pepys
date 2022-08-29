@@ -19,7 +19,6 @@ class Pepys < Formula
   end
 
   def post_install
-    system "ln", "-s", "/Applications", "Applications"
     system "open", "#{bin}/Applications"
   end
 end
