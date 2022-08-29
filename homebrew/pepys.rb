@@ -1,7 +1,7 @@
 class Pepys < Formula
   desc "A Straightforward Markdown Journal"
   homepage "https://lukebriggs.dev/pepys"
-  url "https://github.com/LukeBriggsDev/Pepys/archive/refs/tags/v1.5.4.tar.gz"
+  url "https://github.com/LukeBriggsDev/Pepys/archive/refs/tags/v1.5.5.tar.gz"
   sha256 "1f80b6ff92b55abd510f31b53e4d9d6fa7e5484a996382d3edf621a617f6295c"
   license "GPL-3.0"
   depends_on "python@3.8"
@@ -19,6 +19,7 @@ class Pepys < Formula
   end
 
   def post_install
+    system "ln", "-s", "/Applications", "Applications"
     system "open", "#{bin}/Applications"
   end
 end

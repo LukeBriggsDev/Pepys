@@ -158,7 +158,7 @@ modules:
       - cp ./dev.lukebriggs.pepys.svg /app/share/icons/hicolor/scalable/apps/
     sources:
       - type: git
-        tag: v1.5.4
+        tag: v1.5.5
         url: https://github.com/LukeBriggsDev/Pepys
 
   - name: runner
