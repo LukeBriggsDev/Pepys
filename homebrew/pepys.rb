@@ -10,7 +10,7 @@ class Pepys < Formula
 
   def install
     system "#{prefix}/../../../bin/brew", "install", "--cask", "wkhtmltopdf"
-    system Formula['python@3.8'].opt_bin/"python3", "-m", "venv", "--system-site-packages", libexec
+    system Formula['python@3.8'].opt_bin/"python3.8", "-m", "venv", "--system-site-packages", libexec
     system "#{libexec}/bin/pip3.8", "install", "-r", "requirements.txt"
     system "cp", "-R", "src", lib
     system "mkdir", bin
